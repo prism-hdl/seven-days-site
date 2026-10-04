@@ -6,7 +6,7 @@
 <title>第 6 集 · 记忆：regfile / ram / im / dm · 创世记 · 第二日 · 空气与水</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
@@ -85,66 +85,65 @@ footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',se
 </style>
 <style>
 /* ---------- 侧边栏目录（构建脚本注入） ---------- */
-:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+:root { --nav-w: 288px; --nav-bg:#080b13; --nav-line:rgba(255,255,255,.09); }
 body { padding-left: var(--nav-w); }
-.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
-  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
-  display: flex; flex-direction: column; }
-.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
-  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
-.site-nav-inner::-webkit-scrollbar { width: 8px; }
-.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
-.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
-  border-bottom: 1px solid var(--nav-line); }
-.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
-.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
-.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
-  -webkit-background-clip: text; background-clip: text; color: transparent; }
-.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
-.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
-  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
-.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
-.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
-.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
-.nav-day { margin-bottom: 14px; }
-.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
-  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
-.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
-.nav-day h3 .nm { color: #e8ecf4; }
-.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
-.nav-day ul { list-style: none; margin: 0; padding: 0; }
-.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
-  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
-  color: #9aa4b8; text-decoration: none; }
-.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
-.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px; color: #6b7488; flex: none; }
-.nav-day li a .n { color: #a678ff; }
-.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
-  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
-.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
-.nav-day li a.on .n { color: #ffe0a8; }
-.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
-  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
-.nav-foot a { color: #8a94a8; text-decoration: none; }
-.nav-foot a:hover { color: #a678ff; }
-.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
-  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
-  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
-.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
-html.nav-open .nav-scrim { display: block; }
-@media (max-width: 1080px) {
-  body { padding-left: 0; }
-  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
-  html.nav-open .site-nav { transform: none; }
-  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
-  .hero .hero-inner, main { padding-top: 52px; }
+.site-nav { position:fixed; inset:0 auto 0 0; width:var(--nav-w); z-index:60;
+  background:var(--nav-bg); border-right:1px solid var(--nav-line);
+  display:flex; flex-direction:column; }
+.site-nav-inner { overflow-y:auto; overscroll-behavior:contain; padding:22px 16px 28px; flex:1;
+  scrollbar-width:thin; scrollbar-color:#2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width:8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background:#242c3b; border-radius:8px; }
+.nav-brand { display:block; text-decoration:none; padding:0 8px 18px; margin-bottom:8px;
+  border-bottom:1px solid var(--nav-line); }
+.nav-kicker { display:block; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em;
+  color:#8892a6; margin-bottom:6px; }
+.nav-title { display:block; font-family:'Noto Serif SC',serif; font-size:21px; font-weight:700; color:#fff; }
+.nav-title em { font-style:normal; background:linear-gradient(112deg,#ffe0a8,#a678ff); -webkit-background-clip:text;
+  background-clip:text; color:transparent; }
+.nav-top { display:flex; flex-direction:column; gap:2px; margin-bottom:16px; }
+.nav-top a { display:flex; align-items:baseline; gap:8px; padding:7px 10px; border-radius:7px;
+  font-size:13.5px; color:#c6cdda; text-decoration:none; }
+.nav-top a:hover { background:rgba(255,255,255,.06); color:#fff; }
+.nav-top a.on { background:rgba(91,75,255,.2); color:#fff; box-shadow:inset 2px 0 0 #a678ff; }
+.nav-top a span { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; color:#7a8497; }
+.nav-day { margin-bottom:14px; }
+.nav-day h3 { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:600; color:#8892a6;
+  letter-spacing:.02em; padding:0 10px; margin-bottom:5px; }
+.nav-day h3 .dot { width:7px; height:7px; border-radius:2px; flex:none; }
+.nav-day h3 .nm { color:#e8ecf4; font-weight:600; }
+.nav-day h3 .st { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:9.5px; color:#5d6779; }
+.nav-day ul { list-style:none; margin:0; padding:0; }
+.nav-day li a, .nav-day li span.row { display:flex; gap:8px; align-items:baseline; padding:6px 10px 6px 14px;
+  border-radius:7px; font-size:13px; line-height:1.45; color:#9aa4b8; text-decoration:none; }
+.nav-day li a:hover { background:rgba(255,255,255,.06); color:#fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family:'JetBrains Mono',monospace; font-size:10.5px;
+  color:#6b7488; flex:none; }
+.nav-day li a .n { color:#a678ff; }
+.nav-day li.todo span.row { color:#4c5666; cursor:default; border-left:1px dashed rgba(255,255,255,.1);
+  border-radius:0; padding-left:13px; }
+.nav-day li a.on { background:rgba(91,75,255,.22); color:#fff; }
+.nav-day li a.on .n { color:#ffe0a8; }
+.nav-foot { margin-top:20px; padding:14px 10px 0; border-top:1px solid var(--nav-line);
+  font-size:11.5px; color:#5d6779; line-height:1.7; }
+.nav-foot a { color:#8a94a8; text-decoration:none; }
+.nav-foot a:hover { color:#a678ff; }
+.nav-toggle { display:none; position:fixed; z-index:70; left:14px; top:14px; padding:9px 14px;
+  border-radius:8px; border:1px solid rgba(255,255,255,.22); background:rgba(8,11,19,.86);
+  backdrop-filter:blur(8px); color:#fff; font:600 13px/1 'Inter','Noto Serif SC',sans-serif; cursor:pointer; }
+.nav-scrim { display:none; position:fixed; inset:0; z-index:55; background:rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display:block; }
+@media (max-width:1080px) {
+  body { padding-left:0; }
+  .site-nav { transform:translateX(-100%); transition:transform .22s ease; width:min(var(--nav-w),86vw); }
+  html.nav-open .site-nav { transform:none; }
+  .nav-toggle { display:inline-flex; align-items:center; gap:6px; }
+  .hero .hero-inner, main { padding-top:52px; }
 }
-@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+@media print { .site-nav, .nav-toggle, .nav-scrim { display:none !important; } body { padding-left:0; } }
 </style></head>
-<body
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="06-memory.html" class="on" aria-current="page"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-cpu-top.html"><span class="n">EP 9</span><span class="t">cpu_top · 一具身体</span></a></li><li><a href="10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">旱地与植物</span><span class="st">待重构</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">天上光体</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 11</span><span class="t">Composer · 一次声明五段生成</span></span></li><li class="todo"><span class="row"><span class="n">EP 12</span><span class="t">五级流水线数据通路</span></span></li><li class="todo"><span class="row"><span class="n">EP 13</span><span class="t">数据冒险与前递</span></span></li><li class="todo"><span class="row"><span class="n">EP 14</span><span class="t">控制冒险与分支</span></span></li><li class="todo"><span class="row"><span class="n">EP 15</span><span class="t">RV64I 与整合验证</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">有生命的活物</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 16</span><span class="t">RV32M 乘除法</span></span></li><li class="todo"><span class="row"><span class="n">EP 17</span><span class="t">CSR 框架与异常</span></span></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">中断与 PMP</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">模式切换与上板</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">独立 ISS 四方对撞</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">照着形象造人</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">总线 / ABI / 链接脚本</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">SRAM 与 BootROM</span></span></li><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">PLIC 与 UART</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">SoC 顶层组装</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">OpenSBI 移植与最小 SoC 跑通</span></span></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span>HOME</span>首页 · 七日导览</a><a href="../outline.html"><span>OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">连载中</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 心跳</span></a></li><li><a href="06-memory.html" class="on" aria-current="page"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-observe.html"><span class="n">EP 9</span><span class="t">观察它们的心跳</span></a></li><li><a href="../day3/10-cpu-top.html"><span class="n">EP 10</span><span class="t">cpu_top · 四颗合体</span></a></li><li class="todo"><span class="row"><span class="n">EP 11</span><span class="t">跑一段冒泡排序</span></span></li><li class="todo"><span class="row"><span class="n">EP 12</span><span class="t">反证 · 变异扫描</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">旱地与植物</span><span class="st">待重构</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">天上光体</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 13</span><span class="t">Composer · 一次声明五段生成</span></span></li><li class="todo"><span class="row"><span class="n">EP 14</span><span class="t">五级流水线数据通路</span></span></li><li class="todo"><span class="row"><span class="n">EP 15</span><span class="t">数据冒险与前递</span></span></li><li class="todo"><span class="row"><span class="n">EP 16</span><span class="t">控制冒险与分支</span></span></li><li class="todo"><span class="row"><span class="n">EP 17</span><span class="t">RV64I 与整合验证</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">有生命的活物</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">RV32M 乘除法</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">CSR 框架与异常</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">中断与 PMP</span></span></li><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">模式切换与上板</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">独立 ISS 四方对撞</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">照着形象造人</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">总线 / ABI / 链接脚本</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">SRAM 与 BootROM</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">PLIC 与 UART</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">SoC 顶层组装</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">OpenSBI 移植与最小 SoC 跑通</span></span></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 <header class="hero">
   <div class="hero-inner">
@@ -224,53 +223,38 @@ html.nav-open .nav-scrim { display: block; }
 
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">memory.prism · regfile</span></div>
-<pre>
-<span class="tk-decl">module</span> regfile {
-    <span class="tk-dir">in</span>  raddr1 : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u5</span>&gt;     <span class="tk-com">// 读地址 1</span>
-    <span class="tk-dir">in</span>  raddr2 : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u5</span>&gt;     <span class="tk-com">// 读地址 2</span>
-    <span class="tk-dir">in</span>  waddr  : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u5</span>&gt;     <span class="tk-com">// 写地址</span>
-    <span class="tk-dir">in</span>  wdata  : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">i64</span>&gt;    <span class="tk-com">// 写数据</span>
-    <span class="tk-dir">in</span>  wen    : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u1</span>&gt;     <span class="tk-com">// 写使能</span>
-    <span class="tk-dir">out</span> rdata1 : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">i64</span>&gt;    <span class="tk-com">// 读数据 1（组合）</span>
-    <span class="tk-dir">out</span> rdata2 : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">i64</span>&gt;    <span class="tk-com">// 读数据 2（组合）</span>
+<pre><span class="tk-decl">module</span> <span class="tk-name">regfile</span>&lt;T: bits&gt; {
+    <span class="tk-dir">in</span>  <span class="tk-name">raddr1</span> : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u5</span>&gt;     <span class="tk-com">// 读地址 1</span>
+    <span class="tk-dir">in</span>  <span class="tk-name">raddr2</span> : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u5</span>&gt;     <span class="tk-com">// 读地址 2</span>
+    <span class="tk-dir">in</span>  <span class="tk-name">waddr</span>  : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u5</span>&gt;     <span class="tk-com">// 写地址</span>
+    <span class="tk-dir">in</span>  <span class="tk-name">wdata</span>  : <span class="tk-typ">Signal</span>&lt;T&gt;      <span class="tk-com">// 写数据</span>
+    <span class="tk-dir">in</span>  <span class="tk-name">wen</span>    : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u1</span>&gt;     <span class="tk-com">// 写使能</span>
+    <span class="tk-dir">out</span> <span class="tk-name">rdata1</span> : <span class="tk-typ">Signal</span>&lt;T&gt;      <span class="tk-com">// 读数据 1（组合）</span>
+    <span class="tk-dir">out</span> <span class="tk-name">rdata2</span> : <span class="tk-typ">Signal</span>&lt;T&gt;      <span class="tk-com">// 读数据 2（组合）</span>
 
-    <span class="tk-stor">mem</span> regs : [<span class="tk-num">32</span>] <span class="tk-prim">i64</span> = <span class="tk-num">0</span>     <span class="tk-com">// 32 项 × 64 位；复位清零（上电是确定的 0，不是 x）</span>
+    <span class="tk-stor">mem</span> regs : [<span class="tk-num">32</span>] T = <span class="tk-num">0</span>       <span class="tk-com">// 32 项阵列；复位清零</span>
 
-    <span class="tk-com">// 异步读：x0 硬连线——读地址 0 直接给 0，不查阵列</span>
+    <span class="tk-com">// 组合读：x0 硬连线——读地址 0 直接给 0，不查阵列</span>
     rdata1 = (raddr1 == <span class="tk-num">0</span>) ? <span class="tk-num">0</span> : regs[raddr1]
     rdata2 = (raddr2 == <span class="tk-num">0</span>) ? <span class="tk-num">0</span> : regs[raddr2]
 
-    <span class="tk-com">// 同步写：waddr == 0 丢弃。读侧给 0 + 写侧拒收，两道合起来才是&quot;x0 恒零&quot;。</span>
+    <span class="tk-com">// 时序写：waddr == 0 丢弃</span>
     <span class="tk-stor">on</span> <span class="tk-stor">clock</span> {
-        regs&#x27;[waddr] = (wen &amp; (waddr != <span class="tk-num">0</span>)) ? wdata : regs[waddr]
-    }</pre>
+        regs<span class="tk-op">'</span>[waddr] = (wen &amp; (waddr != <span class="tk-num">0</span>)) ? wdata : regs[waddr]
+    }
+}</pre>
   </div>
 
-  <h3>两读一写，是三条指令数出来的</h3>
-  <p>口要几个，不由设计者拍板，由指令的字段数出来：</p>
-
-  <div class="code">
-    <div class="code-header"><span class="code-lang">asm</span><span class="code-file">四条指令的形状</span></div>
-<pre>        add  x3, x1, x2      <span class="tk-com"># 0x002081b3  两个源操作数 + 一个目的</span>
-        sd   x3, 8(x0)       <span class="tk-com"># 0x00303423  数据取 x3，基址取 x0</span>
-        jalr x1, 0(x5)       <span class="tk-com"># 0x000280e7  取 x5 算目标，返回地址写 x1</span>
-        add  x0, x1, x2      <span class="tk-com"># 0x00208033  目的寄存器写的是 x0——ISA 允许这条编码</span></pre>
-  </div>
-
+  <p>三个设计点：</p>
   <ul>
-    <li><strong>读口两个</strong>：<code>add x3, x1, x2</code> 的 <code>rs1</code> 与 <code>rs2</code> 要在<strong>同一拍</strong>都取到——ALU 的两个操作数缺一边就算不出东西。这就是两个读口的全部理由，多一个都不需要。</li>
-    <li><strong>写口一个</strong>：一条指令最多改一个寄存器（<code>rd</code>）。<code>sd</code> 那拍 <code>rd</code> 那格位段被借去装立即数，寄存器堆根本不写；<code>jalr x1, 0(x5)</code> 只写一个 <code>x1</code>（链接地址），它读的 <code>x5</code> 走的还是那两个读口。</li>
-    <li><strong>读是异步、写是同步</strong>：单周期里"取数 → 运算 → 写回"全在这一拍完成——取数不挂时钟，地址一稳就把那一格送出来；写回落在这条指令末尾的时钟边上。于是 <code>add x1, x1, x2</code> 连着跑几拍时，每拍读到的是<strong>上一拍落进阵列的值</strong>——存储阵列那条"同拍同址读旧值"的规则，正是在这种连续写读同一格的循环里显形的。</li>
+    <li><strong>2 读 1 写</strong>——ALU 的两个操作数要<strong>同一拍</strong>取到，所以读口有两个、且是组合的。写口是时序的：结果在边沿落进阵列。</li>
+    <li><strong>读侧硬连线</strong>——<code>raddr == 0</code> 直接返回 0，根本不查阵列。这是"x0 恒零"的第一道。</li>
+    <li><strong>写侧丢弃</strong>——<code>waddr == 0</code> 时写不进去。这是第二道。</li>
   </ul>
-
-  <h3>32 个名字里有一个不许写</h3>
-  <p>第四条指令的编码是合法的：<code>add x0, x1, x2</code>（<code>0x00208033</code>）。RISC-V 规定 <code>x0</code> 恒为 0，但它<strong>没有禁止你把 <code>rd</code> 写成 0</strong>——指令照发、运算照做，只是那个结果必须当没发生。硬件里这一条由寄存器堆自己钉死：读侧 <code>raddr == 0</code> 直接给 0、不查阵列；写侧 <code>waddr == 0</code> 丢弃。</p>
-
-  <p>再加上"32 项 × <code>i64</code>"这一条：这台机器的寄存器恒为 64 位，<code>2^32</code> 这种数放得下也读得回（下面那张表拍 3、4 就是这一条的见证）。阵列里没有一个字节是留给"将来可能是 32 位机器"的。</p>
 
   <div class="callout">
     <span class="callout-title">为什么两道都要？</span>
-    <p style="margin:0;">有的人把这条规矩放在 decoder 里（"译码时发现 rd=0 就不发写使能"）。但那是把 <strong>寄存器堆自己的不变式</strong>外包给了别人——只要有任何一条路径绕过 decoder 直接驱动 <code>waddr=0, wen=1</code>，x0 就被写坏了。<strong>谁的状态谁负责</strong>：读口给 0、写口拒收，两道焊在 regfile 内部。等合体之后你会看到，decoder 那边<em>还</em>有一道门（store 的 <code>rd</code> 位段被门成 0）——那是冗余的第二层，不是唯一的一层。</p>
+    <p style="margin:0;">RISC-V 规定 <code>x0</code> 恒为 0。有的人把这条规矩放在 decoder 里（"译码时发现 rd=0 就不发写使能"）。但那是把 <strong>寄存器堆自己的不变式</strong>外包给了别人——只要有任何一条路径绕过 decoder 直接驱动 <code>waddr=0, wen=1</code>，x0 就被写坏了。<strong>谁的状态谁负责</strong>：读口给 0、写口拒收，两道焊在 regfile 内部。等合体之后你会看到，decoder 那边<em>还</em>有一道门——但那是冗余的第二层，不是唯一的一层。</p>
   </div>
 </section>
 
@@ -279,30 +263,30 @@ html.nav-open .nav-scrim { display: block; }
 
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">memory.prism · ram</span></div>
-<pre>
-<span class="tk-decl">module</span> ram&lt;SIZE: int, W: bits, A: bits&gt; {
-    <span class="tk-com">// SIZE 是容量（字），A 是地址口位宽：装配面给几根地址线由总线定，这片内存</span>
-    <span class="tk-com">// 有多少字由容量定，二者本就不等——64 字的片也可以挂 8 根地址线。</span>
-    <span class="tk-dir">in</span>  addr  : <span class="tk-typ">Signal</span>&lt;A&gt;       <span class="tk-com">// 字地址</span>
-    <span class="tk-dir">in</span>  wdata : <span class="tk-typ">Signal</span>&lt;W&gt;       <span class="tk-com">// 写数据</span>
-    <span class="tk-dir">out</span> rdata : <span class="tk-typ">Signal</span>&lt;W&gt;       <span class="tk-com">// 读数据（组合，同拍出数）</span>
-    <span class="tk-dir">in</span>  wen   : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// 写使能</span>
-    <span class="tk-dir">in</span>  ren   : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// 读使能</span>
+<pre><span class="tk-decl">module</span> <span class="tk-name">ram</span>&lt;SIZE: int&gt; {
+    <span class="tk-dir">in</span>  <span class="tk-name">addr</span>  : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u6</span>&gt;      <span class="tk-com">// 字地址 0..63</span>
+    <span class="tk-dir">in</span>  <span class="tk-name">wdata</span> : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u32</span>&gt;
+    <span class="tk-dir">out</span> <span class="tk-name">rdata</span> : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u32</span>&gt;
+    <span class="tk-dir">in</span>  <span class="tk-name">wen</span>   : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u1</span>&gt;
+    <span class="tk-dir">in</span>  <span class="tk-name">ren</span>   : <span class="tk-typ">Signal</span>&lt;<span class="tk-prim">u1</span>&gt;
 
-    <span class="tk-stor">mem</span> ram : [SIZE] W = <span class="tk-num">0</span>      <span class="tk-com">// 字阵列，复位清零（未初始化的阵列会读出 x）</span>
+    <span class="tk-stor">mem</span> mem : [SIZE] <span class="tk-prim">u32</span> = <span class="tk-num">0</span>    <span class="tk-com">// 字阵列，复位清零</span>
 
-    <span class="tk-com">// 异步读：同拍出数（单周期核需要这个形状——同步读会给到上一条 pc 的数据）</span>
-    rdata = ren ? ram[addr] : <span class="tk-num">0</span>
+    <span class="tk-com">// 异步读：同拍出数</span>
+    rdata = ren ? mem[addr] : <span class="tk-num">0</span>
 
     <span class="tk-com">// 同步写</span>
     <span class="tk-stor">on</span> <span class="tk-stor">clock</span> {
         <span class="tk-kw">if</span> (wen) {
-            ram&#x27;[addr] = wdata</pre>
+            mem<span class="tk-op">'</span>[addr] = wdata
+        }
+    }
+}</pre>
   </div>
 
   <div class="callout warn">
-    <span class="callout-title">如果读口是"同步读"（挂在边沿、下一拍才出数）会怎样？</span>
-    <p style="margin:0;">单周期核里，pc 与数据通路共用同一个边沿：pc 指向 4 的那一拍，就得拿到地址 4 的指令。若是同步读，你会拿到<strong>上一拍 pc</strong> 的指令——<code>auipc</code> / <code>jal</code> 算出的链接地址会差一条指令的 pc；复位后第一个边沿更糟：它会去译码存储器里的复位值 <code>0</code>，当成非法指令跳去异常入口。<strong>"同步读"的存储器是另一个模型，不是这颗的开关。</strong></p>
+    <span class="callout-title">如果读口是"寄存读"（下一拍才出数）会怎样？</span>
+    <p style="margin:0;">单周期核里，pc 与数据通路共用同一个边沿：pc 指向 4 的那一拍，就得拿到地址 4 的指令。若是寄存读，你会拿到<strong>上一拍 pc</strong> 的指令——<code>auipc</code> / <code>jal</code> 算出的链接地址会差一条指令的 pc；复位后第一个边沿更糟：它会去译码存储器里的复位值 <code>0</code>，当成非法指令跳去异常入口。<strong>"同步读"的存储器是另一个模型，不是这颗的开关。</strong></p>
   </div>
 
   <p>还有一条容易被忽略的：<code>rdata = ren ? mem[addr] : 0</code>。读口被 <code>ren</code> 门控，不读的时候给 0。<strong>不给外设发假读</strong>——第六日接上 UART 时，这条门就是"读走即消费"的开关，漏了它固件会永远等不到下一个字节。</p>
@@ -315,72 +299,41 @@ html.nav-open .nav-scrim { display: block; }
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">memory.prism · regfile_check</span></div>
 <pre><span class="tk-decl">design</span> <span class="tk-name">regfile_top</span> {
-    <span class="tk-name">dut</span> : <span class="tk-name">regfile</span>
+    <span class="tk-name">dut</span> : <span class="tk-name">regfile</span>&lt;T = <span class="tk-prim">i32</span>&gt;
     <span class="tk-com">// 读侧的硬连线只能证明"读不出 x0"；要证明"x0 写不进"，得把阵列本身引出来看。</span>
     <span class="tk-kw">expose</span> dut.regs[<span class="tk-num">0</span>] <span class="tk-kw">as</span> x0_raw
 }</pre>
   </div>
 
   <div class="term">
-    <div class="term-header">▸ prism run examples/day2/memory.prism --run regfile_check --debug</div>
-    <div class="term-body">[run] regfile_check: 8 拍 golden 直跑完成
-# run: regfile_check  design: regfile_top  stop: end of stim (8 cycles)
-cycle   raddr1  raddr2  waddr       wdata  wen      rdata1  rdata2  x0_raw
-0            5       0      5         100    1         100       0       0
-1            5       6      0           0    0         100       0       0
-2            6       0      6         200    1         200       0       0
-3            7       0      7  4294967296    1  4294967296       0       0   <span class="term-hint"># 写 x7=2^32</span>
-4            7       0      0           0    0  4294967296       0       0
-5            0       5      0           0    0           0     100       0   <span class="term-hint"># x0 恒 0</span>
-6            0       0      0         999    1           0       0       0   <span class="term-hint"># 试图写 x0</span>
-7            6       0      0           0    0         200       0       0
-<span class="term-ok"># expect: 8/8 拍有断言 · 3 列 · 全等 ✅</span></div>
+    <div class="term-header">▸ prism run examples/day2/memory.prism --run regfile_check --show --util</div>
+    <div class="term-body">cycle  raddr1  raddr2  waddr  wdata  wen  rdata1  rdata2  x0_raw
+0      5       0       5      100    1    100     0       0
+1      5       6       0      0      0    100     0       0
+2      6       0       6      200    1    200     0       0
+3      0       5       0      0      0    0       100     0
+4      0       0       0      999    1    0       0       0        <span class="term-hint"># 试图写 x0</span>
+5      6       0       0      0      0    200     0       0
+<span class="term-ok"># expect: 6/6 拍有断言 · 3 列 · 全等 ✅</span></div>
   </div>
 
-  <p>拍 3、4 写进 <code>x7</code> 的是 <code>2^32</code>——低 32 位全是 0，仍然原样读得回，这条通路确实宽 64 位。拍 6 值得盯：<code>wen=1</code>、<code>waddr=0</code>、<code>wdata=999</code>——<strong>写请求确实发出去了，但被 regfile 拒收</strong>。<code>rdata1</code> 是 0（读侧硬连线），<code>x0_raw</code> 也是 0（写侧丢弃，阵列里根本没变）。这两列一起，才是完整证据。</p>
+  <p>注意拍 4：<code>wen=1</code>、<code>waddr=0</code>、<code>wdata=999</code>——<strong>写请求确实发出去了，但被 regfile 拒收</strong>。<code>rdata1</code> 是 0（读侧硬连线），<code>x0_raw</code> 也是 0（写侧丢弃，阵列里根本没变）。这两列一起，才是完整证据。</p>
 
-  <p>把写侧那道 <code>(waddr != 0)</code> 删掉再跑，喊出来的正是 <code>x0_raw</code>：</p>
-
+  <h3>字阵列：写三个字、读回来</h3>
   <div class="term">
-    <div class="term-header">▸ 注入后的输出（截取）</div>
-    <div class="term-body">6            0       0      0         999    1           0       0     999
-7            6       0      0           0    0         200       0     999
-<span class="term-err">[expect] ❌ cycle 6 x0_raw: 期望 0，实得 999</span>
-<span class="term-err">[expect] ❌ cycle 7 x0_raw: 期望 0，实得 999</span>
-<span class="term-err"># expect: 8/8 拍有断言 · 3 列 · 有不等 ❌</span></div>
+    <div class="term-header">▸ prism run examples/day2/memory.prism --run ram_check --show --util</div>
+    <div class="term-body">cycle  addr  wdata  wen  ren  rdata
+0      10    1111   1    1    1111       <span class="term-hint"># 写与读同拍：异步读口已看到新值</span>
+1      10    0      0    1    1111
+2      11    2222   1    1    2222
+3      11    0      0    1    2222
+4      0     3333   1    0    0          <span class="term-hint"># ren=0：读口给 0，不泄阵列值</span>
+5      0     0      0    1    3333
+6      12    0      0    1    0          <span class="term-hint"># 没写过的地址读到复位值</span>
+<span class="term-ok"># expect: 7/7 拍有断言 · 1 列 · 全等 ✅</span>
+<span class="term-ok">[run --cosim] ✅ PASS: regfile_check golden == RTL 仿真（6 拍 × 8 列全等；golden stop: end of stim (6 cycles)）</span>
+<span class="term-ok">[run --cosim] ✅ PASS: ram_check golden == RTL 仿真（7 拍 × 5 列全等；golden stop: end of stim (7 cycles)）</span></div>
   </div>
-
-  <p><code>rdata1</code> 那两拍仍稳在 0——读侧硬连线没被动过。<strong>两道防线各自承重，测试分得清缺的是哪一道。</strong></p>
-
-  <h3>字阵列：写进去、读回来、ren 拦不拦得住</h3>
-  <div class="term">
-    <div class="term-header">▸ prism run examples/day2/memory.prism --run ram_check --debug</div>
-    <div class="term-body">[run] ram_check: 7 拍 golden 直跑完成
-# run: ram_check  design: ram_top  stop: end of stim (7 cycles)
-cycle   addr       wdata  wen  ren       rdata
-0         10        1111    1    1        1111   <span class="term-hint"># 写读同拍：异步读口已见新值</span>
-1         10           0    0    1        1111
-2         11  8589934592    1    1  8589934592   <span class="term-hint"># 写 2^33</span>
-3         11           0    0    1  8589934592
-4          0        3333    1    0           0   <span class="term-hint"># ren=0：读口给 0</span>
-5          0           0    0    1        3333
-6         12           0    0    1           0   <span class="term-hint"># 复位值</span>
-<span class="term-ok"># expect: 7/7 拍有断言 · 1 列 · 全等 ✅</span></div>
-  </div>
-
-  <div class="term">
-    <div class="term-header">▸ 两条腿撞一次（golden vs RTL）</div>
-    <div class="term-body">$ prism cosim examples/day2/memory.prism --run regfile_check
-[run] regfile_check: RTL tb 跑完，8 拍（产物 …）
-<span class="term-ok">[run --cosim] ✅ PASS: regfile_check golden == RTL 仿真（8 拍 × 8 列全等；
-      golden stop: end of stim (8 cycles)）</span>
-$ prism cosim examples/day2/memory.prism --run ram_check
-[run] ram_check: RTL tb 跑完，7 拍（产物 …）
-<span class="term-ok">[run --cosim] ✅ PASS: ram_check golden == RTL 仿真（7 拍 × 5 列全等；
-      golden stop: end of stim (7 cycles)）</span></div>
-  </div>
-
-  <p>把 <code>ren ? … : 0</code> 拿掉再跑：第 4 拍（<code>ren=0</code>）的读口变成 <code>3333</code>——阵列值泄到读口上了。今天它只是仿真表里的一格差异；<strong>接上外设之后，这就是"没在读却把数据总线驱动起来"的致命形态</strong>。</p>
 </section>
 
 <section id="s5">
@@ -388,29 +341,27 @@ $ prism cosim examples/day2/memory.prism --run ram_check
   <p>RISC-V 常见两种组织：冯·诺依曼（指令与数据共用一块存储器）和哈佛（分开两块）。<strong>在 Prism 里这不是两个模块，而是同一个 <code>ram</code> 例化两次</strong>：</p>
 
   <div class="code">
-    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">cpu.prism · 实例表（第九集会跑它）</span></div>
-<pre><span class="tk-decl">design</span> cpu_top {
-    <span class="tk-com">// ==== 六颗实例 ====</span>
-    pc  : pc
-    rf  : regfile
-    ex  : alu
-    im  : ram&lt;SIZE = <span class="tk-num">256</span>, W = <span class="tk-prim">u32</span>, A = <span class="tk-prim">u8</span>&gt;    <span class="tk-com">// 指令侧：32 位字，1KB</span>
-    dm  : ram&lt;SIZE = <span class="tk-num">256</span>, W = <span class="tk-prim">i64</span>, A = <span class="tk-prim">u8</span>&gt;    <span class="tk-com">// 数据侧：64 位字，2KB</span>
-    ctl : decoder</pre>
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">合体后 cpu_top 里的样子（预告）</span></div>
+<pre><span class="tk-decl">design</span> <span class="tk-name">cpu_top</span> {
+    <span class="tk-name">pc</span> : <span class="tk-name">pc</span>&lt;T = <span class="tk-prim">i32</span>&gt;
+    <span class="tk-name">im</span> : <span class="tk-name">ram</span>&lt;SIZE = <span class="tk-num">64</span>&gt;    <span class="tk-com">// 指令侧</span>
+    <span class="tk-name">dm</span> : <span class="tk-name">ram</span>&lt;SIZE = <span class="tk-num">64</span>&gt;    <span class="tk-com">// 数据侧</span>
+    <span class="tk-com">…</span>
+}</pre>
   </div>
 
-  <p>两份宽度不是两份代码：<strong>指令恒为 32 位，数据是 64 位</strong>——RISC-V 的这条事实只落在实例参数上。白虹真核就是这个形状，它的 <code>im</code> 与 <code>dm</code> 是同一颗 <code>SRAM</code> 的两个实例，一个 <code>W = u32</code>、一个 <code>W = u64</code>。<strong>"哈佛"不是多一段控制逻辑，是多摆一颗存储、多接一根地址线。</strong></p>
+  <p>白虹的单周期核也是这个形状——只不过它是<strong>两颗各司其职的存储模块</strong>：<code>im.prism</code>（指令 ROM，复位时预载程序镜像、只读）与 <code>dm.prism</code>（泛型数据存储器，组合读 + 时序写），顶层各例化一颗。<strong>"哈佛"不是多一段控制逻辑，是多摆一颗存储、多接一根地址线。</strong></p>
 
   <div class="callout">
-    <span class="callout-title">回看：分层在这里兑现</span>
-    <p style="margin:0;">第一日把"做什么"（算法层）与"怎么做、怎么接"（调度层 / 组装层）分开，这里就是那笔账的兑现处：<code>ram</code> 的算法层只有"按地址读写"，它不知道自己是 im 还是 dm——那是实例化时的事。如果语言不允许把这两层分开，你就得写两份几乎一模一样的存储器模块。</p>
+    <span class="callout-title">回看：为什么第一集要讲"信息注入"</span>
+    <p style="margin:0;">这里正是那句话的例子：<code>ram</code> 的算法层只有"按地址读写"，它不知道自己是 im 还是 dm——那是<strong>调度层 / 组装层</strong>的决定（例化几次、接给谁）。如果语言不允许把"做什么"和"怎么接"分开，你就得写两份几乎一样的存储器模块。</p>
   </div>
 </section>
 
 <section id="s6">
   <h2>小结</h2>
   <ul>
-    <li><strong>短记忆</strong>：寄存器堆，32 项 × 64 位，2 异步读 + 1 同步写；<code>x0</code> 由它<strong>自己</strong>保证恒零（读给 0 + 写丢弃）。</li>
+    <li><strong>短记忆</strong>：寄存器堆，2 组合读 + 1 时序写；<code>x0</code> 由它<strong>自己</strong>保证恒零（读给 0 + 写丢弃）。</li>
     <li><strong>长记忆</strong>：字阵列，<strong>异步读 + 同步写</strong>——单周期核必须这个形状，否则取指会晚一拍。</li>
     <li><strong>读口要门控</strong>（<code>ren</code>）：不读就明确给 0，别把阵列值当"正在读"送出去。</li>
     <li><strong>哈佛 = 同一份源码例化两次</strong>，不是两份代码。</li>
@@ -424,6 +375,15 @@ $ prism cosim examples/day2/memory.prism --run ram_check
   <p>下一集造 <strong>ALU</strong>——四颗器官里唯一"纯组合"的一颗，也是第一次出现"会走多步"的单元。</p>
 </section>
 
+<section id="s7">
+  <h2>练习</h2>
+  <ol>
+    <li>把 regfile 写侧的 <code>(waddr != 0)</code> 条件删掉，跑 <code>regfile_check</code>——哪一列先喊？（提示：不是 <code>rdata1</code>，是 <code>x0_raw</code>。想想为什么。）</li>
+    <li>把 <code>rdata = ren ? mem[addr] : 0</code> 里的 <code>ren ? … : 0</code> 去掉（直接 <code>rdata = mem[addr]</code>），跑 <code>ram_check</code>——第 5 拍（cycle 4）会变成什么？为什么这个"泄漏"在接上外设时很危险？</li>
+    <li>给 <code>ram</code> 加一个 <code>size</code> 形参之外的第二个实例 <code>im</code>，并用 <code>mem mem : [SIZE] u32 = [...]</code> 塞几条指令进去（常量列表）——这就是合体后要跑的程序的雏形。</li>
+  </ol>
+</section>
+
 <section id="s8">
   <h2>复现本集</h2>
   <div class="code">
@@ -431,10 +391,8 @@ $ prism cosim examples/day2/memory.prism --run ram_check
 <pre>git clone https://github.com/prism-hdl/seven-days
 cd seven-days
 
-prism run   examples/day2/memory.prism --run regfile_check --debug
-prism run   examples/day2/memory.prism --run ram_check --debug
-prism cosim examples/day2/memory.prism --run regfile_check
-prism cosim examples/day2/memory.prism --run ram_check</pre>
+prism run examples/day2/memory.prism --run regfile_check --cosim --show --util
+prism run examples/day2/memory.prism --run ram_check     --cosim --show --util</pre>
   </div>
 </section>
 
@@ -454,11 +412,10 @@ prism cosim examples/day2/memory.prism --run ram_check</pre>
   toggle.addEventListener('click', function () {
     var open = root.classList.toggle('nav-open');
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block:'nearest' }); }
   });
   document.getElementById('nav-scrim').addEventListener('click', function () {
-    root.classList.remove('nav-open');
-    toggle.setAttribute('aria-expanded', 'false');
+    root.classList.remove('nav-open'); toggle.setAttribute('aria-expanded', 'false');
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
