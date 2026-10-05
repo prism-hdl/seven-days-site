@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 11 集 · 立 flag：从玩具到能跑 Linux · 创世记 · 第三日 · 天上光体</title>
+<title>第 11 集 · 立 flag：缺的三样 · 创世记 · 第三日 · 天上光体</title>
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 :root {
@@ -88,14 +88,12 @@ footer a { color:var(--prism-2); text-decoration:none; }
 footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
 
 
-.fig { margin:26px 0 30px; padding:22px 18px 14px; background:var(--cream); border:1px solid var(--line); border-radius:var(--radius); }
-.fig svg { width:100%; height:auto; display:block; }
-.fig figcaption { text-align:center; margin-top:10px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
-table.ceil { width:100%; border-collapse:collapse; font-size:14.5px; }
-table.ceil th, table.ceil td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
-table.ceil th { font-size:12.5px; letter-spacing:.04em; color:var(--mute); font-weight:600; }
-table.ceil td.g { font-weight:600; color:var(--ink); white-space:nowrap; }
-table.ceil code { font-size:13px; }
+.gaps { width:100%; border-collapse:collapse; font-size:14.5px; }
+.gaps th, .gaps td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+.gaps th { font-size:12.5px; letter-spacing:.04em; color:var(--mute); font-weight:600; }
+.gaps td.g { font-weight:600; color:var(--ink); white-space:nowrap; }
+.gaps code { font-size:13px; }
+.who { font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--prism); white-space:nowrap; }
 @media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
 </style>
 <style>
@@ -166,8 +164,8 @@ html.nav-open .nav-scrim { display: block; }
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">七日创造 · 第三日 · 天上光体 · 第 11 集</div>
-    <h1>立 flag<br><em>从玩具到能跑 Linux</em></h1>
-    <p class="subtitle">第二日那颗核排过序、三条通路逐拍对撞过——它是真的。这一集<strong>不写一行新硬件</strong>，只做一件事：把它离"能跑 Linux"还差的东西<strong>一条条量出来</strong>，量不出来的那条就不许写进靶子。</p>
+    <h1>立 flag<br><em>缺的三样</em></h1>
+    <p class="subtitle">第二日那颗核能排序、能跑真程序，三条通路逐拍对撞过。它跑不了 Linux——不是因为慢，是因为<strong>缺三样：MMU、S 态与 U 态、异常处理。</strong>这一集只把这三样讲清楚：少一样，Linux 的哪一步就落不下来。</p>
     <div class="verse">
       "天上要有光体，可以分昼夜、作记号、定节令、日子、年岁。"
       <cite>—— 《创世记》 1:14</cite>
@@ -179,205 +177,15 @@ html.nav-open .nav-scrim { display: block; }
 
 <div class="pn">
   <a href="../day2/10-bubble-sort.html">← 第 10 集 · 跑一段真程序</a>
-  <a href="../index.html#day3">第 12 集 · 五级流水线数据通路（待写）→</a>
+  <a href="12-pipeline.html">第 12 集 · 五级流水线数据通路 →</a>
 </div>
 
 <section id="s1">
-  <h2>差距清单要能指到代码</h2>
-  <p>"造一颗能跑 Linux 的处理器"这句话本身没有价值——它太容易说，也太容易不兑现。要让它变成一件做得完的事，得先回答两个问题：<strong>差在哪</strong>，以及<strong>凭什么说差在这里</strong>。</p>
-  <p>第二日那颗核的全部家当都在 <code>examples/day2/cpu.prism</code> 里：186 行，其中 <code>design cpu_top</code> 104 行。差距不需要想象，读它就行。这一集读出来的有五条：</p>
-  <div class="tbl-wrap">
-    <table class="ceil">
-      <tr><th>差距</th><th>代码里的事实</th><th>它挡在哪</th></tr>
-      <tr><td class="g">一拍做完所有事</td><td>四颗部件各自的 <code>@schedule</code> 都写着 <code>pipeline : 1 stage</code> + <code>latency : 1 cycle</code>，而顶层 <code>cpu.prism</code> 里 <code>on clock</code> 出现 <strong>0 次</strong>——六段组合被同一拍串完</td><td>那条组合路径的长度就是周期的下限——频率被它钉死，不是被"指令条数"钉死</td></tr>
-      <tr><td class="g">存储 1KB / 2KB</td><td><code>im : ram&lt;SIZE=256, W=u32, A=u8&gt;</code>、<code>dm : ram&lt;SIZE=256, W=i64, A=u8&gt;</code></td><td>装不下固件，更装不下内核。8 位地址是电路事实，改一行链接脚本没用</td></tr>
-      <tr><td class="g">只有 M 态</td><td>没有 CSR，没有陷阱通路；顶层注释直写"这一台不做错误处理"</td><td>特权级与异常是操作系统的入场券：交不进棒，也接不住 fault</td></tr>
-      <tr><td class="g">没有中断</td><td>核端口里没有一根线留给 timer 或外部设备</td><td>只能轮询。真实驱动、真实控制台都不接受轮询</td></tr>
-      <tr><td class="g">访存只有双字</td><td>许可表里 <code>0x03 =&gt; funct3 == 3</code>、<code>0x23 =&gt; funct3 == 3</code></td><td>字节与半字是字符串、结构体、MMIO 的日常——固件第一件事就是读字节</td></tr>
-    </table>
-  </div>
-  <p>后四条都能直接数出来。第一条不行——"一拍做完所有事"到底<strong>有多重</strong>，得量。</p>
-</section>
-
-<section id="s2">
-  <h2>量之前：先把它变成门</h2>
-  <p>组合深度是门级的事，Prism 源码里没有门。所以第一步是走一遍已经在第一日讲完的路：<code>gen-rtl</code> 出 SystemVerilog，再交给 yosys。</p>
+  <h2>先分清"跑不了"和"跑得慢"</h2>
+  <p>把"造一颗能跑 Linux 的处理器"拆开，会发现里面混着两类完全不同的需求。一类是<strong>跑得快不快</strong>：流水线、cache、分支预测、指令密度。另一类是<strong>能不能跑</strong>：地址翻译、特权级、异常。第二类少一样，Linux 连第一条用户进程都起不来——再快也没用。</p>
+  <p>第二日那颗核属于哪一类？把它的 <code>design</code> 摊开看，六颗实例、一百零四行连线：</p>
   <div class="code">
-    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">gen-rtl</span></div>
-<pre>prism gen-rtl examples/day2/cpu.prism -o /tmp/day3/cpu.sv
-grep '^module' /tmp/day3/cpu.sv</pre>
-  </div>
-  <div class="term">
-    <div class="term-header">$ grep '^module' /tmp/day3/cpu.sv</div>
-    <div class="term-body">module pc_rtl #(
-module regfile_rtl #(
-module alu_rtl #(
-module ram__im__rtl #(
-module ram__dm__rtl #(
-module decoder_rtl #(
-module cpu_top_top (</div>
-  </div>
-  <p>546 行，七颗 module：六颗实例各自成一颗，顶层叫 <code>cpu_top_top</code>（yosys 的 <code>hierarchy -top</code> 要的是这个带 <code>_top</code> 的名字）。第二日讲"一颗 module 一只盒子"时说过：design 会展平成连线——现在连线也是门级素材了。</p>
-</section>
-
-<section id="s3">
-  <h2>两把会说谎的尺</h2>
-  <p>yosys 里量组合深度最顺手的是 <code>ltp</code>（最长拓扑路径）。它数的是<strong>路径上串了多少个单元</strong>。先拿它量整颗核：</p>
-  <div class="term">
-    <div class="term-header">$ yosys -p "read_verilog -sv -formal cpu.sv; hierarchy -top cpu_top_top;
-       proc; flatten; opt; techmap; opt; ltp -noff"</div>
-    <div class="term-body">Longest topological path in cpu_top_top (length=11):
-    0: \pc.pc [31]
-    1: $techmap$add$cpu.sv:525$357…replace_alu$93060.lcu.$and$…_Y
-   …
-   11: $techmap$add$cpu.sv:528$360…replace_alu$93128.Y [63]
-   ff: \pc.pc [63]</div>
-  </div>
-  <p><strong>11。</strong>一颗单周期 CPU 最长的那条路只有 11 级？可它自己肚子里那颗 ALU 单独量就有 33 级（下一节）。<strong>一把尺量出的数比被量对象的某个零件还小，那这把尺一定没在量你以为它在量的东西。</strong>看它给的路径就明白了：起点是 <code>pc.pc</code> 边上一根组合线，终点是 pc 那个触发器——它量到的只是 pc 自己那个加法器。</p>
-  <p>原因写在 <code>ltp</code> 的帮助里：<code>-noff</code> 会<strong>排除触发器单元</strong>。于是路径不能从寄存器输出起步——而这一颗核里每一条真正要紧的路，起点都是寄存器。<code>-noff</code> 本意是"别把触发器本身算进深度"，实际效果是"把所有寄存器出发的路都掐了"。</p>
-  <p>那就去掉 <code>-noff</code> 再量一次：</p>
-  <div class="term">
-    <div class="term-header">$ …; techmap; opt; ltp        <span class="term-hint">（不带 -noff）</span></div>
-    <div class="term-body">Longest topological path in cpu_top_top (length=234):
-    0: \clk
-  …
-  231: \pc.pc [62] (via $auto$ff.cc:337:slice$93321)
-  232: $techmap$add$cpu.sv:528$360…CO [62]
-  …
-  234: \pc.pc [63] (via $auto$ff.cc:337:slice$93322)</div>
-  </div>
-  <p>234，一个更像样的数——但看起点：<code>\clk</code>，而且第 231 步就<strong>穿过了一个触发器</strong>（<code>pc.pc[62]</code>）。它量的是"从时钟一路 walk 到下一拍"的路，跨了拍，不是拍内的组合深度。这个数字对频率没有任何意义。</p>
-  <div class="callout warn">
-    <div class="callout-title">两把尺各自的死法</div>
-    <p>带 <code>-noff</code>：11，比零件还小——因为它拒绝从寄存器输出起步。不带 <code>-noff</code>：234，从 <code>clk</code> 起、穿过触发器——因为它什么都肯走。<strong>一把"什么都能量出一个数"的尺，等于没量。</strong>判据得能失败：先问"什么情况下这个数会明显不对"，答不上来就别用它。这一集的答案是——<strong>分段量</strong>。</p>
-  </div>
-</section>
-
-<section id="s4">
-  <h2>分段量：一颗一颗来</h2>
-  <p>单周期这一拍里串起来的，恰好就是第二日一颗一颗造出来的那几颗盒子。它们各自是<strong>纯组合或近组合</strong>的（<code>alu_rtl</code>、<code>decoder_rtl</code> 里那个 <code>always_ff</code> 是空的），所以单独量它们时 <code>ltp -noff</code> 没有寄存器可掐——尺子又灵了。</p>
-  <div class="code">
-    <div class="code-header"><span class="code-lang">sh</span><span class="code-file">examples/day3/depth.sh · 量的那一段</span></div>
-<pre>depth() {
-  mod=$<span class="tk-num">1</span>; tm=$<span class="tk-num">2</span>
-  p=&quot;proc; opt; ltp -noff&quot;
-  [ &quot;$tm&quot; = <span class="tk-num">1</span> ] &amp;&amp; p=&quot;proc; opt; techmap; opt; ltp -noff&quot;
-  script=&quot;read_verilog -sv -formal $OUT/cpu.sv; hierarchy -top $mod; $p&quot;
-  yosys -l &quot;$OUT/$mod.log&quot; -p &quot;$script&quot; &gt;/dev/null <span class="tk-num">2</span>&gt;&amp;<span class="tk-num">1</span>
-  grep -oE &#x27;length=[<span class="tk-num">0</span>-<span class="tk-num">9</span>]+&#x27; &quot;$OUT/$mod.log&quot; | tail -<span class="tk-num">1</span> | cut -d= -f2
-}
-
-printf &#x27;%-16s %-12s %-12s\n&#x27; 部件 不techmap techmap后
-for m in pc_rtl regfile_rtl alu_rtl decoder_rtl ram__im__rtl ram__dm__rtl; do
-  printf &#x27;%-16s %-12s %-12s\n&#x27; &quot;$m&quot; &quot;$(depth &quot;$m&quot; <span class="tk-num">0</span>)&quot; &quot;$(depth &quot;$m&quot; <span class="tk-num">1</span>)&quot;
-done</pre>
-  </div>
-  <div class="term">
-    <div class="term-header">$ sh examples/day3/depth.sh</div>
-    <div class="term-body">RTL: /tmp/day3-depth/cpu.sv       546 行
-部件           不techmap   techmap后
-pc_rtl           2            12
-regfile_rtl      4            13
-alu_rtl          11           33
-decoder_rtl      18           21
-ram__im__rtl     3            16
-ram__dm__rtl     3            16
-全核 ltp -noff   : 11   ← 不承重：比 ALU 一段还短
-全核 ltp（不带）  : 234           ← 不承重：路径从 clk 起、穿过触发器</div>
-  </div>
-  <p>两列都要看。<strong>不 techmap 那一列是骗小孩的</strong>：<code>$add</code>、<code>$mul</code> 这类粗粒度单元在图里就是一个点，于是 pc 的加法器是 2 级、256 选 1 的读阵列是 3 级——恰好把最该量的算术整段看不见。<code>techmap</code> 把加法器摊成进位链、把读阵列摊成 mux 树之后，pc 从 2 变 12，两颗 RAM 的读从 3 变 16。</p>
-  <p>还有一句必须说清楚：<strong>单位是门级单元的个数，不是纳秒。</strong>本机没有 liberty 工艺库，报不出 GHz——门级深度只是频率的<strong>代理指标</strong>。它能比大小，不能换算成兆赫。</p>
-</section>
-
-<section id="s5">
-  <h2>把它串起来：111 与 34</h2>
-  <p>有了分段实测，"一拍做完所有事"第一次变成了一个数。按 <code>cpu.prism</code> 里的连线顺序，这一拍要走的是：</p>
-
-  <figure class="fig">
-    <svg viewBox="0 0 1180 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="第二日那颗核一拍里串起来的六段组合逻辑，以及五级流水在哪里下刀">
-      <defs>
-        <marker id="a11" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
-          <path d="M0,0 L8,4.5 L0,9 z" fill="#4a5468"/>
-        </marker>
-      </defs>
-      <g font-family="Noto Serif SC, serif" font-size="12.5" fill="#4a5468">
-        <rect x="60" y="58" width="285" height="26" rx="6" fill="#eef1f7" stroke="#dfe3ec"/>
-        <text x="202" y="75" text-anchor="middle">IF 取指 ≈ 28</text>
-        <rect x="370" y="58" width="285" height="26" rx="6" fill="#eef1f7" stroke="#dfe3ec"/>
-        <text x="512" y="75" text-anchor="middle">ID 译码 + 读堆 ≈ 34</text>
-        <rect x="680" y="58" width="130" height="26" rx="6" fill="#e8f0f9" stroke="#cfdff0"/>
-        <text x="745" y="75" text-anchor="middle">EX 运算 ≈ 33</text>
-        <rect x="835" y="58" width="130" height="26" rx="6" fill="#eef1f7" stroke="#dfe3ec"/>
-        <text x="900" y="75" text-anchor="middle">MEM 访存 ≈ 16</text>
-        <rect x="990" y="58" width="130" height="26" rx="6" fill="#eef1f7" stroke="#dfe3ec"/>
-        <text x="1055" y="75" text-anchor="middle">WB 写回 ≈ 几级</text>
-      </g>
-      <g stroke="#c8cfdb" stroke-width="1" stroke-dasharray="4 4">
-        <line x1="357" y1="52" x2="357" y2="212"/>
-        <line x1="667" y1="52" x2="667" y2="212"/>
-        <line x1="822" y1="52" x2="822" y2="212"/>
-        <line x1="977" y1="52" x2="977" y2="212"/>
-      </g>
-      <g font-family="JetBrains Mono, monospace" font-size="12.5">
-        <g fill="#ffffff" stroke="#5b4bff" stroke-width="1.4">
-          <rect x="60" y="120" width="130" height="58" rx="8"/>
-          <rect x="215" y="120" width="130" height="58" rx="8"/>
-          <rect x="370" y="120" width="130" height="58" rx="8"/>
-          <rect x="525" y="120" width="130" height="58" rx="8"/>
-          <rect x="680" y="120" width="130" height="58" rx="8"/>
-          <rect x="835" y="120" width="130" height="58" rx="8"/>
-          <rect x="990" y="120" width="130" height="58" rx="8"/>
-        </g>
-        <g fill="#0f1420">
-          <text x="125" y="145" text-anchor="middle">pc_rtl</text>
-          <text x="280" y="145" text-anchor="middle">ram__im__rtl</text>
-          <text x="435" y="145" text-anchor="middle">decoder_rtl</text>
-          <text x="590" y="145" text-anchor="middle">regfile_rtl</text>
-          <text x="745" y="145" text-anchor="middle">alu_rtl</text>
-          <text x="900" y="145" text-anchor="middle">ram__dm__rtl</text>
-          <text x="1055" y="145" text-anchor="middle">顶层 mux</text>
-        </g>
-        <g fill="#4a5468">
-          <text x="125" y="165" text-anchor="middle">12 级</text>
-          <text x="280" y="165" text-anchor="middle">16 级</text>
-          <text x="435" y="165" text-anchor="middle">21 级</text>
-          <text x="590" y="165" text-anchor="middle">13 级</text>
-          <text x="745" y="165" text-anchor="middle">33 级</text>
-          <text x="900" y="165" text-anchor="middle">16 级</text>
-          <text x="1055" y="165" text-anchor="middle">+几级</text>
-        </g>
-      </g>
-      <g stroke="#4a5468" stroke-width="1.6" marker-end="url(#a11)">
-        <line x1="190" y1="149" x2="213" y2="149"/>
-        <line x1="345" y1="149" x2="368" y2="149"/>
-        <line x1="500" y1="149" x2="523" y2="149"/>
-        <line x1="655" y1="149" x2="678" y2="149"/>
-        <line x1="810" y1="149" x2="833" y2="149"/>
-        <line x1="965" y1="149" x2="988" y2="149"/>
-      </g>
-      <g stroke="#d84a4a" stroke-width="1.4" fill="none">
-        <path d="M60,232 L60,244 L1120,244 L1120,232"/>
-      </g>
-      <text x="590" y="268" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="13.5" fill="#d84a4a">单周期：这一拍要把上面六段一次串完 —— 至少 12+16+21+13+33+16 = 111 级</text>
-      <text x="590" y="290" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="13" fill="#12a060">下刀切成五段之后：最长的一段是 ID 的 34 级</text>
-    </svg>
-    <figcaption>框上的名字抄自 <tspan font-family="JetBrains Mono, monospace">/tmp/day3/cpu.sv</tspan>，级数抄自上一节那张实测表</figcaption>
-  </figure>
-
-  <p>把六段按连线顺序加起来：<strong>12 + 16 + 21 + 13 + 33 + 16 = 111 级</strong>。这是<strong>下界</strong>——顶层还有三处 mux 没算进去（分支借道 ALU 的 <code>alu_f</code>、W 型的 <code>is_w_op ? ex_ext :</code>、写回选择），它们只加不减。</p>
-  <p>切成五级之后，每一段各自承担其中一段：<strong>IF ≈ 28、ID ≈ 34、EX ≈ 33、MEM ≈ 16、WB 个位数</strong>，最长的一段是 34。<strong>111 → 34</strong>：这就是"节拍换频率"的全部算术。</p>
-  <p>它不承诺什么，也要说清楚：它<strong>不</strong>保证 Fmax 提升 3.3 倍——真实数字要综合进具体工艺库才知道，本机没有那个库。它保证的是一件更硬的事：<strong>这一拍的组合深度不再是六件事的和</strong>。谁想验证，跑一遍 <code>depth.sh</code> 就能拿到同一张表。</p>
-  <div class="callout key">
-    <div class="callout-title">便宜不是白拿的</div>
-    <p>下五刀，就要多出四组段寄存器（IF/ID、ID/EX、EX/MEM、MEM/WB），还要处理"上一条还没写回、下一条就要读"这件事——前递、停顿、冲刷。第 12 集摆段寄存器，第 13 集对付冒险。<strong>流水线的吞吐是借来的，利息写在冒险那一集。</strong></p>
-  </div>
-</section>
-
-<section id="s6">
-  <h2>另外四条差距：逐条点名</h2>
-  <p>这四条不用量，读源码就行。第一条：存储与地址。</p>
-  <div class="code">
-    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day2/cpu.prism · 六颗实例与取指口</span></div>
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day2/cpu.prism · 六颗实例</span></div>
 <pre><span class="tk-decl">design</span> cpu_top {
     <span class="tk-com">// ==== 六颗实例 ====</span>
     pc  : pc
@@ -391,21 +199,34 @@ ram__dm__rtl     3            16
     <span class="tk-kw">wire</span> iaddr : <span class="tk-prim">u8</span> = pc.addr[<span class="tk-num">9</span>:<span class="tk-num">2</span>] -&gt; im.addr      <span class="tk-com">// 字节地址 → 字地址</span>
     <span class="tk-kw">wire</span> instr : <span class="tk-prim">u32</span> = im.rdata -&gt; ctl.instr</pre>
   </div>
-  <p><code>pc.addr</code> 是 64 位的，可这颗核<strong>看得见</strong>的指令只有 <code>addr[9:2]</code> 那 8 位——256 个字，1KB。数据侧同理，2KB。第二日第 10 集那份 80 字节的 <code>.text</code> 能跑，是因为它小；OpenSBI 的 <code>.text</code> 是几百 KB 量级，装不进来不是"再等等"，是<strong>这颗芯片没有那块地</strong>。</p>
-  <p>第二条：访存宽度。第 8 集那张许可表里，访存只占两行：</p>
-  <div class="code">
-    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day2/decoder.prism · 许可表里访存那两行</span></div>
-<pre>        <span class="tk-num">0x33</span> =&gt; r_f7_ok,
-        <span class="tk-num">0x3b</span> =&gt; r_f7_ok &amp; (funct3 <span class="tk-kw">in</span> [<span class="tk-num">0</span>, <span class="tk-num">1</span>, <span class="tk-num">5</span>]),
-        <span class="tk-num">0x13</span> =&gt; (funct3 <span class="tk-kw">in</span> [<span class="tk-num">0</span>, <span class="tk-num">2</span>, <span class="tk-num">3</span>, <span class="tk-num">4</span>, <span class="tk-num">6</span>, <span class="tk-num">7</span>]) | ((funct3 <span class="tk-kw">in</span> [<span class="tk-num">1</span>, <span class="tk-num">5</span>]) &amp; sh_ok),
-        <span class="tk-num">0x1b</span> =&gt; (funct3 == <span class="tk-num">0</span>) | ((funct3 <span class="tk-kw">in</span> [<span class="tk-num">1</span>, <span class="tk-num">5</span>]) &amp; sh_ok),
-        <span class="tk-num">0x03</span> =&gt; funct3 == <span class="tk-num">3</span>,               <span class="tk-com">// LD（这一颗 dm 就是 64 位字）</span>
-        <span class="tk-num">0x23</span> =&gt; funct3 == <span class="tk-num">3</span>,               <span class="tk-com">// SD</span>
-        <span class="tk-num">0x63</span> =&gt; funct3 <span class="tk-kw">in</span> [<span class="tk-num">0</span>, <span class="tk-num">1</span>, <span class="tk-num">4</span>, <span class="tk-num">5</span>, <span class="tk-num">6</span>, <span class="tk-num">7</span>],
-        <span class="tk-num">0x67</span> =&gt; funct3 == <span class="tk-num">0</span>,</pre>
+  <p>这六颗里没有一颗管"这个地址属谁"，没有一颗管"这条指令有没有权限做这件事"，也没有一处接得住"出事了，去这里"。<strong>它缺的正好是第二类。</strong>这一集就把这三样一样一样点出来，每样都说清：Linux 的哪一步会踩空。</p>
+</section>
+
+<section id="s2">
+  <h2>第一缺：S 态与 U 态——机器分不清"谁在说话"</h2>
+  <p>RISC-V 的硬件特权级是 M / S / U 三层：M 给固件，S 给内核，U 给用户程序。第二日那颗核<strong>只有一层</strong>：没有 CSR，没有当前态这个概念。</p>
+  <p>少这一层不是"权限粗一点"，而是三件事直接做不了：</p>
+  <ul>
+    <li><strong>系统调用没有入口。</strong>用户程序用 <code>ecall</code> 请求内核——这条指令的含义是"我承认自己是低权限的一方，把控制权交给高权限的一方"。没有权限级别，<code>ecall</code> 就只是一条无意义的编码；没有 <code>sepc</code> / <code>stvec</code>，内核连"从哪儿回来的"都记不住。</li>
+    <li><strong>内核护不住自己。</strong>用户程序的一条 <code>sd</code> 就能写内核的数据段。Linux 的隔离不是软件纪律，是硬件在每次访存时做的判断。</li>
+    <li><strong>交棒没有落点。</strong>OpenSBI 跑在 M 态，把内核交给 S 态——这一脚靠 <code>mret</code> 读 <code>mstatus.MPP</code> 改态。没有 MPP，就没有"交出去"这个动作。</li>
+  </ul>
+  <p>这里要提前立一条诚实的规矩：<strong>本连载的白虹做到第五日也只有 M / S 两态</strong>——<code>sret</code> 恒回 S（源码注释直写"本核没有 U"，<code>whitebow/ext/csr.prism:395</code>）。U 态要等第 19 集把"谁能跳到哪一态"逐条画清楚才补上。所以这一集的话要说准：<strong>缺的不是"三层齐全"，缺的是"有层"。</strong>哪怕只加 M/S 两层，交棒与系统调用就已经能落了。</p>
+</section>
+
+<section id="s3">
+  <h2>第二缺：异常处理——Linux 的正常路径就是异常</h2>
+  <p>很多人把异常当成错误处理，其实 Linux 大量正常工作是靠异常完成的：</p>
+  <div class="tbl-wrap">
+    <table class="gaps">
+      <tr><th>Linux 的动作</th><th>走的异常</th><th>硬件要交出什么</th></tr>
+      <tr><td class="g">第一次碰栈、碰堆</td><td>load / store 缺页（cause 13 / 15）</td><td>出事的地址要能报出来（<code>mtval</code> / <code>stval</code>）</td></tr>
+      <tr><td class="g">时钟到点换进程</td><td>中断（cause 带 bit63）：机器定时器 7、机器软件 3</td><td>要有一根线打断正在跑的指令，并在<strong>精确</strong>的那一拍停下</td></tr>
+      <tr><td class="g">用户程序请求服务</td><td><code>ecall</code>（cause 8 / 9 / 11）</td><td>按当前态报不同的号，内核才知道是谁在叫</td></tr>
+      <tr><td class="g">访问越界设备</td><td>access fault（异常，bit63=0）：load 5 / store 7</td><td>报地址，内核才能决定是杀进程还是补映射</td></tr>
+    </table>
   </div>
-  <p><code>funct3 == 3</code> 一条判据把 <code>lw</code> / <code>lh</code> / <code>lb</code> 全挡在门外——不是忘了写，是那一颗 <code>dm</code> 一个元素就是 64 位，多出来的路没有对应电路。固件启动第一件事是逐字节拷字符串，这一步在这颗核上<strong>没有指令可发</strong>。</p>
-  <p>第三条与第四条：特权与中断。顶层自己把话说死了：</p>
+  <p>第二日那颗核连第一步都没有：decoder 会举手报 <code>is_illegal</code>，顶层不拿它当门。</p>
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day2/cpu.prism · 这一台不做错误处理</span></div>
 <pre>    <span class="tk-com">// ==== 这一台不做错误处理 ====</span>
@@ -414,43 +235,127 @@ ram__dm__rtl     3            16
     <span class="tk-kw">connect</span> ctl.reg_wen -&gt; rf.wen
     <span class="tk-kw">connect</span> ctl.mem_wen -&gt; dm.wen</pre>
   </div>
-  <p>非法编码照样读、照样写回，机器不停——因为<strong>没有地方可以去</strong>：<code>mtvec</code> 没有、<code>mcause</code> 没有、陷阱通路没有。中断同理：核的端口表里一根 <code>mtip</code> / <code>msip</code> / <code>meip</code> 都没有，连"谁想打断我"这个问题都无处安放。</p>
+  <p>"没有地方可以去"是字面意思：没有 <code>mtvec</code>（去哪）、没有 <code>mepc</code>（从哪来）、没有 <code>mcause</code>（为什么）、没有 <code>mtval</code>（对哪个地址）。这四样凑不齐，缺页就只能变成死循环。</p>
+  <p>还有一条最容易被低估：<strong>异常要冲掉比它年轻的指令。</strong>流水线里，出事那条指令在 MEM 定案时，前面已经有两条在飞。不冲，它们就会把一个"本该被杀掉的进程"的副作用写进内存和寄存器堆。白虹今天冲三级（<code>pipe/trap.prism</code> 与 <code>iu/hazard.prism</code> 的 <code>src_trap</code>），而这套东西第一次真正咬人，是在第六日内核跑起来之后——那一发反证留到它自己的那一集。</p>
+</section>
+
+<section id="s4">
+  <h2>第三缺：MMU——没有虚拟地址，就没有"进程"这回事</h2>
+  <p>这颗核的地址是<strong>物理的、且只有一小块</strong>：取指只切 <code>pc.addr[9:2]</code> 那 8 位，1KB 指令、2KB 数据。而 Linux 的整个模型建立在"每个进程以为自己独占一整段地址"之上：</p>
+  <ul>
+    <li><strong><code>fork</code> 与写时复制</strong>：父子共享同一份物理页，靠页表项的只读位与缺页异常才分家。没有页表，就没有"共享但看不见"这件事。</li>
+    <li><strong>加载一个 ELF</strong>：<code>mmap</code> 把代码、数据、栈、共享库摆在约定的虚拟地址上（<code>0x…ffff…</code> 那一带）。没有翻译，这些地址就是真地址，两个进程不可能都从同一个地址开始。</li>
+    <li><strong>内核自己</strong>：Linux 的线性映射区、vmalloc 区、设备 MMIO 的非缓存属性，全是页表属性（PTE 的 D/A/V 位与 PBMA）。</li>
+    <li><strong>保护</strong>：内核页对用户不可见，也是页表项的事，不是 S 态单独能做到的。</li>
+  </ul>
+  <p>RISC-V 这边对应的是 <code>satp</code>（模式 + 根页表号 + ASID）与两级翻译下的 Sv39：40 位虚拟地址、三级页表、4KB 页。<strong>这颗核里 <code>satp</code> 连个影子都没有</strong>——它不是没接线，是没有任何东西可以被翻译。</p>
+  <p>顺带把一件容易误会的事说清楚：加 MMU 不是加一张表。它至少带来三件新活——<strong>TLB</strong>（访存路径上多一次查表）、<strong>PTW</strong>（硬件走页表，走不到就要报缺页，而缺页本身又是异常）、<strong>缺页要区分取指 / 读 / 写</strong>（cause 12 / 13 / 15，报的 <code>mtval</code> 也不同）。这三件在第五日各占一节。</p>
+</section>
+
+<section id="s5">
+  <h2>第四缺：几条指令根本发不出来</h2>
+  <p>前三样是机制，还有一样更底层：<strong>机制要靠指令去操作，而那些指令这颗核不认。</strong>第二日那颗核的许可表把 opcode 之外的字段也管住了，看一眼就知道缺了谁：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day2/decoder.prism · 认不认这条编码</span></div>
+<pre>    <span class="tk-com">// R 型族只认 funct7 = 0x00 / 0x20（0x01 是 M 扩展，这台不做）；</span>
+    <span class="tk-com">// 立即数移位：shamt 占低 6 位，funct6 只许是 0x00（SLLI / SRLI）或</span>
+    <span class="tk-com">// 0x10（bit 30 置起 = SRAI，仅 funct3=5）；</span>
+    <span class="tk-com">// load / store 只认双字（LD/SD）；分支只认六个已定义编码。</span>
+    r_f7_ok  = funct7 <span class="tk-kw">in</span> [<span class="tk-num">0x00</span>, <span class="tk-num">0x20</span>]
+    sh_ok    = (funct3 == <span class="tk-num">1</span>) ? (funct6 == <span class="tk-num">0x00</span>) : (funct6 <span class="tk-kw">in</span> [<span class="tk-num">0x00</span>, <span class="tk-num">0x10</span>])
+    field_ok  = <span class="tk-kw">match</span> opcode {
+        <span class="tk-num">0x33</span> =&gt; r_f7_ok,
+        <span class="tk-num">0x3b</span> =&gt; r_f7_ok &amp; (funct3 <span class="tk-kw">in</span> [<span class="tk-num">0</span>, <span class="tk-num">1</span>, <span class="tk-num">5</span>]),
+        <span class="tk-num">0x13</span> =&gt; (funct3 <span class="tk-kw">in</span> [<span class="tk-num">0</span>, <span class="tk-num">2</span>, <span class="tk-num">3</span>, <span class="tk-num">4</span>, <span class="tk-num">6</span>, <span class="tk-num">7</span>]) | ((funct3 <span class="tk-kw">in</span> [<span class="tk-num">1</span>, <span class="tk-num">5</span>]) &amp; sh_ok),
+        <span class="tk-num">0x1b</span> =&gt; (funct3 == <span class="tk-num">0</span>) | ((funct3 <span class="tk-kw">in</span> [<span class="tk-num">1</span>, <span class="tk-num">5</span>]) &amp; sh_ok),
+        <span class="tk-num">0x03</span> =&gt; funct3 == <span class="tk-num">3</span>,               <span class="tk-com">// LD（这一颗 dm 就是 64 位字）</span>
+        <span class="tk-num">0x23</span> =&gt; funct3 == <span class="tk-num">3</span>,               <span class="tk-com">// SD</span>
+        <span class="tk-num">0x63</span> =&gt; funct3 <span class="tk-kw">in</span> [<span class="tk-num">0</span>, <span class="tk-num">1</span>, <span class="tk-num">4</span>, <span class="tk-num">5</span>, <span class="tk-num">6</span>, <span class="tk-num">7</span>],
+        <span class="tk-num">0x67</span> =&gt; funct3 == <span class="tk-num">0</span>,
+        <span class="tk-num">0x37</span> =&gt; <span class="tk-num">1</span>,
+        <span class="tk-num">0x17</span> =&gt; <span class="tk-num">1</span>,
+        <span class="tk-num">0x6f</span> =&gt; <span class="tk-num">1</span>,
+        _    =&gt; <span class="tk-num">0</span>,
+    }</pre>
+  </div>
+  <p>表里没有 <code>0x73</code>，它落进最后那条 <code>_ =&gt; 0</code>。这一族叫 SYSTEM，里面装着四类指令：CSR 读写（<code>csrrw</code> / <code>csrrs</code> / <code>csrrc</code>）、<code>ecall</code> 与 <code>ebreak</code>、<code>wfi</code>，还有 <code>sfence.vma</code>。</p>
+  <p><strong>没有 Zicsr，前面三样连一条指令都发不出来</strong>：<code>mtvec</code> 写不进去、<code>mcause</code> 读不出来、<code>satp</code> 根本开不了。所以它不是"再多支持一族"——它是其余三样的<strong>载体</strong>。而 <code>sfence.vma</code> 也在同一族里：改完页表要能告诉硬件"把翻译过的丢掉"，MMU 才算闭环。第四缺和第三缺，在编码上是同一个 opcode。</p>
+  <p>剩下的按"缺了它 Linux 的哪一步落不下来"排：</p>
+  <div class="tbl-wrap">
+    <table class="gaps">
+      <tr><th>Linux 里谁在等</th><th>要的指令 / 扩展</th><th>缺了会怎样</th></tr>
+      <tr><td class="g">每一处临界区</td><td><code>amoswap.w.aq</code>（A）</td><td><code>spin_lock</code> 在 RISC-V 上就是一条原子交换。没有 A，锁只能靠关中断凑，多任务与 SMP 直接封死</td></tr>
+      <tr><td class="g">引用计数、无锁结构</td><td><code>amoadd.d</code>、<code>lr.d</code> / <code>sc.d</code>（A）</td><td>同上：这是原子性，不是性能</td></tr>
+      <tr><td class="g">内核自己的浮点访存</td><td><code>fsd</code> / <code>fld</code>（D）</td><td><strong>不是"可选带上 FP"</strong>——我们在白虹上实测过：RV64 的内核无条件发这两条，没有 D 就连启动路径都走不完</td></tr>
+      <tr><td class="g">时间源</td><td><code>rdtime</code>（Zicntr）+ <code>mcounteren</code> 放行</td><td>读不到计数器，<code>sched_clock</code> 与 vDSO 只能一路问固件</td></tr>
+      <tr><td class="g">乘除</td><td><code>mul</code> / <code>div</code>（M）</td><td>内核自带软除回退，所以<strong>严格说 M 不是门槛</strong>；但编译器只要看见带 M 的 target 就直接发指令，届时这台机器每次乘法都进一次陷阱</td></tr>
+    </table>
+  </div>
+  <div class="callout key">
+    <div class="callout-title">不算门槛的那几样</div>
+    <p><strong>C</strong>（压缩码）省的是取指带宽与 I-cache 压力；<strong>Zba / Zbb</strong>（位运算）内核里有开关但可运行时退回；<strong>Zifencei</strong>（<code>fence.i</code>）要等 cache 装上才成为必需；<strong>Sstc</strong>（<code>stimecmp</code>）没有它 S 态定时器要走一次固件调用，慢而不是不能。<strong>这四样归"跑得更好"</strong>，登记在下一节，不占主线。</p>
+  </div>
+</section>
+
+<section id="s6">
+  <h2>这四样谁也离不开谁</h2>
+  <p>分开讲是为了点名，但做的时候分不开：<strong>缺页不是返回值，是一次异常；异常要分给内核还是固件，靠的就是特权级；而特权级那些状态，只能用 CSR 指令去读写。</strong>做 MMU 就必须做异常，做异常就必须做特权级，做特权级就必须先有 Zicsr。一环扣一环：</p>
+  <div class="stack">
+    <div class="stk"><div class="k">MMU 出错</div><div class="t">就是一次异常</div><div class="d">缺页不是返回值，是陷阱：要报 cause、要报地址、要能回到那条指令重来一遍。</div></div>
+    <div class="stk"><div class="k">异常要分去处</div><div class="t">就要有特权级</div><div class="d">委派给 S 态的（缺页、系统调用）走内核；留在 M 态的（固件自己）走 OpenSBI。没有层，就没有"委派"这个概念。</div></div>
+    <div class="stk"><div class="k">特权级要能回</div><div class="t">就要有状态可存</div><div class="d"><code>mstatus</code> 的 MPP / SPP、<code>*epc</code>、<code>*tvec</code>——这是一堆跨段共享的状态，也就是 CSR 那一颗模块。</div></div>
+    <div class="stk"><div class="k">前三样机制</div><div class="t">都要指令去操作</div><div class="d">写 <code>mtvec</code>、开 <code>satp</code>、失效 TLB，全落在同一个 opcode <code>0x73</code> 里。所以 Zicsr 排在最前面做：它是其余三样的载体。</div></div>
+  </div>
+  <p>所以第三日到第五日的顺序不是随便排的：<strong>先把节拍立起来（流水与冒险），再给核装上痛觉（CSR 与陷阱），最后把权限与翻译补齐（S 态、中断、MMU）。</strong>痛觉先于权限，是因为没有精确的陷阱点，权限做对了也没法验证。</p>
 </section>
 
 <section id="s7">
-  <h2>靶子：这一日要交出什么</h2>
-  <p>五条差距翻过来，就是五件要造的东西。每一件都对应上面一条量得出或读得出的差距，没有一件是"顺手多做的"。</p>
-  <div class="stack">
-    <div class="stk"><div class="k">对 111 级那一拍</div><div class="t">五级流水线</div><div class="d">pipe/ 五颗 composer + 四组段寄存器；把最长一段压到 34 级。第 12 集。</div></div>
-    <div class="stk"><div class="k">对流水的代价</div><div class="t">冒险处置</div><div class="d">前递、停顿、冲刷、多拍单元。第 13 集。</div></div>
-    <div class="stk"><div class="k">对"没有地方可以去"</div><div class="t">CSR 与特权级</div><div class="d">白名单号表、mstatus 的 WARL、trap 与 mret、中断采样。第 14 集。</div></div>
-    <div class="stk"><div class="k">对"没有那块地"</div><div class="t">存储与地址图</div><div class="d">1KB / 2KB 换成 DDR 量级，地址从 8 位长成物理地址。第 17 集。</div></div>
-    <div class="stk"><div class="k">对"没有指令可发"</div><div class="t">完整访存宽度与指令面</div><div class="d">字节 / 半字 / 双字，加上 M · A · C · F。第 16 集与第 19 集。</div></div>
+  <h2>其余的差距：只列，不展开</h2>
+  <p>这些属于"跑得快不快 / 装不装得下"那一类（上一节末尾那四样扩展也算），各自有归属的集，这里只登记：</p>
+  <div class="tbl-wrap">
+    <table class="gaps">
+      <tr><th>差在哪</th><th>这颗核的事实</th><th>谁来补</th></tr>
+      <tr><td class="g">一拍做完所有事</td><td>四颗部件各写 <code>pipeline : 1 stage</code>，顶层没有一颗段寄存器（<code>on clock</code> 出现 0 次）⇒ 取指到写回被 yosys 分段量出来是 <strong>111 级门</strong>，切成五段后最长一段 34 级</td><td class="who">EP 12 / 13</td></tr>
+      <tr><td class="g">装不下</td><td><code>im</code> 1KB、<code>dm</code> 2KB；OpenSBI 一个固件槽就是 <code>0x48000</code>（288KB）</td><td class="who">EP 17</td></tr>
+      <tr><td class="g">访存只有双字</td><td>许可表里 <code>0x03 =&gt; funct3 == 3</code>、<code>0x23 =&gt; funct3 == 3</code>；<code>lb</code> / <code>lh</code> / <code>lw</code> 一律判非法</td><td class="who">EP 12 的 LSU</td></tr>
+      <tr><td class="g">压缩码与位运算</td><td>没有 C（省取指带宽）、Zba / Zbb、Zifencei、Sstc——上一节已判定它们不是门槛</td><td class="who">EP 16 / 第五日</td></tr>
+      <tr><td class="g">没有中断源</td><td>核端口里没有 <code>mtip</code> / <code>msip</code> / <code>meip</code>，也没有 <code>mtime</code></td><td class="who">EP 15</td></tr>
+      <tr><td class="g">每次访存都到主存</td><td>没有 ICache / DCache；白虹今天的两条 cache 是 256B 与 512B 的量级</td><td class="who">第五日条目</td></tr>
+      <tr><td class="g">跑不动长跑</td><td>golden 逐拍解释，百万拍量级跑不完；也没有第四个独立裁判</td><td class="who">EP 20 / 21</td></tr>
+    </table>
   </div>
+  <p>这一栏里唯一一处"数字"是 111 与 34。它怎么量出来的、为什么不能拿全核一个数当结论，全部收在 <code>examples/day3/depth.sh</code> 那二十行脚本里——<strong>跑一遍就有表，不必在这里读我的流水账。</strong></p>
+</section>
+
+<section id="s8">
+  <h2>靶子与验收口径</h2>
+  <p>差距列完了，靶子就是它的反面。这一日之后要到手的：</p>
+  <ul>
+    <li>五级流水，段与段之间四组段寄存器，冒险由一处裁决（EP 12 / 13）。</li>
+    <li>CSR 与陷阱：号表、<code>mstatus</code> 的 WARL、<code>mtvec</code> / <code>mepc</code> / <code>mcause</code> / <code>mtval</code>、进与退（EP 14）。</li>
+    <li>S 态与系统调用、CLINT / PLIC 中断（EP 15、EP 19）。</li>
+    <li>MMU 与 Sv39、PMP（第五日）。</li>
+    <li>指令面：Zicsr 随 CSR 一起落地，A 与 D 是硬门槛，M / C 是密度与性能；完整访存宽度、128MB 量级的存储与一张字节口径的地址图（EP 16、EP 17）。</li>
+  </ul>
+  <p><strong>验收口径也在这一日立起来，后面每一日都按它交卷。</strong>三层测试台：<strong>核内</strong>（<code>tests/test_cpu.py</code>——31 个用例、411 次断言，形态是"run 表的行内期望自判 + golden / RTL 双通路 + 变异反证"）、<strong>整机</strong>（<code>tests/test_soc.py</code>——镜像装载、交棒、控制台）、<strong>外设</strong>（uart 与宿主对端）。跑什么由 <code>--image</code> 决定，芯片一个字不改——这条规矩第二日第 10 集已经兑现过一次。</p>
+</section>
+
+<section id="s9">
+  <h2>白虹（Whitebow）</h2>
   <div class="callout key">
-    <div class="callout-title">白虹（Whitebow）</div>
+    <div class="callout-title">名字的由来</div>
     <p>这颗核从这一日起有一个正式的名字：<strong>白虹</strong>，英文 <code>Whitebow</code>。典出《战国策·魏策》"聂政刺韩傀，白虹贯日"——白色虹霓直冲太阳，本身就是光的折射现象，正合 Prism（棱镜）的立命之本；而刺客一剑破日的杀伐气，正合"用 Prism 写 CPU 是硬仗"。</p>
   </div>
 </section>
 
-<section id="s8">
-  <h2>验收口径：三层测试台</h2>
-  <p>flag 立了，还得有"做完了"的定义。否则每一集都可以宣布自己完成了。这一日立的是三层，从里到外：</p>
-  <div class="stack">
-    <div class="stk"><div class="k">最里层</div><div class="t">核内</div><div class="d">一颗器官、一条通路、一张号表——run 表的行内期望自判，golden 与 RTL 两条通路逐拍对撞，再加一发注入反证。便宜、秒级、每集都跑。</div></div>
-    <div class="stk"><div class="k">中间层</div><div class="t">整机</div><div class="d">核 + 存储 + 地址图 + 镜像。判据不再看某根线，看退休序：pc / rd / 写回值逐条比。</div></div>
-    <div class="stk"><div class="k">最外层</div><div class="t">外设</div><div class="d">芯片对上的世界：串口的 tx 内容与宿主喂进去的逐字节相同才算活着。到第 18 集才有这一层。</div></div>
-  </div>
-  <p>还有一条从第二日就立着的规矩，它也是验收口径的一部分：<strong>换程序只换镜像，不换芯片</strong>。第 10 集已经兑现过一次——<code>sort.c</code> 重编、<code>--image</code> 一挂，<code>cpu.prism</code> 一个字没动。往后每一集都按这条交卷。</p>
-</section>
-
-<section id="s9">
+<section id="s10">
   <h2>小结</h2>
   <ul>
-    <li>五条差距，每条指得到具体代码：一拍做完所有事、1KB / 2KB 与 8 位地址、只有 M 态、没有中断、访存只有双字。</li>
-    <li>"一拍有多重"量出来了：<strong>六段串完至少 111 级</strong>；切成五段后最长一段 34 级。单位是门级单元个数，不是纳秒。</li>
-    <li>量它之前先废了两把尺：全核 <code>ltp -noff</code> 报 11（比零件还小），不带 <code>-noff</code> 报 234（从 clk 起、穿过触发器）。<strong>能失败的判据才叫判据。</strong></li>
-    <li>靶子与验收口径都立在这条差距清单上——这一集没写一行新硬件，但后面每一集都得从这里领任务。</li>
+    <li>"跑不了 Linux"和"跑得慢"是两件事。第二日那颗核属于前者。</li>
+    <li>四样缺的：<strong>S / U 态</strong>（分不清谁在说话）、<strong>异常处理</strong>（缺页、时钟、系统调用都是 Linux 的正常路径）、<strong>MMU</strong>（没有虚拟地址就没有进程）、<strong>指令面</strong>（<code>0x73</code> 这一族不认：Zicsr 是前三样的载体；A 是锁；D 是内核无条件发的 <code>fsd</code> / <code>fld</code>）。</li>
+    <li>这四样谁也离不开谁：缺页是一次异常 → 异常要分去处就要有特权级 → 特权级要能回就要有跨段共享的状态 → 而这些状态只能用 <code>csrrw</code> 这类指令去读写。做一样就得做四样。</li>
+    <li>顺序因此定了：先节拍（流水、冒险），再痛觉（CSR 与陷阱——它顺带把 Zicsr 带进来），最后权限与翻译（S 态、中断、MMU 与 <code>sfence.vma</code>）。</li>
+    <li>其余差距（流水、访存宽度、存储、cache、长跑、C 与 Zb*）各自有归属，登记在案，不抢主线。</li>
   </ul>
   <div class="verse-inline">
     "神称光为昼，称暗为夜。有晚上，有早晨，是第三日。"
@@ -458,8 +363,9 @@ ram__dm__rtl     3            16
   </div>
 </section>
 
-<section id="s10">
+<section id="s11">
   <h2>复现本集</h2>
+  <p>本集不写新硬件，只读第二日那颗核。要把它那一拍量出来，一条命令：</p>
   <div class="code">
     <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
 <pre>pip install prism-hdl
@@ -467,15 +373,15 @@ git clone https://github.com/prism-hdl/seven-days
 cd seven-days
 
 brew install yosys                       <span class="tk-com"># 本机实测 0.69+post；只要 yosys，不需要仿真器</span>
-sh examples/day3/depth.sh                <span class="tk-com"># 一张分段深度表 + 两把不承重的全核尺，约 11 秒</span></pre>
+sh examples/day3/depth.sh                <span class="tk-com"># 一张分段深度表 + 两把不承重的全核尺，约 11 秒</span>
+prism run examples/day2/cpu.prism --run cpu_check --debug  <span class="tk-com"># 27 拍出结果</span></pre>
   </div>
-  <p><code>depth.sh</code> 第一件事就是 <code>prism gen-rtl examples/day2/cpu.prism</code>，所以它顺带证明了本集那张表量的是<strong>眼前这份源码下降出来的门</strong>，不是别处的。要改判据：把 <code>depth()</code> 里那个 <code>techmap</code> 去掉，两列数字会同时塌成个位数——那就是"粗粒度单元是一个点"的样子。</p>
 </section>
 
 </main>
 
 <footer>
-  <span class="next">第三日 · 天上光体 —— flag 立住了，下一集开始摆段寄存器</span>
+  <span class="next">第三日 · 天上光体 —— flag 立住了，下一集把那一拍切成五段</span>
   七日创造 · 第三日 · 天上光体 · 第 11 集 · <a href="../index.html">返回首页</a>
 </footer>
 

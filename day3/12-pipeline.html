@@ -184,7 +184,7 @@ html.nav-open .nav-scrim { display: block; }
 <section id="s1">
   <h2>流水线没有把逻辑变短</h2>
   <p>这是第一次有人把"流水线"当成一种加速手段时最容易搞错的地方：加一级流水，<strong>任何一条指令走完全部五段都要五拍</strong>，比单周期还慢。它换来的是另一件事——<strong>每一拍都有一条新指令进来</strong>。</p>
-  <p>所以这一集的活很朴素：把第 11 集那张链图上的六段组合逻辑，按顺序切成五堆，堆与堆之间放寄存器。第二日那颗核里，寄存器只有四颗（pc、寄存器堆、两片存储阵列）；这一集要多出四组。</p>
+  <p>所以这一集的活很朴素：把第二日那颗核串在一拍里的六段组合逻辑，按顺序切成五堆，堆与堆之间放寄存器。第二日那颗核里，寄存器只有四颗（pc、寄存器堆、两片存储阵列）；这一集要多出四组。</p>
   <p>四组寄存器各收两根控制线。这两根线在这一集<strong>全部接 0</strong>——先让机器跑起来，再谈什么时候该停、什么时候该冲。这是第 13 集的债。</p>
 </section>
 
@@ -256,7 +256,7 @@ html.nav-open .nav-scrim { display: block; }
       <text x="590" y="222" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="13" fill="#8892a6">这一集这四颗的控制线全部接 0 —— 不停、不冲，先跑通</text>
       <text x="590" y="262" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="13" fill="#12a060">第 11 集那一拍 111 级 ⇒ 现在最长的一段是 ID 的 34 级</text>
     </svg>
-    <figcaption>实例名抄自 <tspan font-family="JetBrains Mono, monospace">design pipe5_top</tspan>；每段级数抄自第 11 集那张实测表</figcaption>
+    <figcaption>实例名抄自 <tspan font-family="JetBrains Mono, monospace">design pipe5_top</tspan>；每段级数量自 <tspan font-family="JetBrains Mono, monospace">examples/day3/depth.sh</tspan></figcaption>
   </figure>
 
   <p>白虹真核里这四颗更肥：<code>IfId</code> 7 根、<code>IdEx</code> 30 根、<code>ExMem</code> 22 根、<code>MemWb</code> 11 根外加一根 <code>commit</code>。这一片教学核只跑五条指令，字段自然少——但<strong>该带什么下去</strong>这件事，两边是同一条规矩：下一段要用什么，这一段就带着什么走。</p>
