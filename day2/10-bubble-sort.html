@@ -150,13 +150,14 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-cpu-top.html"><span class="n">EP 9</span><span class="t">cpu_top · 一具身体</span></a></li><li><a href="10-bubble-sort.html" class="on" aria-current="page"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">旱地与植物</span><span class="st">待重构</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">天上光体</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 11</span><span class="t">Composer · 一次声明五段生成</span></span></li><li class="todo"><span class="row"><span class="n">EP 12</span><span class="t">五级流水线数据通路</span></span></li><li class="todo"><span class="row"><span class="n">EP 13</span><span class="t">数据冒险与前递</span></span></li><li class="todo"><span class="row"><span class="n">EP 14</span><span class="t">控制冒险与分支</span></span></li><li class="todo"><span class="row"><span class="n">EP 15</span><span class="t">RV64I 与整合验证</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">有生命的活物</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 16</span><span class="t">RV32M 乘除法</span></span></li><li class="todo"><span class="row"><span class="n">EP 17</span><span class="t">CSR 框架与异常</span></span></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">中断与 PMP</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">模式切换与上板</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">独立 ISS 四方对撞</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">照着形象造人</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">总线 / ABI / 链接脚本</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">SRAM 与 BootROM</span></span></li><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">PLIC 与 UART</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">SoC 顶层组装</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">OpenSBI 移植与最小 SoC 跑通</span></span></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-cpu-top.html"><span class="n">EP 9</span><span class="t">cpu_top · 一具身体</span></a></li><li><a href="10-bubble-sort.html" class="on" aria-current="page"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">写作中</span></h3><ul><li><a href="../day3/11-flag.html"><span class="n">EP 11</span><span class="t">立 flag · 从玩具到能跑 Linux</span></a></li><li><a href="../day3/12-pipeline.html"><span class="n">EP 12</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/13-hazards.html"><span class="n">EP 13</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li class="todo"><span class="row"><span class="n">EP 14</span><span class="t">CSR 与特权级</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">待写</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 15</span><span class="t">中断：CLINT 与 PLIC</span></span></li><li class="todo"><span class="row"><span class="n">EP 16</span><span class="t">指令面长大：M · A · C · F</span></span></li><li class="todo"><span class="row"><span class="n">EP 17</span><span class="t">soc.prism · 一片真芯片</span></span></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">uart8250 · 让芯片开口说话</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">模式切换与系统调用</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">第四方对撞 · 官方 sail 模型</span></span></li><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">Verilator · 跑得起百万拍</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">flag · 未达成</span></h3><ul></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
 
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">七日创造 · 第二日 · 空气与水 · 第 10 集</div>
-    <h1>跑一段真程序<br><em>冒泡排序</em></h1>
-    <p class="subtitle">第九集那颗 <code style="background:none;border:none;color:#a678ff">cpu_top</code> 一行都不改——只把另一份镜像灌进去，让它把六个数排好，再让它自己验一遍。</p>
+    <h1>跑一段真程序<br><em>从 C 到裸镜像</em></h1>
+    <p class="subtitle">第 9 集那颗 <code style="background:none;border:none;color:#a678ff">cpu_top</code> 一行都不改。这一集连机器码都不用手抄——写 C，交给 RISC-V 编译器：<strong>sort.c → sort.elf → 两段裸镜像 → image 装载 → 181 拍把六个数排好</strong>。</p>
     <div class="verse">
       "有晚上，有早晨，是第二日。"
       <cite>—— 《创世记》 1:8</cite>
@@ -168,205 +169,344 @@ html.nav-open .nav-scrim { display: block; }
 
 <div class="pn">
   <a href="09-cpu-top.html">← 第 9 集 · 一具身体</a>
-  <a href="../index.html#day2">第二日完 · 下一日 · 旱地与植物 →</a>
+  <a href="../day3/11-flag.html">第二日完 · 下一集 · 立 flag →</a>
 </div>
 
 <section id="s1">
-  <h2>这一集不写新的芯片</h2>
-  <p>前九集造完的这颗单周期核，取指、译码、算绪、访存、写回都会做了，但它只跑过一件事：从 5 加到 1。这一集给它一段有结果的活儿——把 <code>9, 7, 5, 3, 2, 1</code> 排成升序。</p>
-
-  <p>做法只有一行：<strong>在 <code>cpu.prism</code> 里再加一个 run 块</strong>。design 不动、器官不动、<code>@schedule</code> 不动。镜像是测试台事实——</p>
+  <h2>这一集不写硬件，也不写机器码</h2>
+  <p>第 9 集那份程序是手抄的：14 条指令，逐条对着手册核编码，写进 run 的内联表。十几条这个量级，手抄得起。</p>
+  <p>冒泡排序不在这个量级上。所以这一集换一条所有嵌入式开发者都走惯的路——</p>
 
   <div class="stack">
-    <div class="stk"><div class="k">第九集</div><div class="t">cpu_check</div><div class="d">六条指令的累加循环，27 拍</div></div>
-    <div class="stk"><div class="k">本集</div><div class="t">bubble_sort</div><div class="d">32 条指令的排序 + 自检，417 拍</div></div>
-    <div class="stk"><div class="k">同一颗</div><div class="t">cpu_top</div><div class="d">换的是镜像，不是芯片</div></div>
+    <div class="stk"><div class="k">① 写</div><div class="t">sort.c</div><div class="d">一个数组、两重循环：普通的冒泡排序</div></div>
+    <div class="stk"><div class="k">② 编</div><div class="t">riscv64-elf-gcc</div><div class="d">-march=rv64i -mabi=lp64，地址图交给 sort.ld → sort.elf</div></div>
+    <div class="stk"><div class="k">③ 拆</div><div class="t">objcopy</div><div class="d">.text → sort.text.bin，.data → sort.data.bin</div></div>
+    <div class="stk"><div class="k">④ 装</div><div class="t">image + @load</div><div class="d">两段裸镜像分别灌进 im 与 dm 的窗口</div></div>
+    <div class="stk"><div class="k">⑤ 跑</div><div class="t">181 拍</div><div class="d">golden 与 RTL 逐拍全等，判据在拍 180 成立</div></div>
   </div>
+
+  <p>芯片这一侧<strong>什么都没学</strong>：它只认得 <code>im</code> 里那些 32 位的字。把 C 变成那些字，是工具链的活——这一集就把这条通路走一遍，每一步都留真输出。</p>
 </section>
 
 <section id="s2">
-  <h2>那段程序</h2>
-  <p>冒泡排序不用乘除法：扫一遍相邻两格，逆序就换；有一趟一个都没换，就说明排好了。地址乘法用 <code>slli</code>（<code>j*8</code>——dm 一个字 8 字节），比较用 <code>slt</code>，跳转用 <code>beq</code> / <code>bne</code> / <code>blt</code>，取数放数用 <code>ld</code> / <code>sd</code>。全是第九集已经接通的路。</p>
-  <p>机器码不是手算的：先写 <code>.s</code> 交给 <code>llvm-mc</code> 汇编，再用 <code>llvm-objdump</code> 反着打一遍，地址与编码对上才抄进镜像表——<strong>第三方汇编器做裁判</strong>，Prism 这边只负责跑它。</p>
+  <h2>那段 C：两处故意，其余普通</h2>
 
   <div class="code">
-    <div class="code-header"><span class="code-lang">riscv64</span><span class="code-file">程序清单（机器码经 llvm-mc 汇编核对）</span></div>
-<pre>
-   0  0x00600293  addi x5, x0, 6        <span class="tk-com">n = 6</span>
-   4  0x00000313  addi x6, x0, 0        <span class="tk-com">swapped = 0</span>
-   8  0x00000393  addi x7, x0, 0        <span class="tk-com">j = 0</span>
-  12  0x00339e13  slli x28, x7, 3       <span class="tk-com">&amp;a[j] = j*8</span>
-  16  0x00138e93  addi x29, x7, 1       <span class="tk-com">j + 1</span>
-  20  0x003e9f13  slli x30, x29, 3      <span class="tk-com">&amp;a[j+1]</span>
-  24  0x000e3503  ld x10, 0(x28)        <span class="tk-com">a[j]</span>
-  28  0x000f3583  ld x11, 0(x30)        <span class="tk-com">a[j+1]</span>
-  32  0x00a5a633  slt x12, x11, x10     <span class="tk-com">a[j+1] 比 a[j] 小？</span>
-  36  0x00060863  beq x12, x0, 16       <span class="tk-com">没逆序 → 跳到 52</span>
-  40  0x00be3023  sd x11, 0(x28)        <span class="tk-com">换：小的进来</span>
-  44  0x00af3023  sd x10, 0(x30)        <span class="tk-com">换：大的出去</span>
-  48  0x00130313  addi x6, x6, 1        <span class="tk-com">swapped++</span>
-  52  0x00138393  addi x7, x7, 1        <span class="tk-com">j++</span>
-  56  0xfff28693  addi x13, x5, -1      <span class="tk-com">n - 1</span>
-  60  0xfcd3c8e3  blt x7, x13, -52      <span class="tk-com">j &lt; n-1 → 回 12</span>
-  64  0xfc0312e3  bne x6, x0, -60       <span class="tk-com">这趟换过 → 回 4 再扫</span>
-  68  0x00000393  addi x7, x0, 0        <span class="tk-com">自检：j = 0</span>
-  72  0xfff28693  addi x13, x5, -1      <span class="tk-com">n - 1</span>
-  76  0x00339e13  slli x28, x7, 3       <span class="tk-com">&amp;a[j]</span>
-  80  0x00138e93  addi x29, x7, 1       <span class="tk-com">j + 1</span>
-  84  0x003e9f13  slli x30, x29, 3      <span class="tk-com">&amp;a[j+1]</span>
-  88  0x000e3503  ld x10, 0(x28)        <span class="tk-com">a[j]</span>
-  92  0x000f3583  ld x11, 0(x30)        <span class="tk-com">a[j+1]</span>
-  96  0x00a5a633  slt x12, x11, x10     <span class="tk-com">还有逆序？</span>
- 100  0x00061c63  bne x12, x0, 24       <span class="tk-com">有 → 掉进 124 那格自跳，永不通</span>
- 104  0x00138393  addi x7, x7, 1        <span class="tk-com">j++</span>
- 108  0xfff28693  addi x13, x5, -1      <span class="tk-com">n - 1</span>
- 112  0xfcd3cee3  blt x7, x13, -36      <span class="tk-com">六对没比完 → 回 76</span>
- 116  0x00100a13  addi x20, x0, 1       <span class="tk-com">完工标志：直到这里才置 1</span>
- 120  0x0000006f  jal x0, 0             <span class="tk-com">停机（自跳）</span>
- 124  0x0000006f  jal x0, 0             <span class="tk-com">fail：自检没过就永远停在这</span>
+    <div class="code-header"><span class="code-lang">c</span><span class="code-file">sort.c · 全文</span></div>
+<pre><span class="tk-com">/* =============================================================================</span>
+<span class="tk-com"> * sort.c —— 第二日 · 第 10 集：一段真程序（冒泡排序）</span>
+<span class="tk-com"> *</span>
+<span class="tk-com"> * 这颗核只认最小 RV64I，所以这段 C 有两处&quot;故意&quot;：</span>
+<span class="tk-com"> *   1. 数组元素是 long（8 字节）——本日的访存只有双字（LD/SD），</span>
+<span class="tk-com"> *      int（LW/SW）、char（LB/SB）都还不在这台机器的字典里。</span>
+<span class="tk-com"> *   2. 全程没有乘除法——M 扩展是第四日以后的事。</span>
+<span class="tk-com"> * 其余就是普通的冒泡排序：扫一趟，逆序就换；有一趟一个都没换就收尾。</span>
+<span class="tk-com"> *</span>
+<span class="tk-com"> * 程序不参与&quot;报告&quot;：排没排好由测试台读 dm 里那六个字判定（run 的 until）。</span>
+<span class="tk-com"> * 最后那个 while(1) 只是停机——编译成一条原地自跳，CPU 留在这儿等收工。</span>
+<span class="tk-com"> * ============================================================================= */</span>
+
+<span class="tk-kw">long</span> a[<span class="tk-num">6</span>] = {<span class="tk-num">9</span>, <span class="tk-num">7</span>, <span class="tk-num">5</span>, <span class="tk-num">3</span>, <span class="tk-num">2</span>, <span class="tk-num">1</span>};   <span class="tk-com">/* 待排的六个数，初值编进镜像 */</span>
+
+<span class="tk-kw">void</span> sort(<span class="tk-kw">void</span>)
+{
+    <span class="tk-kw">long</span> pass, j, t;
+
+    <span class="tk-kw">for</span> (pass = <span class="tk-num">0</span>; pass &lt; <span class="tk-num">6</span>; pass = pass + <span class="tk-num">1</span>) {
+        <span class="tk-kw">long</span> swapped = <span class="tk-num">0</span>;
+        <span class="tk-kw">long</span> limit = <span class="tk-num">6</span> - pass - <span class="tk-num">1</span>;
+        <span class="tk-kw">for</span> (j = <span class="tk-num">0</span>; j &lt; limit; j = j + <span class="tk-num">1</span>) {
+            <span class="tk-kw">if</span> (a[j] &gt; a[j + <span class="tk-num">1</span>]) {
+                t = a[j]; a[j] = a[j + <span class="tk-num">1</span>]; a[j + <span class="tk-num">1</span>] = t;
+                swapped = <span class="tk-num">1</span>;
+            }
+        }
+        <span class="tk-kw">if</span> (swapped == <span class="tk-num">0</span>)
+            <span class="tk-kw">break</span>;
+    }
 </pre>
+  </div>
+
+  <p>两处故意是替这颗机器着想的：</p>
+  <ul>
+    <li><strong>元素是 <code>long</code>。</strong>本日的访存只有双字：<code>LD</code> / <code>SD</code> 一条判据（<code>funct3 == 3</code>）。<code>int</code>（LW/SW）、<code>char</code>（LB/SB）走的宽度路，第 8 集那本字典里就没有——它们会被报成"不认识"。</li>
+    <li><strong>全程没有乘除法。</strong>M 扩展是第四日以后的事。</li>
+  </ul>
+
+  <p>还有一处是替<strong>验证</strong>着想的：这段程序里<strong>没有任何"报告"</strong>。排没排好不由它说——它排完就 <code>while (1);</code> 停在原地，判由测试台去读 <code>dm</code> 里那六个字。程序自报一个完工位，判据就只是信了它一次；测试台自己读产物，判据才有自己的眼睛。</p>
+</section>
+
+<section id="s3">
+  <h2>地址图：程序摆在哪儿</h2>
+  <p>链接器只有一个地址空间，这颗核有两块存储、各自从 0 数自己的字节。<code>sort.ld</code> 就是把两边对齐的那张纸：</p>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">ld</span><span class="code-file">sort.ld · 全文</span></div>
+<pre>/* =============================================================================
+ * sort.ld —— 把这段程序钉在这颗核的地址图上
+ *
+ * 第 <span class="tk-num">9</span> 集的 cpu_top 是哈佛结构：im 与 dm 各走各的读口，各自从 <span class="tk-num">0</span> 开始数自己的字节。
+ * 但链接器只有一个地址空间，所以这里给两块存储各划一段：
+ *   im  <span class="tk-num">0x000</span>..<span class="tk-num">0x3FF</span>   1KB —— <span class="tk-num">256</span> 字 × <span class="tk-num">32</span> 位（取指只看 pc[<span class="tk-num">9</span>:<span class="tk-num">2</span>]）
+ *   dm  <span class="tk-num">0x400</span>..<span class="tk-num">0x7FF</span>   1KB —— dm 的后半；前半是第 <span class="tk-num">9</span> 集那台自测程序写 dm[<span class="tk-num">0</span>] 的地方
+ * dm 一共 2KB（访存只看 ex.result[<span class="tk-num">10</span>:<span class="tk-num">3</span>]），所以 <span class="tk-num">0x400</span> 起这 1KB 是它的合法窗口，
+ * 越过 <span class="tk-num">0x800</span> 就绕回 <span class="tk-num">0</span> —— 地址图的边界是硬件给的，不是链接脚本说了算。
+ *
+ * .bss 不需要镜像：dm 的复位值本来就是 <span class="tk-num">0</span>（memory.prism 里 `mem ram : [SIZE] W = <span class="tk-num">0</span>`），
+ * 清零这一段交给硬件，编译器只管有初值的 .data。
+ * ============================================================================= */
+
+<span class="tk-kw">ENTRY</span>(sort)
+
+<span class="tk-kw">MEMORY</span> {
+    im : <span class="tk-kw">ORIGIN</span> = <span class="tk-num">0x00000000</span>, <span class="tk-kw">LENGTH</span> = 1K
+    dm : <span class="tk-kw">ORIGIN</span> = <span class="tk-num">0x00000400</span>, <span class="tk-kw">LENGTH</span> = 1K
+}
+
+<span class="tk-kw">SECTIONS</span> {
+    .text   : { *(.text*) }              &gt; im
+    .rodata : { *(.rodata*) }            &gt; im
+    .data   : { *(.data*) *(.sdata*) }   &gt; dm
+    .bss    : { *(.bss*) *(.sbss*) *(COMMON) } &gt; dm
+}</pre>
+  </div>
+
+  <div class="term">
+    <div class="term-header">$ riscv64-elf-objdump -h sort.elf; riscv64-elf-nm -n sort.elf</div>
+    <div class="term-body">Idx Name          Size      VMA               LMA               File off  Algn
+  0 .text         00000050  0000000000000000  0000000000000000  00001000  2**2
+  1 .data         00000030  0000000000000400  0000000000000400  00001400  2**3
+0000000000000000 T sort
+0000000000000400 D a</div>
+  </div>
+
+  <p>三件事要看：</p>
+  <ul>
+    <li><strong>同一个位置有两种币种。</strong><code>.data</code> 摆在 <code>0x400</code>：装载窗口按字节写 <code>dm[1024:]</code>，<code>expose</code> 按格写 <code>dm.ram[128]</code>——1024 ÷ 8 = 128，因为 dm 一个元素是 8 字节。六个数就落在第 128..133 格。</li>
+    <li><strong>有初值的进 <code>.data</code>，零初始化的进 <code>.bss</code>，而 <code>.bss</code> 不需要镜像。</strong>dm 的复位值本来就是 0（<code>mem ram : [SIZE] W = 0</code>）——清零交给硬件，编译器只管真有内容的那一段。本例只有一个带初值的数组，所以段表里连 <code>.bss</code> 都没有。</li>
+    <li><strong>上限是硬件给的，不是链接脚本说了算。</strong>dm 只看 <code>ex.result[10:3]</code>，覆盖 2KB；所以 RAM 段只能落在 <code>0x400..0x7FF</code>，越过 <code>0x800</code> 就绕回开头——那是别名，不是另一块存储。</li>
+  </ul>
+</section>
+
+<section id="s4">
+  <h2>编译、拆镜像</h2>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">sh</span><span class="code-file">build_sort.sh · 全文</span></div>
+<pre><span class="tk-com">#!/bin/sh</span>
+<span class="tk-com"># =============================================================================</span>
+<span class="tk-com"># build_sort.sh —— 第 10 集：C → ELF → 裸镜像</span>
+<span class="tk-com">#</span>
+<span class="tk-com"># 目标是一颗只认最小 RV64I 的核：-march=rv64i（不带 M / C / Zbb），</span>
+<span class="tk-com"># -mabi=lp64（long 与指针都是 64 位，正好对上这台机器的双字访存）。</span>
+<span class="tk-com"># 产物三个：sort.elf 用来看（段表、反汇编），两段裸镜像用来装进 cpu.prism</span>
+<span class="tk-com"># 里 run 块的 image 段——芯片源码一行都不改。</span>
+<span class="tk-com"># =============================================================================</span>
+<span class="tk-kw">set</span> -e
+<span class="tk-kw">cd</span> &quot;$(dirname &quot;$<span class="tk-num">0</span>&quot;)&quot;
+
+RV=$(brew --prefix riscv64-elf-gcc)/bin
+CC=$RV/riscv64-elf-gcc
+[ -x &quot;$CC&quot; ] || { <span class="tk-kw">echo</span> &quot;缺 RISC-V 交叉工具链：brew install riscv64-elf-gcc&quot;; <span class="tk-kw">exit</span> <span class="tk-num">1</span>; }
+<span class="tk-kw">export</span> PATH=&quot;$RV:$PATH&quot;
+
+<span class="tk-com"># ① 编译 + 链接：-T 交地址图，-nostdlib 让它谁都别依赖</span>
+&quot;$CC&quot; -march=rv64i -mabi=lp64 -ffreestanding -nostdlib -mno-relax \
+    -Os -Wall -T sort.ld sort.c -o sort.elf
+
+<span class="tk-com"># ② 拆裸镜像：.text 进 im，.data 进 dm（.bss 不用装——dm 的复位值就是 0）</span>
+riscv64-elf-objcopy -O binary --only-section=.text sort.elf sort.text.bin
+riscv64-elf-objcopy -O binary --only-section=.data sort.elf sort.data.bin
+
+<span class="tk-kw">wc</span> -c sort.elf sort.text.bin sort.data.bin</pre>
+  </div>
+
+  <div class="term">
+    <div class="term-header">$ sh build_sort.sh</div>
+    <div class="term-body">    6040 sort.elf
+      80 sort.text.bin
+      48 sort.data.bin
+    6168 total</div>
+  </div>
+
+  <p>80 字节 = <strong>20 条指令</strong>，48 字节 = <strong>六个数</strong>。反汇编打开是这样——这份 listing 不是我写的，是编译器给的：</p>
+
+  <div class="term">
+    <div class="term-header">$ riscv64-elf-objdump -d sort.elf</div>
+    <div class="term-body">0000000000000000 &lt;sort&gt;:
+   0:   00500713                li      a4,5
+   4:   000008b7                lui     a7,0x0
+   8:   fff00813                li      a6,-1
+   c:   40088793                addi    a5,a7,1024 # 400 &lt;a&gt;
+  10:   00000613                li      a2,0
+  14:   00000693                li      a3,0
+  18:   00e69a63                bne     a3,a4,2c &lt;sort+0x2c&gt;
+  1c:   00060663                beqz    a2,28 &lt;sort+0x28&gt;
+  20:   fff70713                addi    a4,a4,-1
+  24:   ff0714e3                bne     a4,a6,c &lt;sort+0xc&gt;
+  28:   0000006f                j       28 &lt;sort+0x28&gt;
+  2c:   0007b583                ld      a1,0(a5)
+  30:   0087b503                ld      a0,8(a5)
+  34:   00168693                addi    a3,a3,1
+  38:   00b55863                bge     a0,a1,48 &lt;sort+0x48&gt;
+  3c:   00a7b023                sd      a0,0(a5)
+  40:   00b7b423                sd      a1,8(a5)
+  44:   00100613                li      a2,1
+  48:   00878793                addi    a5,a5,8
+  4c:   fcdff06f                j       18 &lt;sort+0x18&gt;</div>
+  </div>
+
+  <p>两处值得停。<strong>内层循环体被摆在函数末尾</strong>（<code>0x2c..0x4c</code>），判头在 <code>0x18</code>，两头靠 <code>bne</code> / <code>j</code> 来回——所以 <code>pc</code> 不会从 0 一路递增。另一处是 <code>0x28</code> 那条 <code>j 28</code>：它就是 <code>while (1);</code>，<strong>一条原地自跳</strong>，与第 9 集手抄程序末尾那条 <code>jal x0, 0</code> 同一个形态。至于 <code>li</code> / <code>beqz</code> 这些助记符，<strong>落进二进制的是真指令</strong>（<code>addi</code> / <code>beq</code>）。</p>
+
+  <p>这颗核认不认得这份产物，判据只有一条：每条编码落在第 8 集那本字典里。把 20 条按 <code>(opcode, funct3)</code> 归一次类——</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>opcode · funct3</th><th>条数</th><th>是什么</th><th>走 decoder 哪条路</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">0x13 · 0</td><td class="mono">9</td><td>addi（含 li）</td><td>I-ALU，<code>alu_src=1</code></td></tr>
+        <tr><td class="mono">0x03 · 3</td><td class="mono">2</td><td>ld</td><td>load，<code>mem_ren=1</code></td></tr>
+        <tr><td class="mono">0x23 · 3</td><td class="mono">2</td><td>sd</td><td>store，<code>mem_wen=1</code></td></tr>
+        <tr><td class="mono">0x37 · 0</td><td class="mono">1</td><td>lui</td><td><code>u_sext : i32</code> 那条位形</td></tr>
+        <tr><td class="mono">0x63 · 0/1/5</td><td class="mono">1/2/1</td><td>beq · bne · bge</td><td>分支借 ALU（顶层那张 <code>alu_op_b</code>）</td></tr>
+        <tr><td class="mono">0x6f · 0/7</td><td class="mono">1/1</td><td>jal（<code>j 28</code> 与 <code>j 18</code>）</td><td><code>is_jal</code>：一条停机自跳、一条回循环头</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>9 种组合、20 条，没有一条需要给硬件加线。</strong>第码对不对由编译器负责；我只核对一件事——这颗核认不认得它。</p>
+</section>
+
+<section id="s5">
+  <h2>镜像写在测试台上</h2>
+  <p>装阵列的手续在第一日第 2 集就讲完了：一个别名、一块存储、一个字节偏移、一个长度。到这里它第一次拿来装<strong>别人产出的东西</strong>——而且两个窗口：代码进 <code>im</code>，数据进 <code>dm</code>。</p>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">cpu.prism · bubble_sort</span></div>
+<pre><span class="tk-com">// bubble_sort —— 第十集加的第二个 run：还是这颗 cpu_top，一行都不改，只换镜像。</span>
+<span class="tk-com">// 这一回的镜像不是手抄的第码，是 riscv64-elf-gcc 从 sort.c 打出来的 ELF 拆出来的</span>
+<span class="tk-com">// 两段裸二进制（build_sort.sh）：.text 进 im，.data 进 dm。</span>
+<span class="tk-com">// 窗口两个数都是字节：dm 的偏移 1024 = 链接脚本里 .data 的 VMA 0x400，</span>
+<span class="tk-com">// 长度由文件自己量（48 字节 = 六个字）。.bss 那个完工位不用装——dm 的复位值就是 0。</span>
+<span class="tk-com">// 判据不问程序&quot;你排完了吗&quot;——它自己读 dm 里那六个字：数组没升序，它就不成立。</span>
+<span class="tk-com">// ----------------------------------------------------------------------------</span>
+<span class="tk-decl">run</span> bubble_sort <span class="tk-rw">of</span> cpu_top {
+    <span class="tk-stor">image</span> : {
+        prog : im[<span class="tk-num">0</span>:]    = @load(&quot;sort.text.bin&quot;),   <span class="tk-com">// .text：20 条指令，80 字节</span>
+        data : dm[<span class="tk-num">1024</span>:] = @load(&quot;sort.data.bin&quot;),   <span class="tk-com">// .data：9,7,5,3,2,1 → dm[128..133]</span>
+    }
+    until : (a0 == <span class="tk-num">1</span>) &amp; (a1 == <span class="tk-num">2</span>) &amp; (a2 == <span class="tk-num">3</span>) &amp; (a3 == <span class="tk-num">5</span>) &amp; (a4 == <span class="tk-num">7</span>) &amp; (a5 == <span class="tk-num">9</span>)
+    show  : { pcv, a0, a1, a2, a3, a4, a5 }
+}</pre>
+  </div>
+
+  <p>两句口径要记：</p>
+  <ul>
+    <li><strong>窗口两个数都是字节</strong>，零点是这块 mem 的起点。<code>im[0:]</code> 的字节数省掉了——由 <code>sort.text.bin</code> 的长度量出来（80 B = 20 条）；<code>dm[1024:]</code> 那个 1024 就是链接地址 <code>0x400</code>。</li>
+    <li><strong>别名是命令行的把手。</strong><code>--image prog=&lt;文件&gt;</code> 只换文件，落点与窗口仍是源码里的事实——这一点下面反证那节要真用它一次。</li>
+  </ul>
+</section>
+
+<section id="s6">
+  <h2>181 拍</h2>
+  <div class="term">
+    <div class="term-header">▸ prism run examples/day2/cpu.prism --run bubble_sort --debug（节选）</div>
+    <div class="term-body">[run] bubble_sort: 181 拍 golden 直跑完成
+# run: bubble_sort  design: cpu_top  stop: until true at cycle 180
+cycle   pcv     a0      a1      a2      a3      a4      a5
+0       4       9       7       5       3       2       1
+<span class="term-hint"># 拍 0 看见的就是灌进去的六个数</span>
+5       24      9       7       5       3       2       1
+6       44      9       7       5       3       2       1
+<span class="term-hint"># 跳进函数末尾的内层体</span>
+10      60      9       7       5       3       2       1
+11      64      7       7       5       3       2       1
+<span class="term-hint"># 第一条 sd 落地：低格变 7</span>
+12      68      7       9       5       3       2       1
+<span class="term-hint"># 第二条 sd：高格变 9</span>
+<span class="term-hint">…（13 – 176 略：一趟一趟扫，最后一次换位在前头）</span>
+178     60      2       1       3       5       7       9
+179     64      1       1       3       5       7       9
+180     68      1       2       3       5       7       9
+<span class="term-hint"># 六个数成形，until 当拍成立</span>
+<span class="term-ok"># stop: until true at cycle 180</span></div>
   </div>
 
   <p>三处值得停：</p>
   <ul>
-    <li><strong>只用 <code>ld</code> / <code>sd</code></strong>。这台机器的 dm 一颗就是一个 64 位字，排序里搬的也就是一个字——不碰字访问、半字访问那条没建的路。</li>
-    <li><strong>地址靠移位</strong>。<code>slli x28, x7, 3</code> 把下标 <code>j</code> 变成字节地址。没有乘法器，也不该为了一个下标去要一个乘法器。</li>
-    <li><strong>末尾那八条是自检</strong>。排完之后再从头比一遍相邻两格，发现任何一次逆序就掉进 <code>124</code> 那格自跳——<code>x20</code> 永远不置起。置起 <code>x20</code> 的那条指令，是这段程序里唯一能被称为"报告"的东西。</li>
+    <li><strong>一次换位改两格，分两拍看见。</strong>拍 11 低格从 9 变 7、拍 12 高格才从 7 变 9；中间那一拍数组是 <code>7 7 5 …</code>。两个 <code>sd</code> 之间本来就有这个半完成态——它不是 bug，是这两条指令要各落一个边沿。</li>
+    <li><strong><code>pc</code> 的轨迹跟着编译器的摆法走</strong>：4→8→…→24→44→…→68，再一条 <code>j</code> 回 24。想按手写程序的直觉去核对拍数会一头雾水；能核对的是<strong>格子值</strong>。</li>
+    <li><strong>判据成立的那一拍，就是数组最后一次变化的那一拍。</strong>拍 180 之前它一直是假，拍 180 六个字同时对上——因为判据读的就是这六个字本身，中间没有任何"程序宣布完成"的环节要等。</li>
   </ul>
-</section>
-
-<section id="s3">
-  <h2>镜像写在测试台上</h2>
-  <p>程序与数组都进 run 块的 <code>image</code> 段：一个窗口给 <code>im</code>（指令），一个给 <code>dm</code>（数据）。<code>[0:]</code> 那个窗口只写起点，长度由值侧量出来——32 个字 × 4 字节 = 128 字节，六个 64 位数据字 = 48 字节。</p>
-<span class="tk-decl">run</span> bubble_sort <span class="tk-rw">of</span> cpu_top {
-    <span class="tk-stor">image</span> : {
-        prog : im[<span class="tk-num">0</span>:] = [
-            <span class="tk-num">0x00600293</span>,   <span class="tk-com">//   0: addi x5, x0, 6         n = 6</span>
-            <span class="tk-num">0x00000313</span>,   <span class="tk-com">//   4: addi x6, x0, 0         swapped = 0</span>
-            <span class="tk-num">0x00000393</span>,   <span class="tk-com">//   8: addi x7, x0, 0         j = 0</span>
-            <span class="tk-num">0x00339e13</span>,   <span class="tk-com">//  12: slli x28, x7, 3        &amp;a[j] = j*8</span>
-            <span class="tk-num">0x00138e93</span>,   <span class="tk-com">//  16: addi x29, x7, 1        j + 1</span>
-            <span class="tk-num">0x003e9f13</span>,   <span class="tk-com">//  20: slli x30, x29, 3       &amp;a[j+1]</span>
-            <span class="tk-num">0x000e3503</span>,   <span class="tk-com">//  24: ld x10, 0(x28)         a[j]</span>
-            <span class="tk-num">0x000f3583</span>,   <span class="tk-com">//  28: ld x11, 0(x30)         a[j+1]</span>
-            <span class="tk-num">0x00a5a633</span>,   <span class="tk-com">//  32: slt x12, x11, x10      a[j+1] 比 a[j] 小？</span>
-            <span class="tk-num">0x00060863</span>,   <span class="tk-com">//  36: beq x12, x0, 16        没逆序 → 跳到 52</span>
-            <span class="tk-num">0x00be3023</span>,   <span class="tk-com">//  40: sd x11, 0(x28)         换：小的进来</span>
-            <span class="tk-num">0x00af3023</span>,   <span class="tk-com">//  44: sd x10, 0(x30)         换：大的出去</span>
-            <span class="tk-num">0x00130313</span>,   <span class="tk-com">//  48: addi x6, x6, 1         swapped++</span>
-            <span class="tk-num">0x00138393</span>,   <span class="tk-com">//  52: addi x7, x7, 1         j++</span>
-            <span class="tk-num">0xfff28693</span>,   <span class="tk-com">//  56: addi x13, x5, -1       n - 1</span>
-            <span class="tk-num">0xfcd3c8e3</span>,   <span class="tk-com">//  60: blt x7, x13, -52       j &lt; n-1 → 回 12</span>
-            <span class="tk-num">0xfc0312e3</span>,   <span class="tk-com">//  64: bne x6, x0, -60        这趟换过 → 回 4 再扫</span>
-            <span class="tk-num">0x00000393</span>,   <span class="tk-com">//  68: addi x7, x0, 0         自检：j = 0</span>
-            <span class="tk-num">0xfff28693</span>,   <span class="tk-com">//  72: addi x13, x5, -1       n - 1</span>
-            <span class="tk-num">0x00339e13</span>,   <span class="tk-com">//  76: slli x28, x7, 3        &amp;a[j]</span>
-            <span class="tk-num">0x00138e93</span>,   <span class="tk-com">//  80: addi x29, x7, 1        j + 1</span>
-            <span class="tk-num">0x003e9f13</span>,   <span class="tk-com">//  84: slli x30, x29, 3       &amp;a[j+1]</span>
-            <span class="tk-num">0x000e3503</span>,   <span class="tk-com">//  88: ld x10, 0(x28)         a[j]</span>
-            <span class="tk-num">0x000f3583</span>,   <span class="tk-com">//  92: ld x11, 0(x30)         a[j+1]</span>
-            <span class="tk-num">0x00a5a633</span>,   <span class="tk-com">//  96: slt x12, x11, x10      还有逆序？</span>
-            <span class="tk-num">0x00061c63</span>,   <span class="tk-com">// 100: bne x12, x0, 24        有 → 掉进 124 那格自跳，永不通</span>
-            <span class="tk-num">0x00138393</span>,   <span class="tk-com">// 104: addi x7, x7, 1         j++</span>
-            <span class="tk-num">0xfff28693</span>,   <span class="tk-com">// 108: addi x13, x5, -1       n - 1</span>
-            <span class="tk-num">0xfcd3cee3</span>,   <span class="tk-com">// 112: blt x7, x13, -36       六对没比完 → 回 76</span>
-            <span class="tk-num">0x00100a13</span>,   <span class="tk-com">// 116: addi x20, x0, 1        完工标志：直到这里才置 1</span>
-            <span class="tk-num">0x0000006f</span>,   <span class="tk-com">// 120: jal x0, 0              停机（自跳）</span>
-            <span class="tk-num">0x0000006f</span>    <span class="tk-com">// 124: jal x0, 0              fail：自检没过就永远停在这</span>
-        ]
-
-    }
-    until : x20 == <span class="tk-num">1</span>
-    show  : { pcv, x20, dm0, dm1, dm2, dm3, dm4, dm5 }
-}
-  <p>两句口径要记：<strong>偏移与字节数的单位是字节</strong>，零点是这块 mem 的起点；<code>别名</code>（<code>prog</code> / <code>data</code>）是命令行换镜像的把手——<code>--image prog=&lt;文件&gt;</code> 只换文件，落点与窗口仍是源码里的事实。</p>
-</section>
-
-<section id="s4">
-  <h2>417 拍</h2>
-  <div class="term">
-    <div class="term-header">▸ prism run examples/day2/cpu.prism --run bubble_sort --debug</div>
-    <div class="term-body">[run] bubble_sort: 417 拍 golden 直跑完成
-# run: bubble_sort  design: cpu_top  stop: until true at cycle 416
-cycle  pcv  x20  dm0  dm1  dm2  dm3  dm4  dm5
-0        4    0    9    7    5    3    2    1
-1        8    0    9    7    5    3    2    1
-2       12    0    9    7    5    3    2    1
-3       16    0    9    7    5    3    2    1
-4       20    0    9    7    5    3    2    1
-5       24    0    9    7    5    3    2    1
-6       28    0    9    7    5    3    2    1
-7       32    0    9    7    5    3    2    1
-8       36    0    9    7    5    3    2    1
-9       40    0    9    7    5    3    2    1
-10      44    0    7    7    5    3    2    1   <span class="term-hint"># 第一条 sd 落地：低格换成 7</span>
-11      48    0    7    9    5    3    2    1   <span class="term-hint"># 第二条 sd：高格换成 9</span>
-12      52    0    7    9    5    3    2    1
-13      56    0    7    9    5    3    2    1
-14      60    0    7    9    5    3    2    1
-15      12    0    7    9    5    3    2    1
-<span class="term-hint">…（16 – 263 略：一共换了 15 次，每次两格）</span>
-264     44    0    1    1    3    5    7    9   <span class="term-hint"># 最后一次换位：1 顶到最前</span>
-265     48    0    1    2    3    5    7    9
-266     52    0    1    2    3    5    7    9
-267     56    0    1    2    3    5    7    9
-268     60    0    1    2    3    5    7    9
-269     12    0    1    2    3    5    7    9
-<span class="term-hint">…（268 – 411 略：再扫一趟一格没换，进自检）</span>
-412    104    0    1    2    3    5    7    9
-413    108    0    1    2    3    5    7    9
-414    112    0    1    2    3    5    7    9
-415    116    0    1    2    3    5    7    9
-416    120    1    1    2    3    5    7    9   <span class="term-hint"># x20 = 1：自检六对全过 → until 成立</span>
-<span class="term-ok"># stop: until true at cycle 416</span></div>
-  </div>
 
   <div class="term">
-    <div class="term-header">▸ prism cosim examples/day2/cpu.prism --run bubble_sort</div>
-    <div class="term-body">[run] bubble_sort: RTL tb 跑完，417 拍（产物 …）
-<span class="term-ok">[run --cosim] ✅ PASS: bubble_sort golden == RTL 仿真（417 拍 × 8 列全等；
-      golden stop: until true at cycle 416）</span></div>
+    <div class="term-header">▸ 两条腿撞一次</div>
+    <div class="term-body">$ prism cosim examples/day2/cpu.prism --run bubble_sort
+[run] bubble_sort: RTL tb 跑完，181 拍（产物 …）
+<span class="term-ok">[run --cosim] ✅ PASS: bubble_sort golden == RTL 仿真（181 拍 × 7 列全等；
+      golden stop: until true at cycle 180）</span></div>
   </div>
 
-  <p>几处值得看：</p>
-  <ul>
-    <li><strong>拍 0 就已经是 <code>9 7 5 3 2 1</code></strong>。装载发生在复位释放之后、第一个被采样的拍之前——第一拍看到的是灌完的数组。</li>
-    <li><strong>一次换位改两格，分两拍看见</strong>。拍 10 低格从 9 变 7、拍 11 高格才从 7 变 9；中间那一拍的数组是 <code>7 7 5 …</code>——两个 <code>sd</code> 之间本来就有一个半完成态，这不是 bug，是这两条指令本来就要分开落两个边沿。</li>
-    <li><strong>最后一次变化在拍 265</strong>（<code>1</code> 顶到最前），可判据要到拍 416 才成立。中间那一百多拍是"再扫一趟确认没换 + 六对自检"。<strong>排完</strong>比<strong>验完</strong>早，这中间的差就是判据的价值。</li>
-  </ul>
-</section>
-
-<section id="s5">
-  <h2>这条判据会不会骗你</h2>
-  <p>把 <code>32</code> 那条比较的两个源操作数对调——<code>slt x12, x11, x10</code>（a[j+1] 比 a[j] 小？）写成 <code>slt x12, x10, x11</code>（编码 <code>0x00b52633</code>，同样由 llvm-mc 核对）。程序照常跑，数组照常动，<code>x20</code> 却再也不会置起：</p>
-  <div class="term">
-    <div class="term-header">▸ 注入后的输出</div>
-    <div class="term-body"><span class="term-err">[run] ❌ [run bubble_sort] until 判据在 10000 拍内从不成立——停机不可达</span>
-<span class="term-hint">（报错退出而非无限跑；要有界看一眼就加 --time &lt;时长&gt;）</span></div>
-  </div>
-  <p>判据要能失败才算判据。这里它失败的方式很干净：机器不停下来，工具就不替你假装跑完了。</p>
-  <p>自检那八条的作用也不在"让排序更对"——带 <code>swapped</code> 标志的冒泡本身已经能排好；它的作用是<strong>让判据独立于排序过程</strong>：用同一批 <code>ld</code> / <code>slt</code> 从头部再比一遍，判的是结果，不是过程自称完成。<em>报告的资格，来自它检查的东西不是它自己。</em></p>
-  <p>一条腿要交代清楚：这一集的 run 用了 <code>until</code> 引用 <code>expose</code> 出来的 <code>x20</code>，TLM 后端目前在这条路上还生成不出合法代码（<code>error: no member named 'read' in 'V4'</code>）。所以这一段撞的是 golden 与 RTL 两条腿，SystemC 那条腿等后端补上再撞。</p>
-</section>
-
-<section id="s6">
-  <h2>小结</h2>
-  <ul>
-    <li>同一颗 <code>cpu_top</code>，第二个 run 块换一份镜像——<strong>换程序不动芯片</strong>。</li>
-    <li>只用这台已有的能力：双字访存、移位算地址、<code>slt</code> 比较、三条分支。没有为排序加一根线。</li>
-    <li>417 拍把 <code>9 7 5 3 2 1</code> 排成 <code>1 2 3 5 7 9</code>，golden 与 RTL 逐拍逐列全等。</li>
-    <li>停机判据是程序自己写出的完工位 <code>x20</code>；注入一发反向比较，它就从不成立——<strong>判据能失败，才算它在看</strong>。</li>
-  </ul>
-  <p>第二日到这一集收束。这台机器已经会做事了——它接下来要学的不是更多电路，是<strong>更快的节拍</strong>与<strong>会疼</strong>。</p>
+  <p>一条腿要交代清楚：这个 run 的 <code>until</code> 引用了 <code>expose</code> 出来的阵列格，TLM 后端在这条路上还生成不出合法代码（<code>error: no member named 'read' in 'V4'</code>）。所以这一段撞的是 golden 与 RTL 两条腿，SystemC 那条等后端补上再撞。</p>
 </section>
 
 <section id="s7">
+  <h2>这条判据会不会骗你</h2>
+  <p>判据读的是产物，那它有没有牙？两发实测，芯片、地址图、装载语句一个字都不动。</p>
+
+  <p><strong>① 只把排序的比较写反</strong>——<code>if (a[j] &gt; a[j+1])</code> 改成 <code>&lt;</code>，重跑 <code>build_sort.sh</code>。数组从初值起就没动过（降序对它来说"已经有序"），<code>pc</code> 停在自跳那一格：</p>
+
+  <div class="term">
+    <div class="term-header">▸ ① 判据行 + 尾部（加 --time 2us 有界看一眼）</div>
+    <div class="term-body"><span class="term-err">[run] ❌ [run bubble_sort] until 判据在 10000 拍内从不成立——停机不可达</span>
+cycle   pcv     a0      a1      a2      a3      a4      a5
+197     40      9       7       5       3       2       1
+198     40      9       7       5       3       2       1
+199     40      9       7       5       3       2       1
+<span class="term-hint"># 六个字一直没对上，判据就一直不成立</span></div>
+  </div>
+
+  <p><strong>② 把判据换成拍数</strong>——镜像还是①那份坏掉的，只把 <code>until</code> 写成 <code>for 200 cycles</code>：</p>
+
+  <div class="term">
+    <div class="term-header">▸ ② 同一份坏镜像，判据只数拍子</div>
+    <div class="term-body">$ prism run examples/day2/cpu.prism --run bubble_sort \
+      --image prog=/tmp/inj_a/sort.text.bin --debug
+# run: bubble_sort  design: cpu_top  stop: for 200 cycles
+cycle   pcv     a0      a1      a2      a3      a4      a5
+198     40      9       7       5       3       2       1
+199     40      9       7       5       3       2       1
+<span class="term-err"># 退出码 0，"跑完了"——可数组就是初值</span></div>
+  </div>
+
+  <p>①与②是同一份机器码、同一份数据，差别只在<strong>判据读什么</strong>。读拍子，它永远绿；读那六个字，它就只有一种绿法——数组真的排好了。</p>
+
+  <p>这一发还顺手演示了别名怎么用作把手：<code>--image prog=&lt;文件&gt;</code> 换掉的只有文件，<code>im[0:]</code> 那个落点仍是源码里的事实。</p>
+</section>
+
+<section id="s8">
+  <h2>小结</h2>
+  <ul>
+    <li>程序来自 <strong>C → ELF → 裸镜像</strong>：20 条指令、六个数据字，一条都不用手抄；地址图由 <code>sort.ld</code> 说清，字节与格的换算写在窗口里。</li>
+    <li>芯片一行没改，<code>image</code> 的两个窗口把镜像分别灌进 <code>im</code> 与 <code>dm</code>；<code>--image</code> 换的只是文件。</li>
+    <li>181 拍把 <code>9 7 5 3 2 1</code> 排成 <code>1 2 3 5 7 9</code>，golden 与 RTL 逐拍逐列全等。</li>
+    <li>判据不读程序的自报，只读 <code>dm</code> 里那六个字——所以程序坏掉它就永不成立，而把它换成数拍子，同一份坏镜像立刻"通过"。</li>
+  </ul>
+  <p>第二日到这一集收束：从一颗 <code>pc</code> 到一段别人编译出来的程序。这台机器接下来要学的不是更多电路，是<strong>更快的节拍</strong>与<strong>会疼</strong>。</p>
+</section>
+
+<section id="s9">
   <h2>复现本集</h2>
   <div class="code">
     <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
-<pre>git clone https://github.com/prism-hdl/seven-days
+<pre>pip install prism-hdl
+prism deps --install                     <span class="tk-com"># 补齐仿真依赖（iverilog 等）</span>
+brew install riscv64-elf-gcc             <span class="tk-com"># 或任何 riscv64 的 gcc + objcopy</span>
+
+git clone https://github.com/prism-hdl/seven-days
 cd seven-days
 
+sh examples/day2/build_sort.sh           <span class="tk-com"># sort.c + sort.ld → sort.elf → 两段 .bin</span>
 prism run   examples/day2/cpu.prism --run bubble_sort --debug
 prism cosim examples/day2/cpu.prism --run bubble_sort</pre>
   </div>
