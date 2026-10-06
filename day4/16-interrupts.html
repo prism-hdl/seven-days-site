@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 16 集 · 中断：CLINT 与 PLIC · 创世记 · 第四日 · 有生命的活物</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.tk-kw{color:#c57bff;font-weight:500}.tk-decl{color:#e08aff;font-weight:600}.tk-name{color:#fff;font-weight:500}
+.tk-dir{color:#7ee8d8;font-weight:500}.tk-typ{color:#4ad6b4}.tk-prim{color:#79dfff}
+.tk-rf{color:#ffd479;font-weight:500}.tk-rw{color:#b8a0e0}.tk-stor{color:#4ad6b4;font-weight:600}
+.tk-sf{color:#c5b890}.tk-sv{color:#8ab4f8}.tk-op{color:#ff8a4c}.tk-num{color:#79b8ff}
+.tk-com{color:#6c7488;font-style:italic}.tk-ann{color:#ff79c6}.tk-fn{color:#4ad6b4}.tk-str{color:#ffd479}.tk-hex{color:#ffb86b}
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">cpu_top · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">写作中</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">写作中</span></h3><ul><li><a href="16-interrupts.html" class="on" aria-current="page"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">soc.prism · 一片真芯片</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">uart8250 · 让芯片开口说话</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></span></li><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">Verilator · 跑得起百万拍</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">flag · 未达成</span></h3><ul></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第四日 · 有生命的活物 · 第 16 集</div>
+    <h1>中断<br><em>CLINT 与 PLIC</em></h1>
+    <p class="subtitle">第 15 集那颗 CSR 留了三根线——<code style="background:none;border:none;color:#a678ff">mtip / msip / meip</code>，当时表里全是 0——那三根线上没有接任何中断源。这一集给它们接上源：<strong>一颗管时间，一颗管排队。</strong>跑通之后才看得见：中断是两级门控，而第二级的"不点头"，才是它最容易被写错的地方。</p>
+    <div class="verse">
+      "地要生出活物来，各从其类。"
+      <cite>—— 《创世记》 1:24</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="../day3/15-csr.html">← 第 15 集 · CSR 与特权级</a>
+  <a href="../index.html#day4">第 17 集 · 指令面长大（待写）→</a>
+</div>
+
+<section id="s1">
+  <h2>三根线，三件事</h2>
+  <p>RISC-V 把外部世界打断 CPU 的方式压成了三根线：</p>
+  <div class="two">
+    <div class="box"><h4>mtip · 机器定时器</h4><p>时间到了。Linux 靠它换进程、靠它算超时——没有它，调度器就是死的。</p></div>
+    <div class="box"><h4>msip · 机器软件中断</h4><p>"另一个 hart 让你停一下"。多核启动、远程刷新 TLB 都靠它。</p></div>
+    <div class="box"><h4>meip · 机器外部中断</h4><p>设备在叫你。几十个外设共用这一根线，所以它后面必须站一个 PLIC。</p></div>
+    <div class="box"><h4>还有一根内向的</h4><p>第 15 集那颗 CSR 自己就能抬 <code>mip</code> 的位——软件写 <code>mip</code> 是合法的，硬件线只是最常见的那类源。</p></div>
+  </div>
+  <p>这一集两件活：<strong>CLINT</strong> 负责时间与软中断，<strong>PLIC</strong> 负责让一堆设备共用一根线。两个样例都在 <code>examples/day4/</code>，各自一张手算表、各自撞 RTL。</p>
+</section>
+
+<section id="s2">
+  <h2>CLINT：一个一直在走的数</h2>
+  <p>CLINT 里最要紧的是 <code>mtime</code>——一个只增不减的 64 位数，每拍 +1。第二个是阈值 <code>mtimecmp</code>：<code>mtime ≥ mtimecmp</code> 就抬 <code>mtip</code>。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/clint.prism · 时间与比较器</span></div>
+<pre>    <span class="tk-stor">on</span> <span class="tk-stor">clock</span> {
+        r_mtime&#x27; = r_mtime + <span class="tk-num">1</span>                       <span class="tk-com">// 时间只会往前走</span>
+        <span class="tk-kw">if</span> (wen &amp; (addr == <span class="tk-num">0x4000</span>)) { r_mtimecmp&#x27; = wdata }
+        <span class="tk-kw">if</span> (wen &amp; (addr == <span class="tk-num">0x0000</span>)) { r_msip&#x27; = wdata[<span class="tk-num">0</span>:<span class="tk-num">0</span>] }
+    }
+
+    rdata = <span class="tk-kw">match</span> addr {
+        <span class="tk-num">0x0000</span> =&gt; {<span class="tk-num">63</span>{<span class="tk-num">0</span>}, r_msip},
+        <span class="tk-num">0x4000</span> =&gt; r_mtimecmp,
+        <span class="tk-num">0xbff8</span> =&gt; r_mtime,
+        _      =&gt; <span class="tk-num">0</span>,
+    }
+
+    <span class="tk-com">// 两个比较器，两条线：阈值到了就一直抬着（电平，不是脉冲）——</span>
+    <span class="tk-com">// 这也是为什么中断服务里必须写 mtimecmp：不挪阈值，它会一直报。</span>
+    mtip  = r_mtime &gt;= r_mtimecmp
+    stip  = r_mtime &gt;= stimecmp
+    msip  = r_msip
+    mtime = r_mtime</pre>
+  </div>
+  <p>三行代码，三个要讲清的点：</p>
+  <ul>
+    <li><strong>复位值给全 1，不是给 0。</strong>给 0 的话上电第一拍就"时间到了"——机器还没起来就先挨一发中断。<code>0xFFFFFFFFFFFFFFFF</code> 在 100 MHz 下要跑一万年，等于"永远不到"。</li>
+    <li><strong>比较器是电平，不是脉冲。</strong><code>mtip</code> 一旦抬起来就一直抬着，直到软件把阈值挪走。<strong>所以中断服务程序里必须写 <code>mtimecmp</code></strong>——忘了这一步，中断会一直报，机器卡在"进门"上出不去。</li>
+    <li><strong>Sstc 的 <code>stimecmp</code> 也挂在这里。</strong>它是 S 态的定时器阈值（规范里的 Sstc 扩展），比出来的 <code>stip</code> 走 S 态那条路。为什么放在 CLINT 里？因为它要跟 <code>mtime</code> 比，而 <code>mtime</code> 只在这一颗里。</li>
+  </ul>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day4/clint.prism --debug   <span class="term-hint">（12 拍，只摘头尾）</span></div>
+    <div class="term-body">cycle	mtip	stip	msip	mtime
+0	0	0	0	1
+1	0	0	0	2
+2	1	0	0	3      ← 阈值 3 到了：mtip 抬起
+3	1	0	0	4      ← 还抬着（电平，不是脉冲）
+4	0	0	0	5      ← 写回全 1：当拍就落
+…
+6	0	0	1	7      ← 软件写 msip
+8	0	0	0	9      ← 写 0 才落
+10	0	1	0	11     ← S 态阈值 5 到了：stip 抬起</div>
+  </div>
+</section>
+
+<section id="s3">
+  <h2>PLIC：谁在按门铃，谁先说话</h2>
+  <p>几十个设备共用 <code>meip</code> 一根线。PLIC 要做的就三件事：<strong>登记</strong>（谁按了）、<strong>排队</strong>（谁先说话）、<strong>销账</strong>（说完了）。</p>
+  <p>第一件事有个容易写反的细节：<strong>网关只置位、不清位</strong>。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/plic.prism · 网关与认领</span></div>
+<pre>    <span class="tk-stor">on</span> <span class="tk-stor">clock</span> {
+        <span class="tk-com">// ① 网关：源电平进来就置 pending，绝不在这里清</span>
+        r_pending&#x27; = r_pending | src
+
+        <span class="tk-com">// ② 配置口：priority[0..7] 占 0x0000 起的八个字；enable / threshold</span>
+        <span class="tk-kw">if</span> (wen &amp; (addr &lt; <span class="tk-num">0x1000</span>)) { r_prio&#x27;[addr[<span class="tk-num">4</span>:<span class="tk-num">2</span>]] = wdata[<span class="tk-num">2</span>:<span class="tk-num">0</span>] }
+        <span class="tk-kw">if</span> (wen &amp; (addr == <span class="tk-num">0x2000</span>))   { r_enable&#x27;    = wdata[<span class="tk-num">7</span>:<span class="tk-num">0</span>] }
+        <span class="tk-kw">if</span> (wen &amp; (addr == <span class="tk-num">0x200000</span>)) { r_threshold&#x27; = wdata[<span class="tk-num">2</span>:<span class="tk-num">0</span>] }
+
+        <span class="tk-com">// ③ claim：交出去 + 转 in_service（pending 清掉）</span>
+        <span class="tk-kw">if</span> (hit_claim &amp; best_v) {
+            r_claimed&#x27;    = best_id
+            r_pending&#x27;    = r_pending &amp; ~(<span class="tk-prim">u8</span>(<span class="tk-num">1</span>) &lt;&lt; best_id)
+            r_in_service&#x27; = r_in_service | (<span class="tk-prim">u8</span>(<span class="tk-num">1</span>) &lt;&lt; best_id)
+        }
+        <span class="tk-com">// ④ complete：把源号还回来</span>
+        <span class="tk-kw">if</span> (wen &amp; (addr == <span class="tk-num">0x200004</span>)) {
+            r_in_service&#x27; = r_in_service &amp; ~(<span class="tk-prim">u8</span>(<span class="tk-num">1</span>) &lt;&lt; wdata[<span class="tk-num">2</span>:<span class="tk-num">0</span>])
+        }
+    }
+
+    <span class="tk-com">// 通知 = 有候选，且它的优先级高于阈值。阈值只挡这一根线。</span>
+    <span class="tk-kw">wire</span> best_prio : <span class="tk-prim">u4</span> = p7</pre>
+  </div>
+  <p>为什么"只置不清"？因为源可能是很短的一个脉冲——设备按一下就松手。如果 pending 跟着源电平走，脉冲过去了中断就丢了。所以规范把它做成：<strong>源电平进来就登记，清它的唯一途径是被 claim 走</strong>。这一条让"按一下"变成"没被处理就一直报"。</p>
+  <p>第二件事是仲裁：在所有 <code>pending &amp; enable</code> 里挑优先级最高的；<strong>同优先级按源号小的先来</strong>。实现上是一条从 0 号往上走的扫描链，"严格大于才顶替"——这样撞上等值时先来的那个不会被后来的挤掉。样例里 0 号（priority 1）和 2 号（priority 5）同时挂着，claim 交出来的是 2 号：</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day4/plic.prism --debug   <span class="term-hint">（12 拍，摘关键几拍）</span></div>
+    <div class="term-body">cycle	meip	claimed
+4	0	0      ← 源 5 有优先级但 enable 没放行
+5	1	0      ← 源 0 来：1 > 阈值 0 → 通知
+6	1	0      ← 源 2 也来（优先级 5）
+7	1	2      ← claim 交出 2 号，不是号小的 0 号
+8	1	2      ← 0 号还挂着，通知还在
+9	0	0      ← 再 claim 交出 0 号，没候选了
+10	0	0      ← complete 还回 2 号（此刻无候选，不影响通知）
+11	0	0      ← 阈值抬到 7：全挡</div>
+  </div>
+  <p>第三件事：<code>claim</code> 是读、<code>complete</code> 是写同一个地址。claim 走的源转进 <code>in_service</code>，complete 才把它清掉。<strong>threshold 只门控通知（meip），不门控 claim</strong>——阈值高的 context 不该被吵醒，但已经醒着的它照样能把活干完。这是规范里最容易实现错的一条。</p>
+</section>
+
+<section id="s4">
+  <h2>两级门控：线抬起来，不等于要进陷阱</h2>
+  <p>第 15 集那颗 CSR 收到线之后，还要过两道自己的门：<strong><code>mie</code> 里对应位允许 + 全局 <code>mstatus.MIE</code> 打开</strong>。所以外设拼命抬线，核可以全当没看见——这不是 bug，是设计。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/intr_link.prism · 把 CLINT 接上 CSR</span></div>
+<pre><span class="tk-decl">design</span> intr_link_top {
+    clint : Clint
+    csr   : Csr
+
+    <span class="tk-com">// 线：CLINT 的两根接进 CSR，PLIC 那条这一片先接地</span>
+    <span class="tk-kw">connect</span> clint.mtip -&gt; csr.mtip
+    <span class="tk-kw">connect</span> clint.msip -&gt; csr.msip
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span>          -&gt; csr.meip
+    <span class="tk-kw">connect</span> <span class="tk-num">0xFFFFFFFFFFFFFFFF</span> -&gt; clint.stimecmp    <span class="tk-com">// Sstc 那条这一片不用</span>
+
+    <span class="tk-com">// 这一片不动 CSR 的陷阱口，只借它的中断判定</span>
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; csr.ren
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; clint.ren
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; csr.trap
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; csr.mret
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; csr.sret
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; csr.trap_cause
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; csr.trap_pc
+    <span class="tk-kw">connect</span> <span class="tk-num">0</span> -&gt; csr.trap_val
+
+    <span class="tk-com">// 观测：一根是线，一个是 CSR 的判定</span>
+    <span class="tk-kw">wire</span> mtip_v    : <span class="tk-prim">u1</span> = clint.mtip
+    <span class="tk-kw">wire</span> pending_v : <span class="tk-prim">u1</span> = csr.interrupt_pending
+}
+
+<span class="tk-com">// 一张表说清两级门控：同一根 mtip，先不开使能，再开。</span>
+<span class="tk-com">//   拍 0  给 CLINT 写阈值 3；给 CSR 写 mie = 0x80（bit7 = 定时器中断）</span>
+<span class="tk-com">//   拍 1  mtime 2 &lt; 3 → 线还低</span>
+<span class="tk-com">//   拍 2  mtime 3 ≥ 3 → 线抬起；使能已开 → pending 同拍起</span>
+<span class="tk-com">//   拍 3  还抬着（电平）——所以服务程序里必须挪 mtimecmp</span></pre>
+  </div>
+  <p>样例同时驱动两边：给 CLINT 写阈值、给 CSR 写使能。两组地址口重名，所以 stim 里用 <code>实例.端口</code> 的限定写法。</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day4/intr_link.prism --debug</div>
+    <div class="term-body">cycle	mtip_v	pending_v
+0	0	0      ← 写阈值 3、写 mie bit7
+1	0	0      ← mtime 2 < 3
+2	1	1      ← 线抬起；使能开着 → CSR 认账
+3	1	1      ← 还挂着
+4	1	0      ← 把使能关掉：线照样抬着，CSR 不认了</div>
+  </div>
+  <p>最后两拍是这一集最该记住的对照：<strong>同一个硬件、同一根线，第 4 拍与第 3 拍唯一的差别就是 <code>mie</code> 那一位</strong>。<code>pending</code> 是"线 + 使能"的与——这也是为什么调试中断时第一件事是读 <code>mip</code> 和 <code>mie</code>：先分清是"中断源没有抬线"，还是"抬了线但使能位没开"。三张表都撞了 RTL，逐拍全等。</p>
+</section>
+
+<section id="s5">
+  <h2>这一片的边界</h2>
+  <div class="stack">
+    <div class="stk"><div class="k">没有</div><div class="t">真的跳进陷阱</div><div class="d">这一片只验到"该进陷阱了"。真正跳 <code>mtvec</code>、保存现场、mret 回来，要等整机把流水与 CSR 接起来（第 18 集之后）。</div></div>
+    <div class="stk"><div class="k">只有</div><div class="t">8 个中断源</div><div class="d">白虹的 PLIC 要长到 32 源、每 context 一份 enable/threshold。教学版取 8 个，结构一样，位数不同。</div></div>
+    <div class="stk"><div class="k">简化了</div><div class="t">mtime 的频率</div><div class="d">这里每拍 +1；真机上一个 tick 对应 10 ns（100 MHz），固件据此换算墙上时间。</div></div>
+    <div class="stk"><div class="k">没有</div><div class="t">优先级抢占</div><div class="d">服务中被更高优先级打断要 context 自己管；PLIC 只保证"门铃按顺序响"。</div></div>
+  </div>
+</section>
+
+<section id="s6">
+  <h2>小结</h2>
+  <ul>
+    <li>三根线三件事：<code>mtip</code> 管时间、<code>msip</code> 管"叫你一下"、<code>meip</code> 管设备。</li>
+    <li>CLINT：<code>mtime</code> 只增、<code>mtimecmp</code> 复位给"永远不到"、<strong>比较器是电平</strong>（服务程序必须挪阈值）。</li>
+    <li>PLIC：网关<strong>只置不清</strong>、同优先级按号小、claim 交出并转 <code>in_service</code>、<code>complete</code> 才销账。</li>
+    <li><strong><code>threshold</code> 只门控通知，不门控 claim</strong>——醒来的人要把活干完。</li>
+    <li>中断是两级门控：线抬起只是第一级，<code>mie</code> 与 <code>mstatus.MIE</code> 才决定要不要进陷阱。</li>
+  </ul>
+  <div class="verse-inline">
+    "有晚上，有早晨，是第四日。"
+    <cite>—— 《创世记》 1:19</cite>
+  </div>
+</section>
+
+<section id="s7">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre>pip install prism-hdl
+prism deps --install                     <span class="tk-com"># cosim 的 RTL 腿要 iverilog</span>
+git clone https://github.com/prism-hdl/seven-days
+cd seven-days
+
+prism run   examples/day4/clint.prism     --run clint_check     --debug
+prism run   examples/day4/plic.prism      --run plic_check      --debug
+prism run   examples/day4/intr_link.prism --run intr_link_check --debug
+prism cosim examples/day4/intr_link.prism --run intr_link_check  <span class="tk-com"># 5 拍 × 2 列全等</span></pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第四日 · 有生命的活物 —— 会疼会躲了，下一集让它会算会锁</span>
+  七日创造 · 第四日 · 有生命的活物 · 第 16 集 · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>

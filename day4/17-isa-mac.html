@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 17 集 · 指令面长大：M · A · C · 创世记 · 第四日 · 有生命的活物</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.tk-kw{color:#c57bff;font-weight:500}.tk-decl{color:#e08aff;font-weight:600}.tk-name{color:#fff;font-weight:500}
+.tk-dir{color:#7ee8d8;font-weight:500}.tk-typ{color:#4ad6b4}.tk-prim{color:#79dfff}
+.tk-rf{color:#ffd479;font-weight:500}.tk-rw{color:#b8a0e0}.tk-stor{color:#4ad6b4;font-weight:600}
+.tk-sf{color:#c5b890}.tk-sv{color:#8ab4f8}.tk-op{color:#ff8a4c}.tk-num{color:#79b8ff}
+.tk-com{color:#6c7488;font-style:italic}.tk-ann{color:#ff79c6}.tk-fn{color:#4ad6b4}.tk-str{color:#ffd479}.tk-hex{color:#ffb86b}
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">cpu_top · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">写作中</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">写作中</span></h3><ul><li><a href="16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="17-isa-mac.html" class="on" aria-current="page"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">soc.prism · 一片真芯片</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">uart8250 · 让芯片开口说话</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></span></li><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">Verilator · 跑得起百万拍</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">flag · 未达成</span></h3><ul></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第四日 · 有生命的活物 · 第 17 集</div>
+    <h1>指令面长大<br><em>M · A · C</em></h1>
+    <p class="subtitle">第 11 集判过：内核里<strong>第一件跑不起来的东西不是除法，是锁</strong>。这一集补三门扩展——<strong>M</strong> 管乘、<strong>A</strong> 管原子（锁的地基）、<strong>C</strong> 管压缩。三样各一颗真样例，判据一律是"与工具链给出的标准编码逐条对上"。</p>
+    <div class="verse">
+      "地要生出活物来，各从其类。"
+      <cite>—— 《创世记》 1:24</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="16-interrupts.html">← 第 16 集 · 中断：CLINT 与 PLIC</a>
+  <a href="../index.html#day4">第 18 集 · soc.prism：一片真芯片（待写）→</a>
+</div>
+
+<section id="s1">
+  <h2>三门扩展，各缺一件东西</h2>
+  <div class="two">
+    <div class="box"><h4>M · 乘除</h4><p>乘法单拍就能出来；除法要占多拍——所以 M 在硬件上是<strong>两颗</strong>模块，只有一颗长在流水里。</p></div>
+    <div class="box"><h4>A · 原子</h4><p><code>spin_lock</code> 就是一条 <code>amoswap</code>。没有它，临界区只能靠关中断凑，多任务与 SMP 直接封死。</p></div>
+    <div class="box"><h4>C · 压缩</h4><p>16 位编码的<strong>别名</strong>：硬件只做展开，不改数据通路——但取指窗口要能切半字。</p></div>
+    <div class="box"><h4>F · 浮点呢？</h4><p>它要自己的寄存器堆、自己的格式与舍入、还要处理内核里无条件出现的 <code>fsd</code> / <code>fld</code>——<strong>定在第六日 FPU 那一集</strong>。</p></div>
+  </div>
+  <p>三份样例都在 <code>examples/day4/</code>：<code>mul.prism</code> / <code>amo.prism</code> / <code>rvc.prism</code>。每一份都先有一张手算表，再撞 RTL。</p>
+</section>
+
+<section id="s2">
+  <h2>M：一条乘法器，四种解释</h2>
+  <p>RV64M 的乘法有四个变体，差别只在两件事：<strong>两个操作数各自怎么解释</strong>、<strong>取积的哪一半</strong>。硬件上就是一条 64×64 乘法器加一个 mux——四种解释是用"喂之前补什么"实现的：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/mul.prism · 一个形状，四种补法</span></div>
+<pre>    <span class="tk-com">// 同一个形状：操作数先补满 128 位，符号性只体现在&quot;补什么&quot;</span>
+    <span class="tk-kw">wire</span> a_s : <span class="tk-prim">i128</span> = {<span class="tk-num">64</span>{a[<span class="tk-num">63</span>]}, a}     <span class="tk-com">// 有符号：补符号位</span>
+    <span class="tk-kw">wire</span> b_s : <span class="tk-prim">i128</span> = {<span class="tk-num">64</span>{b[<span class="tk-num">63</span>]}, b}
+    <span class="tk-kw">wire</span> a_u : <span class="tk-prim">i128</span> = {<span class="tk-num">64</span>{<span class="tk-num">0</span>}, a}         <span class="tk-com">// 无符号：补 0</span>
+    <span class="tk-kw">wire</span> b_u : <span class="tk-prim">i128</span> = {<span class="tk-num">64</span>{<span class="tk-num">0</span>}, b}
+
+    <span class="tk-kw">wire</span> p_ss : <span class="tk-prim">i128</span> = a_s * b_s
+    <span class="tk-kw">wire</span> p_su : <span class="tk-prim">i128</span> = a_s * b_u
+    <span class="tk-kw">wire</span> p_uu : <span class="tk-prim">i128</span> = a_u * b_u
+
+    <span class="tk-kw">wire</span> lo_ss : <span class="tk-prim">i64</span> = p_ss[<span class="tk-num">63</span>:<span class="tk-num">0</span>]
+    <span class="tk-kw">wire</span> hi_ss : <span class="tk-prim">i64</span> = p_ss[<span class="tk-num">127</span>:<span class="tk-num">64</span>]
+    <span class="tk-kw">wire</span> hi_su : <span class="tk-prim">i64</span> = p_su[<span class="tk-num">127</span>:<span class="tk-num">64</span>]
+    <span class="tk-kw">wire</span> hi_uu : <span class="tk-prim">i64</span> = p_uu[<span class="tk-num">127</span>:<span class="tk-num">64</span>]
+
+    <span class="tk-com">// W 形态：低 32 位当有符号整数，再扩展回 64 位（符号扩展由类型声明负责）</span>
+    <span class="tk-kw">wire</span> wraw : <span class="tk-prim">i32</span> = p_ss[<span class="tk-num">31</span>:<span class="tk-num">0</span>]
+    <span class="tk-kw">wire</span> wext : <span class="tk-prim">i64</span> = wraw
+
+    <span class="tk-kw">wire</span> wide : <span class="tk-prim">i64</span> = <span class="tk-kw">match</span> op {
+        <span class="tk-num">0</span> =&gt; lo_ss,
+        <span class="tk-num">1</span> =&gt; hi_ss,
+        <span class="tk-num">2</span> =&gt; hi_su,
+        _ =&gt; hi_uu,
+    }
+    r = is_word ? wext : wide</pre>
+  </div>
+  <p>高半那几行最能说明问题（表里的数都被工具链核过）：</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day4/mul.prism --debug   <span class="term-hint">（摘关键几行）</span></div>
+    <div class="term-body">a                            b   op   r
+-3                           4   0    -12       ← mul：低半
+-3                           4   1     -1       ← mulh：-12 的高半是 -1
+-3                           4   2     -1       ← mulhsu：-3 有符号、4 无符号
+-3                           4   3      3       ← mulhu：-3 当无符号是 2^64-3
+0x7FFFFFFFFFFFFFFF           2   1      0       ← mulh：2^64-2 的高半是 0
+-2147483648                  1   1     -1       ← mulh：0xFFFFFFFF80000000 的高半
+0x100000000                  2   0(以 W 算) 0   ← mulw：低 32 位截断后是 0</div>
+  </div>
+  <p>同一个 <code>a × b</code>，四个答案——<strong>不是四条电路，是四个"怎么读它"</strong>。W 形态（<code>mulw</code>）再补一刀：只算低 32 位，然后按有符号扩展回 64 位——这条规矩第 7 集就立过（W 操作在顶层收口），这里照旧由类型声明负责。</p>
+  <div class="callout key">
+    <div class="callout-title">除法为什么不在这一颗里</div>
+    <p>除法要一拍一拍地试商。它进来以后，EX 段会被占住几十拍——那套"占用与握手"的协议第 13 集已经打过样（<code>Divider</code> 的 <code>start / busy / done</code>）。所以 M 在流水里是<strong>两颗</strong>：乘法长在 EX 的组合通路上，除法是一颗被占用的多拍单元。</p>
+  </div>
+</section>
+
+<section id="s3">
+  <h2>A：锁的地基是"预约"</h2>
+  <p>原子扩展只有两条路：</p>
+  <p><strong>LR / SC（预约对）</strong>——<code>LR</code> 读出旧值并记下这个地址；<code>SC</code> 只在"预约还挂着、地址还是那个"时才写。中间只要这块地址被写过，预约就作废、SC 返回失败，软件重试。<strong>AMO（读改写一条）</strong>——一条指令里读完就写，中间不给任何人插队，而且旧值还要交给寄存器堆。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/amo.prism · 预约与读改写</span></div>
+<pre>
+    <span class="tk-stor">reg</span> r_rsv_addr  : <span class="tk-prim">u64</span> = <span class="tk-num">0</span>
+    <span class="tk-stor">reg</span> r_rsv_valid : <span class="tk-prim">u1</span>  = <span class="tk-num">0</span>
+    <span class="tk-stor">reg</span> r_consume   : <span class="tk-prim">u1</span>  = <span class="tk-num">0</span>     <span class="tk-com">// 上一拍发生过 SC：这一拍把预约用掉</span>
+                                  <span class="tk-com">// （判决与清除不在同一拍做：清除延后一拍，</span>
+                                  <span class="tk-com">//  SC 才能既看见预约、又把它用掉）</span>
+
+    <span class="tk-kw">wire</span> is_lr : <span class="tk-prim">u1</span> = op == <span class="tk-num">0</span>
+    <span class="tk-kw">wire</span> is_sc : <span class="tk-prim">u1</span> = op == <span class="tk-num">1</span>
+
+    <span class="tk-com">// 一条指令里的&quot;读改写&quot;：先算新值</span>
+    <span class="tk-kw">wire</span> amo_new : <span class="tk-prim">i64</span> = <span class="tk-kw">match</span> op {
+        <span class="tk-num">2</span> =&gt; rs2,               <span class="tk-com">// amoswap：写的是源操作数</span>
+        <span class="tk-num">3</span> =&gt; rdata + rs2,       <span class="tk-com">// amoadd</span>
+        <span class="tk-num">4</span> =&gt; rdata &amp; rs2,       <span class="tk-com">// amoand</span>
+        <span class="tk-num">5</span> =&gt; rdata | rs2,       <span class="tk-com">// amoor</span>
+        _ =&gt; rdata,             <span class="tk-com">// lr / sc 不走这里</span>
+    }
+
+    <span class="tk-com">// SC 成功与否：预约还挂着，而且地址没变过</span>
+    <span class="tk-kw">wire</span> sc_ok : <span class="tk-prim">u1</span> = is_sc &amp; r_rsv_valid &amp; (r_rsv_addr == addr)
+
+    <span class="tk-stor">on</span> <span class="tk-stor">clock</span> {
+        <span class="tk-com">// LR：记下这个地址，预约挂起</span>
+        <span class="tk-kw">if</span> (is_lr) {
+            r_rsv_addr&#x27;  = addr
+            r_rsv_valid&#x27; = <span class="tk-num">1</span>
+        }
+        <span class="tk-com">// SC：无论成败，预约都会用掉——但清除延后一拍（见 r_consume）</span>
+        <span class="tk-kw">if</span> (r_consume &amp; !is_lr) {
+            r_rsv_valid&#x27; = <span class="tk-num">0</span>
+        }
+        r_consume&#x27; = is_sc
+    }
+
+    wdata = is_sc ? rs2 : amo_new
+    do_wen = is_sc ? sc_ok : (op != <span class="tk-num">0</span>)          <span class="tk-com">// LR 不写；SC 看预约；AMO 一定写</span>
+    <span class="tk-com">// AMO / LR 交回**写前**旧值——这是它和 store 的本质区别</span>
+    rd = sc_ok ? <span class="tk-num">0</span> : rdata</pre>
+  </div>
+  <p>写这一片时撞到一个真实的时序问题，值得单独说：<strong>判决与清除不能在同一拍做</strong>。SC 要"看见预约"才能判成功，可它同时又要"用掉预约"——如果清除在同一拍落地，判决读到的就是清完的值，SC 永远失败。真实硬件里这两件事本来就差一拍（判决在 EX，清在写回），所以样例里把清除延后一拍（<code>r_consume</code>），这也是它和 store 的另一个区别：<strong>store 不需要记住任何东西，SC 要记住"上一次是谁在读"。</strong></p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day4/amo.prism --debug</div>
+    <div class="term-body">op  addr   rs2  rdata  wdata  rd  do_wen  rsv
+LR  0x400  0    7      7      7   0       1     ← 读出旧值，预约挂上
+SC  0x400  9    7      9      0   1       1     ← 预约在、地址对 → 成功
+SC  0x400  9    9      9      9   0       0     ← 预约已用掉 → 失败
+LR  0x400  0    9      9      9   0       1     ← 重新预约
+SC  0x408  5    9      5      9   0       1     ← 地址不符 → 失败
+SWAP 0x400 0x2A 9      0x2A   9   1       0     ← AMO：rd 给**写前**旧值 9
+ADD 0x400  1    9      10     9   1       0     ← amoadd：写 10，rd 照样是 9</div>
+  </div>
+  <p>最后两行是 AMO 与普通 store 的本质区别：<strong>store 只写，AMO 写的同时把旧值交回来</strong>。锁就是靠这个旧值判断"我拿到锁了没有"。</p>
+</section>
+
+<section id="s4">
+  <h2>C：压缩码是别名，不是魔法</h2>
+  <p>16 位编码里没有新语义——每条 <code>c.xxx</code> 都对应一条标准 32 位指令。硬件要做的只有一件事：<strong>展开，再交给原来的译码器</strong>。所以 RVC 不动数据通路，只在取指窗口与译码之间插一层查表。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/rvc.prism · 象限分派与展开</span></div>
+<pre>    <span class="tk-com">//   c.nop            →  addi x0, x0, 0</span>
+    <span class="tk-kw">wire</span> is_c_nop  : <span class="tk-prim">u1</span> = (quad == <span class="tk-num">1</span>) &amp; (f3 == <span class="tk-num">0</span>) &amp; (rd == <span class="tk-num">0</span>) &amp; (imm6 == <span class="tk-num">0</span>)
+    <span class="tk-kw">wire</span> is_c_addi : <span class="tk-prim">u1</span> = (quad == <span class="tk-num">1</span>) &amp; (f3 == <span class="tk-num">0</span>) &amp; (rd != <span class="tk-num">0</span>)
+    <span class="tk-kw">wire</span> is_c_li   : <span class="tk-prim">u1</span> = (quad == <span class="tk-num">1</span>) &amp; (f3 == <span class="tk-num">2</span>)
+    <span class="tk-kw">wire</span> q2_f4 : <span class="tk-prim">u1</span> = (quad == <span class="tk-num">2</span>) &amp; (f3 == <span class="tk-num">4</span>) &amp; (rd != <span class="tk-num">0</span>) &amp; (rs2 != <span class="tk-num">0</span>)
+    <span class="tk-kw">wire</span> is_c_mv   : <span class="tk-prim">u1</span> = q2_f4 &amp; (raw[<span class="tk-num">12</span>] == <span class="tk-num">0</span>)
+    <span class="tk-kw">wire</span> is_c_add  : <span class="tk-prim">u1</span> = q2_f4 &amp; (raw[<span class="tk-num">12</span>] == <span class="tk-num">1</span>)
+    <span class="tk-kw">wire</span> is_c_j    : <span class="tk-prim">u1</span> = (quad == <span class="tk-num">1</span>) &amp; (f3 == <span class="tk-num">5</span>)
+
+    <span class="tk-kw">wire</span> known : <span class="tk-prim">u1</span> = is_c_nop | is_c_addi | is_c_li | is_c_mv | is_c_add | is_c_j
+
+    <span class="tk-com">// opcode 字段：addi=0x13、add=0x33、jal=0x6f</span>
+    <span class="tk-kw">wire</span> o_addi : <span class="tk-prim">u7</span> = <span class="tk-num">0x13</span>
+    <span class="tk-kw">wire</span> o_add  : <span class="tk-prim">u7</span> = <span class="tk-num">0x33</span>
+    <span class="tk-kw">wire</span> o_jal  : <span class="tk-prim">u7</span> = <span class="tk-num">0x6f</span>
+
+    <span class="tk-com">// 逐条拼：</span>
+    <span class="tk-com">//   addi  rd, rs1, imm  →  imm[11:0] | rs1 | funct3=0 | rd | opcode</span>
+    <span class="tk-kw">wire</span> e_nop  : <span class="tk-prim">u32</span> = {{<span class="tk-num">12</span>{<span class="tk-num">0</span>}}, {<span class="tk-num">5</span>{<span class="tk-num">0</span>}}, {<span class="tk-num">3</span>{<span class="tk-num">0</span>}}, {<span class="tk-num">5</span>{<span class="tk-num">0</span>}}, o_addi}
+    <span class="tk-kw">wire</span> e_addi : <span class="tk-prim">u32</span> = {imm6_12, rd, {<span class="tk-num">3</span>{<span class="tk-num">0</span>}}, rd, o_addi}
+    <span class="tk-kw">wire</span> e_li   : <span class="tk-prim">u32</span> = {imm6_12, {<span class="tk-num">5</span>{<span class="tk-num">0</span>}}, {<span class="tk-num">3</span>{<span class="tk-num">0</span>}}, rd, o_addi}
+    <span class="tk-kw">wire</span> e_mv   : <span class="tk-prim">u32</span> = {{<span class="tk-num">7</span>{<span class="tk-num">0</span>}}, rs2, {<span class="tk-num">5</span>{<span class="tk-num">0</span>}}, {<span class="tk-num">3</span>{<span class="tk-num">0</span>}}, rd, o_add}
+    <span class="tk-kw">wire</span> e_add  : <span class="tk-prim">u32</span> = {{<span class="tk-num">7</span>{<span class="tk-num">0</span>}}, rs2, rd, {<span class="tk-num">3</span>{<span class="tk-num">0</span>}}, rd, o_add}
+    <span class="tk-kw">wire</span> e_j    : <span class="tk-prim">u32</span> = {imm11_20, {<span class="tk-num">5</span>{<span class="tk-num">0</span>}}, o_jal}
+
+    <span class="tk-com">// 六条谓词两两互斥（象限/funct3 各不相同），串成一条选择链即可</span>
+    <span class="tk-kw">wire</span> pick_a : <span class="tk-prim">u32</span> = is_c_mv ? e_mv : e_j
+    <span class="tk-kw">wire</span> pick_b : <span class="tk-prim">u32</span> = is_c_add ? e_add : pick_a
+    <span class="tk-kw">wire</span> pick_c : <span class="tk-prim">u32</span> = is_c_li ? e_li : pick_b
+    <span class="tk-kw">wire</span> pick_d : <span class="tk-prim">u32</span> = is_c_addi ? e_addi : pick_c
+    <span class="tk-kw">wire</span> expanded : <span class="tk-prim">u32</span> = is_c_nop ? e_nop : pick_d
+    <span class="tk-com">// 不认识的：展开成 **0**（非法编码），不是 nop——&quot;认不出&quot;必须能喊出来</span>
+    instr = known ? expanded : <span class="tk-num">0</span>
+    illegal = known ? <span class="tk-num">0</span> : <span class="tk-num">1</span></pre>
+  </div>
+  <p>两条硬规矩在代码里都能看见：<strong>先按低两位分象限</strong>（<code>quad</code>），再按 <code>funct3</code> 细分；<strong>认不出来必须喊</strong>——展开成 0 并置 <code>illegal</code>，让第 15 集那条陷阱通路去处置，而不是当 nop 混过去。</p>
+  <p>表里的数两边都不是手写的：压缩编码和它的展开形式都由 <code>riscv64-elf-gcc</code> 汇编出来再逐条对读——<strong>汇编器本身就是一次独立参照</strong>。</p>
+  <div class="term">
+    <div class="term-header">$ riscv64-elf-gcc -march=rv64imc … && objdump -d   <span class="term-hint">（压缩 × 展开，成对读出）</span></div>
+    <div class="term-body">c.nop         0x0001  →  nop           0x00000013
+c.addi x5,1   0x0285  →  addi x5,x5,1   0x00128293
+c.li x5,10    0x42A9  →  addi x5,x0,10  0x00A00293
+c.mv x5,x6    0x829A  →  add x5,x0,x6   0x006002B3
+c.add x5,x6   0x929A  →  add x5,x5,x6   0x006282B3</div>
+  </div>
+  <p>写这一片时在最容易想当然的地方错了一次：<strong>CI 型的 6 位立即数不是连续一段</strong>——最高位在 <code>bit12</code>，低 5 位在 <code>bits[6:2]</code>。手写编码时按"连着读 6 位"去取，展开出来就全错。<code>c.lui</code> / 分支 / 跳转那几族各有各的拆法，这也是白虹那份展开器要用穷举对撞的原因：<strong>65536 个 16 位编码，一条条对，别靠眼看。</strong></p>
+  <div class="callout warn">
+    <div class="callout-title">压缩码还要求取指窗口能对齐</div>
+    <p>指令变成 2 字节，就可能跨在两个 32 位字之间。第 13 集的取指窗口取两个字、按 <code>pc[1]</code> 选半字拼装——那一段就是为这一集准备的。没接 RVC 之前，<code>pc</code> 每步 +4；接上之后 <code>+2</code> 还是 <code>+4</code> 由这条指令自己决定。</p>
+  </div>
+</section>
+
+<section id="s5">
+  <h2>F 去了第六日</h2>
+  <p>浮点没有放进这一集，不是漏了——它已经定在<strong>第六日 FPU 那一集</strong>。它要占的地方比这一集任何一门扩展都大，至少带三件别人没有的东西：</p>
+  <ul>
+    <li><strong>自己的一套寄存器</strong>：32 个浮点寄存器（<code>fregfile</code>），和整数寄存器堆并列。</li>
+    <li><strong>格式与舍入</strong>：单双精度共用一条宽通路，靠格式选择与 3 个舍入位分派；<code>FS</code> / <code>SD</code> 还要过 <code>mstatus.FS</code> 的门。</li>
+    <li><strong>一条硬事实</strong>：RV64 内核里 <code>fsd</code> / <code>fld</code> 是<strong>无条件出现</strong>的——广告了 FP 就得真会算，否则内核自己的访存先炸。</li>
+  </ul>
+  <p>第六日那一集要把 F / D 与 A · C 一起对账收尾，判据还是同一句：三条通路与独立参照逐拍全等。这一集先把 <strong>M · A · C</strong> 摆平——它们三个各自都能在 <code>examples/day4/</code> 里跑起来、撞上 RTL。</p>
+</section>
+
+<section id="s6">
+  <h2>小结</h2>
+  <ul>
+    <li><strong>M</strong>：四个变体 = 一条 64×64 乘法器 + "操作数补什么、取积哪半"；W 形态只算低 32 位再符号扩展；除法是另一颗多拍单元。</li>
+    <li><strong>A</strong>：LR/SC 靠"预约"——记住地址、SC 才敢写；AMO 一条指令读改写，<strong>且把写前旧值交回来</strong>（锁靠它判断拿到没有）。</li>
+    <li><strong>A 的时序</strong>：判决与清除差一拍——SC 要看见预约才能成功，不能在同拍把它清掉。</li>
+    <li><strong>C</strong>：是别名不是新语义；象限分派 + 认不出就喊；立即数在编码里是<strong>拆碎的</strong>，别按连续位段读。</li>
+    <li>三张表都撞了 RTL，逐拍全等；表里的数由工具链给出，不是手抄。</li>
+  </ul>
+  <div class="verse-inline">
+    "有晚上，有早晨，是第四日。"
+    <cite>—— 《创世记》 1:19</cite>
+  </div>
+</section>
+
+<section id="s7">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre>pip install prism-hdl
+prism deps --install                     <span class="tk-com"># cosim 的 RTL 腿要 iverilog</span>
+brew install riscv64-elf-gcc             <span class="tk-com"># C 那一节要它出参照编码</span>
+git clone https://github.com/prism-hdl/seven-days
+cd seven-days
+
+prism run   examples/day4/mul.prism --run mul_check --debug
+prism run   examples/day4/amo.prism --run amo_check --debug
+prism run   examples/day4/rvc.prism --run rvc_check --debug
+prism cosim examples/day4/rvc.prism --run rvc_check   <span class="tk-com"># 7 拍 × 2 列全等</span></pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第四日 · 有生命的活物 —— 会算会锁了，下一集把它们连成一片芯片</span>
+  七日创造 · 第四日 · 有生命的活物 · 第 17 集 · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>

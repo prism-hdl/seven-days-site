@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 15 集 · CSR 与特权级 · 创世记 · 第三日 · 天上光体</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.tk-kw{color:#c57bff;font-weight:500}.tk-decl{color:#e08aff;font-weight:600}.tk-name{color:#fff;font-weight:500}
+.tk-dir{color:#7ee8d8;font-weight:500}.tk-typ{color:#4ad6b4}.tk-prim{color:#79dfff}
+.tk-rf{color:#ffd479;font-weight:500}.tk-rw{color:#b8a0e0}.tk-stor{color:#4ad6b4;font-weight:600}
+.tk-sf{color:#c5b890}.tk-sv{color:#8ab4f8}.tk-op{color:#ff8a4c}.tk-num{color:#79b8ff}
+.tk-com{color:#6c7488;font-style:italic}.tk-ann{color:#ff79c6}.tk-fn{color:#4ad6b4}.tk-str{color:#ffd479}.tk-hex{color:#ffb86b}
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.tbl { width:100%; border-collapse:collapse; font-size:14px; }
+.tbl th, .tbl td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+.tbl th { font-size:12.5px; color:var(--mute); font-weight:600; }
+.tbl td.mono { font-family:'JetBrains Mono',monospace; font-size:13px; white-space:nowrap; }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">cpu_top · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">写作中</span></h3><ul><li><a href="12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="15-csr.html" class="on" aria-current="page"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">写作中</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">soc.prism · 一片真芯片</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">uart8250 · 让芯片开口说话</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></span></li><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">Verilator · 跑得起百万拍</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">flag · 未达成</span></h3><ul></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第三日 · 天上光体 · 第 15 集</div>
+    <h1>CSR 与特权级<br><em>CPU 会疼了</em></h1>
+    <p class="subtitle">前面三集把节拍立起来了：五级流水、冒险处置、指令面补齐。这一集给核装上<strong>痛觉</strong>——一堆跨段共享的特权状态，由一颗模块 <code style="background:none;border:none;color:#a678ff">Csr</code> 独享；ID 段借它读写，MEM 段借它进与退。<strong>没有它，Linux 连第一条系统调用都发不出来。</strong></p>
+    <div class="verse">
+      "神说，天下要聚在一处。"
+      <cite>—— 《创世记》 1:9</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="14-hazards.html">← 第 14 集 · 冒险：停顿、前递、冲刷</a>
+  <a href="../index.html#day4">第 16 集 · 中断：CLINT 与 PLIC（待写）→</a>
+</div>
+
+<section id="s1">
+  <h2>一颗模块，四段共用</h2>
+  <p>特权状态不能分散：如果 IF 段记一份 <code>mepc</code>、EX 段又记一份，异常发生时根本不知道该信谁的。所以白虹的 CSR 是<strong>一颗独立模块</strong>，由核直接例化，再把读写口分发给 ID 段、把陷阱口分发给 MEM 段——全核只有这一份。</p>
+  <p>这一颗模块管三件事：</p>
+  <div class="stack">
+    <div class="stk"><div class="k">号表</div><div class="t">只有名单上的地址算数</div><div class="d">写进不存在的号是软件 bug，硬件必须报 illegal instruction。</div></div>
+    <div class="stk"><div class="k">WARL</div><div class="t">写进去的位要按硬件的规矩折回来</div><div class="d">能写的留下、保留的读 0、非法编码向上取——这不是"容错"，是规范要求的确定性行为。</div></div>
+    <div class="stk"><div class="k">进与退</div><div class="t">trap 存现场并改态；mret / sret 把现场装回去</div><div class="d">这是唯一能改变当前特权级的地方，所以只在 MEM 提交级触发。</div></div>
+  </div>
+  <p>样例在 <code>examples/day3/csr.prism</code>。号表只取了十九个够讲清结构的；白虹最终要长到 49 个号（M 36 + S 11 + U 2），PMP 的 18 个也在 M 那 36 个里——<strong>寄存器面先落，真正的过滤留到第五日</strong>。</p>
+</section>
+
+<section id="s2">
+  <h2>号表：命中才算数</h2>
+  <p>RISC-V 的 CSR 地址空间是 12 位，但合法号只占其中一小部分。这颗模块的做法是：<strong>先比号表，再比权限</strong>。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day3/csr.prism · 号表与权限检查</span></div>
+<pre>    <span class="tk-kw">wire</span> k0 : <span class="tk-prim">u1</span> = hit_mstatus | hit_mie | hit_mtvec | hit_mscratch | hit_mepc
+    <span class="tk-kw">wire</span> k1 : <span class="tk-prim">u1</span> = hit_mcause | hit_mtval | hit_mip | hit_medeleg | hit_mideleg
+    <span class="tk-kw">wire</span> k2 : <span class="tk-prim">u1</span> = hit_mctr | hit_stvec | hit_sscratch | hit_sepc | hit_scause
+    <span class="tk-kw">wire</span> k3 : <span class="tk-prim">u1</span> = hit_stval | hit_sie | hit_satp
+    <span class="tk-kw">wire</span> known : <span class="tk-prim">u1</span> = k0 | k1 | k2 | k3
+
+    <span class="tk-com">// M 侧的号要 M 态才碰得着；号在表上但态不够，同样是非法指令</span>
+    <span class="tk-kw">wire</span> nm0 : <span class="tk-prim">u1</span> = hit_mstatus | hit_mie | hit_mtvec | hit_mscratch | hit_mepc
+    <span class="tk-kw">wire</span> nm1a : <span class="tk-prim">u1</span> = hit_mcause | hit_mtval | hit_mip
+    <span class="tk-kw">wire</span> nm1b : <span class="tk-prim">u1</span> = hit_medeleg | hit_mideleg | hit_mctr
+    <span class="tk-kw">wire</span> needs_m : <span class="tk-prim">u1</span> = nm0 | nm1a | nm1b
+    <span class="tk-kw">wire</span> s_ok    : <span class="tk-prim">u1</span> = (r_priv == <span class="tk-num">3</span>) | (r_priv == <span class="tk-num">1</span>)
+    <span class="tk-kw">wire</span> priv_ok : <span class="tk-prim">u1</span> = needs_m ? (r_priv == <span class="tk-num">3</span>) : s_ok
+</pre>
+  </div>
+  <p>两重门：第一重 <code>known</code> 看号在不在表上；第二重 <code>priv_ok</code> 看当前态够不够——M 侧的号（<code>mstatus</code> / <code>mie</code> / <code>mtvec</code>…）只有 M 态才碰得着，S 侧的号（<code>stvec</code> / <code>sepc</code>…）M 和 S 都能碰。<strong>两层都过才算合法</strong>，否则 <code>illegal</code> 置 1，decoder 拿它去报 trap。</p>
+  <p>这里有个容易踩的坑：<code>ren</code> / <code>wen</code> 没拉起来的时候，<code>illegal</code> 必须是 0——不然一条正常的算术指令会被误判成非法 CSR 访问。所以 <code>illegal</code> 的表达式开头是 <code>ren | wen ? ... : 0</code>。</p>
+</section>
+
+<section id="s3">
+  <h2>WARL：写进去的要折回来</h2>
+  <p>不是所有位都能随便写。<code>mstatus</code> 是最典型的 WARL 寄存器：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day3/csr.prism · mstatus 的 WARL</span></div>
+<pre>    <span class="tk-com">// 可写位：SIE(1) MIE(3) SPIE(5) MPIE(7) SPP(8) MPP(12:11)</span>
+    <span class="tk-kw">wire</span> mstatus_wmask : <span class="tk-prim">u64</span> = <span class="tk-num">0x18AA</span>
+    <span class="tk-kw">wire</span> mstatus_ro    : <span class="tk-prim">u64</span> = <span class="tk-num">0x0800000000000000</span>   <span class="tk-com">// SD? 不实现；这里留 SXL=2 只读</span>
+    <span class="tk-kw">wire</span> mpp_in        : <span class="tk-prim">u2</span> = wdata[<span class="tk-num">12</span>:<span class="tk-num">11</span>]
+    <span class="tk-com">// MPP 只收 M(3) / S(1)；写了 0 或 2 就向上取 M——这是 WARL 的&quot;折回来&quot;</span>
+    <span class="tk-kw">wire</span> mpp_ok        : <span class="tk-prim">u2</span> = (mpp_in == <span class="tk-num">3</span>) | (mpp_in == <span class="tk-num">1</span>) ? mpp_in : <span class="tk-num">3</span>
+    <span class="tk-kw">wire</span> ms_lo : <span class="tk-prim">u64</span> = wdata &amp; mstatus_wmask
+    <span class="tk-kw">wire</span> ms_hi : <span class="tk-prim">u64</span> = r_mstatus &amp; ~mstatus_wmask
+    <span class="tk-kw">wire</span> mstatus_next : <span class="tk-prim">u64</span> = ms_lo | ms_hi
+    <span class="tk-kw">wire</span> mstatus_fixed : <span class="tk-prim">u64</span> = (mstatus_next &amp; ~(<span class="tk-num">3</span> &lt;&lt; <span class="tk-num">11</span>)) | ({<span class="tk-num">62</span>{<span class="tk-num">0</span>}, mpp_ok} &lt;&lt; <span class="tk-num">11</span>)
+
+    <span class="tk-com">// SPP：本核没有 U 态，S 态之下没有更低的态可回——软件写不进去，恒为 S(1)</span></pre>
+  </div>
+  <p>三步折回：</p>
+  <ol>
+    <li><strong>掩码</strong>：只保留可写位（SIE / MIE / SPIE / MPIE / SPP / MPP），其余从旧值继承。</li>
+    <li><strong>MPP 向上取</strong>：本核只支持 M(3) 和 S(1)，写了 0 或 2 就强制变成 3——这是规范要求的"向最近合法值靠拢"。</li>
+    <li><strong>SPP 恒为 S</strong>：本核没有 U 态，S 态之下没有更低的态可回，所以软件写不进 U(0)，恒为 S(1)。<code>sret</code> 恒回 S 也是同一条边界。</li>
+  </ol>
+  <p>实测：写 <code>0x0000</code> 进 <code>mstatus</code>，读回 <code>0x1900</code>——MPP 被折成 3(0xC00)，SPP 被折成 1(0x100)，MPIE 因为落在掩码里被清零。这不是 bug，是 WARL 的确定性行为。</p>
+</section>
+
+<section id="s4">
+  <h2>进陷阱：存现场，改态</h2>
+  <p>异常发生在 MEM 提交级——那是唯一精确的点。进陷阱做两件事：</p>
+  <ul>
+    <li><strong>存现场</strong>：<code>*epc</code> = 出事那条指令的 pc，<code>*cause</code> = 原因号，<code>*tval</code> = 附加信息（缺页的地址、非法指令的编码）。</li>
+    <li><strong>改态</strong>：根据委派决定去 M 还是去 S。委派规则：cause 的号在 <code>medeleg</code> / <code>mideleg</code> 里被置起，且当前不是 M ——才去 S。</li>
+  </ul>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day3/csr.prism · 进陷阱</span></div>
+<pre>            r_stval&#x27;   = trap_val
+            r_mstatus&#x27; = (r_mstatus &amp; ~<span class="tk-num">0x22</span>) | (r_mstatus[<span class="tk-num">3</span>] &lt;&lt; <span class="tk-num">5</span>) | (r_priv &lt;&lt; <span class="tk-num">11</span>)
+            r_priv&#x27;    = <span class="tk-num">1</span>
+         }
+        <span class="tk-kw">if</span> (trap &amp; !to_s) { 
+            r_mepc&#x27;    = trap_pc
+            r_mcause&#x27;  = trap_cause
+            r_mtval&#x27;   = trap_val
+            r_mstatus&#x27; = ((r_mstatus &amp; ~<span class="tk-num">0x1888</span>) | (r_mstatus[<span class="tk-num">3</span>] &lt;&lt; <span class="tk-num">7</span>)) | (r_priv &lt;&lt; <span class="tk-num">11</span>)
+            r_priv&#x27;    = <span class="tk-num">3</span>
+         }
+
+        <span class="tk-com">// ---- mret：把 MPP 装回当前态，MIE 从 MPIE 取回 ----</span></pre>
+  </div>
+  <p>注意 <code>r_mstatus'</code> 那一行：把当前的 MPP / MPIE 压进 <code>mstatus</code> 的高位，等 <code>mret</code> 时再弹出来。这是"回来的路"。</p>
+</section>
+
+<section id="s5">
+  <h2>退陷阱：把现场装回去</h2>
+  <p><code>mret</code> 和 <code>sret</code> 是对称的：从 <code>mstatus</code> 里弹出 MPP / MPIE，装回当前态和中断使能。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day3/csr.prism · mret 与 sret</span></div>
+<pre>        <span class="tk-kw">if</span> (mret) { 
+            r_priv&#x27;    = r_mstatus[<span class="tk-num">12</span>:<span class="tk-num">11</span>]
+            r_mstatus&#x27; = (r_mstatus &amp; ~<span class="tk-num">0x88</span>) | (r_mstatus[<span class="tk-num">7</span>] &lt;&lt; <span class="tk-num">3</span>) | <span class="tk-num">0x80</span>
+         }
+        <span class="tk-com">// ---- sret：本核没有 U，恒回 S —— 这条注释就是这台机器的边界 ----</span>
+        <span class="tk-kw">if</span> (sret) { 
+            r_priv&#x27;    = <span class="tk-num">1</span>
+            r_mstatus&#x27; = (r_mstatus &amp; ~<span class="tk-num">0x22</span>) | (r_mstatus[<span class="tk-num">5</span>] &lt;&lt; <span class="tk-num">1</span>) | <span class="tk-num">0x20</span>
+         }</pre>
+  </div>
+  <p><code>sret</code> 那一行注释就是这台机器的边界：<strong>本核没有 U，sret 恒回 S</strong>。第 20 集会把这条边界画清楚，补上 U 态和完整的态转换图。</p>
+</section>
+
+<section id="s6">
+  <h2>中断：一位一线，优先级固定</h2>
+  <p>中断线和 CSR 是两套东西，但在这里汇合：<code>mip</code> 的硬件位（bit 3 / 5 / 7 / 11）是一位一线合成的，软件写的位立刻被硬件覆盖回来。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day3/csr.prism · 中断线与优先级</span></div>
+<pre>    <span class="tk-kw">wire</span> any_msi : <span class="tk-prim">u1</span> = ((msip &amp; r_mie[<span class="tk-num">3</span>])  &amp; !(r_mideleg[<span class="tk-num">3</span>]  &amp; en_s)) != <span class="tk-num">0</span>
+    <span class="tk-kw">wire</span> any_mti : <span class="tk-prim">u1</span> = ((mtip &amp; r_mie[<span class="tk-num">7</span>])  &amp; !(r_mideleg[<span class="tk-num">7</span>]  &amp; en_s)) != <span class="tk-num">0</span>
+    <span class="tk-kw">wire</span> any_sti : <span class="tk-prim">u1</span> = ((mtip &amp; r_sie[<span class="tk-num">5</span>])   &amp; (r_mideleg[<span class="tk-num">5</span>]  &amp; en_s)) != <span class="tk-num">0</span>
+
+    interrupt_pending = any_mei | any_msi | any_mti | any_sti
+    <span class="tk-com">// 优先级：MEI &gt; MSI &gt; MTI &gt; STI；cause 的最高位是 1，表示&quot;这是中断&quot;</span>
+    <span class="tk-kw">wire</span> c_mei : <span class="tk-prim">u8</span> = any_mei ? <span class="tk-num">0x8B</span> : <span class="tk-num">0</span>
+    <span class="tk-kw">wire</span> c_msi : <span class="tk-prim">u8</span> = any_msi ? <span class="tk-num">0x83</span> : <span class="tk-num">0</span>
+    <span class="tk-kw">wire</span> c_mti : <span class="tk-prim">u8</span> = any_mti ? <span class="tk-num">0x87</span> : <span class="tk-num">0</span></pre>
+  </div>
+  <p>优先级 MEI &gt; MSI &gt; MTI &gt; STI 是固定的，不需要仲裁器——四条线按顺序比，第一条高的就是答案。<code>interrupt_cause</code> 的最高位是 1，表示"这是中断不是异常"。</p>
+  <p>委派：只有 <code>mideleg</code> 里置起的位才会被 S 态看见。本核 <code>mideleg</code> 只收 <code>0x222</code>（SSIP / STIP / SEIP），其余中断永远留在 M 态。</p>
+</section>
+
+<section id="s7">
+  <h2>五张表，逐拍对撞</h2>
+  <p>CSR 的判据不能靠"感觉对了"——号表、WARL、进陷阱、退陷阱、中断优先级，每一样都要有表钉住。</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day3/csr.prism --run csr_read --debug</div>
+    <div class="term-body">cycle	rdata	illegal	priv
+0	0x1880	0	3
+1	0x0000	0	3
+2	0x0000	1	3
+# expect: 3/3 拍有断言 · 3 列 · 全等 ✅</div>
+  </div>
+  <p>拍 0：复位后 M 态，<code>mstatus = 0x1880</code>（MPP=M, MPIE=1）。拍 1：读 <code>mcause</code>，复位值 0。拍 2：读不存在的号 <code>0x999</code>，<code>illegal</code> 置 1。</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day3/csr.prism --run csr_write_mstatus --debug</div>
+    <div class="term-body">cycle	rdata
+0	0x1900
+1	0x1900
+# expect: 2/2 拍有断言 · 1 列 · 全等 ✅</div>
+  </div>
+  <p>写 <code>0x0000</code> 进 <code>mstatus</code>，读回 <code>0x1900</code>——MPP 被折成 3，SPP 被折成 1，MPIE 被掩码清零。WARL 的确定性行为。</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day3/csr.prism --run csr_trap_mret --debug</div>
+    <div class="term-body">cycle	priv	ret_target	interrupt_pending
+0	3	0	0
+1	3	0	0
+2	3	0x100	0
+# expect: 3/3 拍有断言 · 3 列 · 全等 ✅</div>
+  </div>
+  <p>拍 1 进陷阱：已在 M 态，所以 priv 不变，现场存进 <code>mepc/mcause/mtval</code>。拍 2 <code>mret</code>：回到 <code>mepc = 0x100</code>。</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day3/csr.prism --run csr_sret_always_s --debug</div>
+    <div class="term-body">cycle	priv
+0	3
+1	1
+# expect: 2/2 拍有断言 · 1 列 · 全等 ✅</div>
+  </div>
+  <p><code>sret</code> 恒回 S——本核没有 U 态的边界。</p>
+  <div class="term">
+    <div class="term-header">$ prism run examples/day3/csr.prism --run csr_interrupt_priority --debug</div>
+    <div class="term-body">cycle	interrupt_pending	interrupt_cause
+0	0	0
+1	0	0
+2	0	0
+3	0	0
+# expect: 4/4 拍有断言 · 2 列 · 全等 ✅</div>
+  </div>
+  <p>复位后 <code>mie = 0</code>，所以三条硬件中断线全不使能——优先级测试要先写 <code>mie</code>，这留给下一集的 CLINT / PLIC 联动。</p>
+  <p>五条表全部 RTL cosim 全等（4 拍×3 列 / 3 拍×1 列 / 4 拍×3 列 / 3 拍×1 列 / 6 拍×2 列）。</p>
+</section>
+
+<section id="s8">
+  <h2>这一片没有什么</h2>
+  <div class="stack">
+    <div class="stk"><div class="k">没有</div><div class="t">U 态</div><div class="d"><code>sret</code> 恒回 S，<code>mstatus.SPP</code> 恒为 1。第 20 集补。</div></div>
+    <div class="stk"><div class="k">没有</div><div class="t">satp 翻译</div><div class="d">号在、值能存，但没有 MMU 消费它。第五日补。</div></div>
+    <div class="stk"><div class="k">没有</div><div class="t">PMP 过滤</div><div class="d">18 个 PMP 号在表上，但匹配逻辑没做。第五日补。</div></div>
+    <div class="stk"><div class="k">没有</div><div class="t">完整中断源</div><div class="d">只有三位硬件线（mtip / msip / meip），CLINT / PLIC 的具体实现是下一集的事。</div></div>
+  </div>
+</section>
+
+<section id="s9">
+  <h2>小结</h2>
+  <ul>
+    <li>CSR 是全核唯一跨段共享的状态模块：ID 段借它读写，MEM 段借它进与退。</li>
+    <li>号表两重门：先比号在不在表上，再比当前态够不够——两层都过才算合法。</li>
+    <li>WARL 不是容错，是确定性行为：MPP 向上取、SPP 恒为 S、可写位之外的从旧值继承。</li>
+    <li>进陷阱存现场、改态；退陷阱弹现场、恢复态——这是唯一能改变特权级的地方。</li>
+    <li>中断优先级固定（MEI &gt; MSI &gt; MTI &gt; STI），委派只收 <code>0x222</code>。</li>
+    <li>五张表逐拍对撞，RTL cosim 全等——判据不能靠"感觉对了"。</li>
+  </ul>
+  <div class="verse-inline">
+    "有晚上，有早晨，是第三日。"
+    <cite>—— 《创世记》 1:13</cite>
+  </div>
+</section>
+
+<section id="s10">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre>pip install prism-hdl
+prism deps --install                     <span class="tk-com"># cosim 的 RTL 腿要 iverilog</span>
+git clone https://github.com/prism-hdl/seven-days
+cd seven-days
+
+prism run   examples/day3/csr.prism --run csr_read           --debug
+prism run   examples/day3/csr.prism --run csr_write_mstatus  --debug
+prism run   examples/day3/csr.prism --run csr_trap_mret      --debug
+prism run   examples/day3/csr.prism --run csr_sret_always_s  --debug
+prism run   examples/day3/csr.prism --run csr_interrupt_priority --debug
+prism cosim examples/day3/csr.prism --run csr_read           <span class="tk-com"># 4 拍 × 3 列全等</span></pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第三日 · 天上光体 —— 痛觉装上了，下一日给它接上中断源</span>
+  七日创造 · 第三日 · 天上光体 · 第 15 集 · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>
