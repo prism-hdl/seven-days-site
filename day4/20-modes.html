@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 20 集 · 模式切换与系统调用 · 创世记 · 第四日 · 有生命的活物</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.tk-kw{color:#c57bff;font-weight:500}.tk-decl{color:#e08aff;font-weight:600}.tk-name{color:#fff;font-weight:500}
+.tk-dir{color:#7ee8d8;font-weight:500}.tk-typ{color:#4ad6b4}.tk-prim{color:#79dfff}
+.tk-rf{color:#ffd479;font-weight:500}.tk-rw{color:#b8a0e0}.tk-stor{color:#4ad6b4;font-weight:600}
+.tk-sf{color:#c5b890}.tk-sv{color:#8ab4f8}.tk-op{color:#ff8a4c}.tk-num{color:#79b8ff}
+.tk-com{color:#6c7488;font-style:italic}.tk-ann{color:#ff79c6}.tk-fn{color:#4ad6b4}.tk-str{color:#ffd479}.tk-hex{color:#ffb86b}
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：让芯片开口说话</span></a></li><li><a href="20-modes.html" class="on" aria-current="page"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与&quot;打拍出数&quot;</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第四日 · 有生命的活物 · 第 20 集</div>
+    <h1>模式切换与系统调用<br><em>谁能跳到哪一态</em></h1>
+    <p class="subtitle">第 15 集立下过一条边界：本核没有 U 态，<code style="background:none;border:none;color:#a678ff">sret</code> 恒回 S。这一集把这条边界画全——<strong>M / S / U 三态到位</strong>：<code>ecall</code> 按当前态编 cause、<code>mret</code> 按 MPP 回、<code>sret</code> 按 SPP 回；哪条指令只属于哪一态，逐条画清楚。<strong>"用户态"这个概念，第一次在这台机器上成立。</strong></p>
+    <div class="verse">
+      "滋生繁多，充满海中的水。"
+      <cite>—— 《创世记》 1:22</cite>
+    </div>
+    <div class="dp"><svg viewBox="0 0 900 452" style="width:100%;height:auto" role="img" aria-label="M/S/U 三态的转换图：ecall 与 ebreak 按当前态编 cause 进陷阱，mret 按 MPP、sret 按 SPP 返回">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8ab4f8"/>
+        </marker>
+        <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5b4bff"/>
+        </marker>
+        <linearGradient id="gm" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1c2333"/><stop offset="100%" stop-color="#10131c"/>
+        </linearGradient>
+      </defs>
+      <rect x="330" y="30" width="240" height="70" rx="12" fill="url(#gm)" stroke="#5b4bff" stroke-width="1.5"/>
+      <text x="450" y="58" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="17" fill="#fff">M · 机器态</text>
+      <text x="450" y="82" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#8ab4f8">ecall ⇒ cause 11</text>
+
+      <rect x="330" y="175" width="240" height="70" rx="12" fill="url(#gm)" stroke="#5b4bff" stroke-width="1.5"/>
+      <text x="450" y="203" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="17" fill="#fff">S · 监管态</text>
+      <text x="450" y="227" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#8ab4f8">ecall ⇒ cause 9</text>
+
+      <rect x="330" y="320" width="240" height="70" rx="12" fill="url(#gm)" stroke="#12a060" stroke-width="1.5"/>
+      <text x="450" y="348" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="17" fill="#fff">U · 用户态</text>
+      <text x="450" y="372" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#6fe8a5">ecall ⇒ cause 8</text>
+
+      <line x1="450" y1="100" x2="450" y2="173" stroke="#8ab4f8" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="462" y="143" font-family="JetBrains Mono, monospace" font-size="12" fill="#8ab4f8">mret（MPP=S）</text>
+
+      <path d="M330,65 L180,65 L180,355 L328,355" fill="none" stroke="#5b4bff" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#arrb)"/>
+      <text x="60" y="205" font-family="JetBrains Mono, monospace" font-size="12" fill="#a678ff">mret（MPP=U）</text>
+
+      <path d="M570,210 L710,210 L710,65 L572,65" fill="none" stroke="#8ab4f8" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="700" y="150" text-anchor="end" font-family="Noto Serif SC, serif" font-size="12.5" fill="#cfe2ff">trap：不委派 ⇒ 进 M</text>
+
+      <path d="M570,355 L650,355 L650,210 L572,210" fill="none" stroke="#8ab4f8" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="450" y="414" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="12.5" fill="#cfe2ff">trap 委派：medeleg / mideleg 该位=1、且当前 ≤ S —— 进 S</text>
+
+      <path d="M330,210 L275,210 L275,355 L328,355" fill="none" stroke="#5b4bff" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#arrb)"/>
+      <text x="200" y="300" font-family="JetBrains Mono, monospace" font-size="12" fill="#a678ff">sret（SPP=U）</text>
+
+      <text x="450" y="16" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="12.5" fill="#8892a6">跳转只有 mret / sret 两条指令；ecall 不跳——它是一次陷阱，按当前态编号</text>
+      <text x="450" y="440" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="12" fill="#8892a6">ebreak ⇒ cause 3（任何态）· sret 的 SPP=S 时留在 S（自环，不画）</text>
+    </svg></div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="19-uart.html">← 第 19 集 · uart8250：让芯片开口说话</a>
+  <a href="21-verilator.html">第 21 集 · Verilator 第二后端：跑得起百万拍 →</a>
+</div>
+
+<section id="s1">
+  <h2>ecall 不是跳转，是一次陷阱</h2>
+  <p>先说一个容易想岔的地方：系统调用<strong>不是</strong>"跳到内核的某条指令"。用户态手里只有一条 <code>ecall</code>——它做的事是<strong>按当前态发起一次陷阱</strong>：硬件把现场存进 <code>*epc / mcause / mtval</code>，跳到 <code>*tvec</code>。去哪张 tvec、编什么 cause，全看"现在是哪一态"：</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>当前态</th><th>ecall 的 cause</th><th>谁会接</th></tr>
+      <tr><td>U 态</td><td class="mono">8</td><td>M 或 S（按委派掩码）</td></tr>
+      <tr><td>S 态</td><td class="mono">9</td><td>M 或 S——<strong>SBI 调用走的就是这一条</strong></td></tr>
+      <tr><td>M 态</td><td class="mono">11</td><td>只有 M</td></tr>
+      <tr><td><code>ebreak</code>（任何态）</td><td class="mono">3</td><td>调试断点，与 ecall 同一张表</td></tr>
+    </table>
+  </div>
+  <p>同一张表里还有一类容易忘的条目：<strong>系统指令的特权门控</strong>——<code>mret</code> 只在 M 态合法，<code>sret</code> / <code>sfence.vma</code> 至少 S 态，不够格就是非法指令（cause 2），<strong>不是静默 no-op</strong>。门控漏在谁身上，谁就替低特权侧改了高特权状态：S 态一条 <code>mret</code> 能把 priv 拉回 M 并跳到 mepc。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/trap.prism · 编码与特权门控</span></div>
+<pre class="wrap">    <span class="tk-com">// 异常优先级：illegal（含 CSR 特权门控并入）&gt; ebreak &gt; ecall（按当前 priv 编</span>
+    <span class="tk-com">// 8/9/11）&gt; 缺页/访问错 &gt; load 未对齐 &gt; store/AMO 未对齐。</span>
+    <span class="tk-com">// 异常编码：2=illegal instr, 3=ebreak, 4=load addr misalign, 6=store addr misalign,</span>
+    <span class="tk-com">//          7=store/AMO access fault（设备窗口上的 AMO）,</span>
+    <span class="tk-com">//          8=user ecall, 9=supervisor ecall, 11=machine ecall</span>
+    <span class="tk-com">// 中断 cause = (1 &lt;&lt; 63) | interrupt_number（RISC-V 规范）</span>
+    <span class="tk-kw">wire</span> mem_trap_cause : <span class="tk-prim">u64</span>
+    <span class="tk-kw">wire</span> mem_priv_s_ecall : <span class="tk-prim">u1</span> = mem_is_ecall &amp; (csr.priv == <span class="tk-num">1</span>)
+    <span class="tk-kw">wire</span> mem_priv_m_ecall : <span class="tk-prim">u1</span> = mem_is_ecall &amp; (csr.priv == <span class="tk-num">3</span>)
+    <span class="tk-kw">wire</span> mem_priv_u_ecall : <span class="tk-prim">u1</span> = mem_is_ecall &amp; (csr.priv == <span class="tk-num">0</span>)
+
+    <span class="tk-com">// 特权门控（规范 §3.3.1 逐条要求）：MRET 只在 M 态合法；SRET / SFENCE.VMA 至少</span>
+    <span class="tk-com">// S 态。不够格就是非法指令（cause 2），不是静默 no-op——门控漏在谁身上，谁就替</span>
+    <span class="tk-com">// 低特权侧改了高特权状态：S 态一条 mret 能把 priv 拉回 M 并跳到 mepc。</span>
+    <span class="tk-com">// 三条的放行条件写在一起，判决与下面三根 strobe 同源。</span>
+    <span class="tk-kw">wire</span> mret_priv_ok   : <span class="tk-prim">u1</span> = csr.priv == <span class="tk-num">3</span>
+    <span class="tk-kw">wire</span> sret_priv_ok   : <span class="tk-prim">u1</span> = csr.priv &gt;= <span class="tk-num">1</span>
+    <span class="tk-kw">wire</span> sfence_priv_ok : <span class="tk-prim">u1</span> = csr.priv &gt;= <span class="tk-num">1</span>
+    <span class="tk-kw">wire</span> mem_priv_bad   : <span class="tk-prim">u1</span> = (mem_is_mret &amp; !mret_priv_ok) | (mem_is_sret &amp; !sret_priv_ok) | (mem_is_sfence &amp; !sfence_priv_ok)</pre>
+  </div>
+</section>
+
+<section id="s2">
+  <h2>一条 match，把"谁先报"钉死</h2>
+  <p>同一个 MEM 提交拍上，可能同时成立好几条"出事了"。硬件只报一条——按一张固定的优先级表往下挑：<strong>中断 &gt; 取指缺页(12) &gt; 非法(2) &gt; ebreak(3) &gt; ecall(11/9/8) &gt; 缺页/访问错 &gt; load 未对齐(4) &gt; store/AMO 未对齐(6)</strong>。写成一条从上往下匹配的 <code>match</code>，顺序本身就是要写明的规格：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/trap.prism · cause 的裁决顺序</span></div>
+<pre class="wrap">    mem_trap_cause = <span class="tk-kw">match</span> {
+        <span class="tk-com">// 中断优先于异常：cause = (1 &lt;&lt; 63) | interrupt_number</span>
+        (mem_valid &amp; mem_interrupt_pending)                   =&gt; (<span class="tk-num">1</span> &lt;&lt; <span class="tk-num">63</span>) | mem_interrupt_cause,
+        (mem_valid &amp; mem_if_pf)                               =&gt; <span class="tk-num">12</span>,
+        (mem_valid &amp; (mem_is_illegal | csr.csr_illegal_priv | mem_priv_bad | (mem_is_fp &amp; csr.fp_off))) =&gt; <span class="tk-num">2</span>,
+        (mem_valid &amp; mem_is_ebreak)                           =&gt; <span class="tk-num">3</span>,
+        (mem_valid &amp; mem_priv_m_ecall)                        =&gt; <span class="tk-num">11</span>,
+        (mem_valid &amp; mem_priv_s_ecall)                        =&gt; <span class="tk-num">9</span>,
+        (mem_valid &amp; mem_priv_u_ecall)                        =&gt; <span class="tk-num">8</span>,
+        (mem_valid &amp; lsu_pf)                                  =&gt; lsu_pf_cause,
+        <span class="tk-com">// 设备窗口上的 AMO：access fault（store/AMO 类）。与缺页互斥（LSU 侧 af 带</span>
+        <span class="tk-com">// !pf_hit 门控）：有 MMU 时先翻译，页面没映射先报缺页。</span>
+        (mem_valid &amp; lsu_af)                                  =&gt; <span class="tk-num">7</span>,
+        (lsu_mis_load | (lsu_mis_atomic &amp; mem_is_lr)) =&gt; <span class="tk-num">4</span>,
+        (lsu_mis_st | lsu_mis_atomic)                    =&gt; <span class="tk-num">6</span>,
+        _                            =&gt; <span class="tk-num">0</span>,
+    }</pre>
+  </div>
+  <p>两个容易写反的位置值得点出来：<strong>取指缺页压过 illegal</strong>——这条指令根本没取到字，ID 拿的是废值，让它先报就成了 cause 2 + 指令字当 mtval，两样都错；<strong>未对齐排在最后</strong>——有 MMU 时先翻译、物理访问在后，一个既未对齐又缺页的访问按缺页报（规范允许二者择一）。</p>
+</section>
+
+<section id="s3">
+  <h2>进与退的严格版：MPP / SPP 是唯一的路</h2>
+  <p>第 15 集讲过的"存现场、改态"在 U 态落地之后要说得更精确：进陷阱时把"被中断的态"压进 <code>MPP</code>（进 M）或 <code>SPP</code>（进 S），把中断使能压进对应的 PIE 位并关掉当前使能；退陷阱从同一位弹回来。<strong>特权级只会沿着这两条路变化</strong>：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · 进 / mret / sret 的状态变换</span></div>
+<pre class="wrap">    <span class="tk-com">// ---- 异常进入 / mret / sret 的 mstatus 状态变换 ----</span>
+    <span class="tk-com">// 位段：SIE(1)、MIE(3)、SPIE(5)、MPIE(7)、SPP(8)、MPP(12:11)</span>
+    <span class="tk-com">//   mstatus mask：M 侧 0x1888，S 侧 0x122</span>
+    <span class="tk-com">// trap → M：MPIE←MIE、MIE←0、MPP←priv；其余位保留（SIE/SPIE/SPP 不动）</span>
+    trap_mstatus_m = (r_mstatus &amp; ~<span class="tk-num">0x1888</span>) | ((r_mstatus &amp; <span class="tk-num">0x8</span>) &lt;&lt; <span class="tk-num">4</span>) | (r_priv &lt;&lt; <span class="tk-num">11</span>)
+    <span class="tk-com">// trap → S：SPIE←SIE、SIE←0、SPP←被中断态；M 侧位段保留</span>
+    <span class="tk-com">//   SPP 编码（规范「SPP is set to 0 if the trap originated from user mode, or 1</span>
+    <span class="tk-com">//   otherwise」）：**非 U ⇒ 1**，不是&quot;SPP=1 表 U&quot;。所以判据是 `r_priv == 0`，别写成</span>
+    <span class="tk-com">//   `r_priv == 1`——那条在被中断态是 M 时给 0，csr_check 的 trap→S 那两拍会抓它。</span>
+    <span class="tk-com">//   写反这一位会让内核 entry.S 的 `bnez tp,_save_context`/`andi s0,s0,SR_SPP` 把每一次</span>
+    <span class="tk-com">//   内核态陷阱都当成从用户态来：返回时 `csrw CSR_SCRATCH,tp` 把 sscratch 留成非 0，</span>
+    <span class="tk-com">//   下一次陷阱就跳过 `REG_S sp, TASK_TI_KERNEL_SP(tp)`，pt_regs 落在陈旧的 kernel_sp 下方，</span>
+    <span class="tk-com">//   盖掉还在用的栈帧（Linux 起跑时表现为 callee-saved 集体变旧值）。</span>
+    trap_mstatus_s = (r_mstatus &amp; ~<span class="tk-num">0x122</span>) | ((r_mstatus &amp; <span class="tk-num">0x2</span>) &lt;&lt; <span class="tk-num">4</span>) | (r_priv == <span class="tk-num">0</span> ? <span class="tk-num">0</span> : <span class="tk-num">0x100</span>)
+    <span class="tk-com">// mret：MIE←MPIE、MPIE←1、MPP←least-supported=U(0)（本核最低档现在是 U，所以掩掉即落 0）</span>
+    mret_mstatus = (r_mstatus &amp; ~<span class="tk-num">0x1888</span>) | ((r_mstatus &amp; <span class="tk-num">0x80</span>) &gt;&gt; <span class="tk-num">4</span>) | <span class="tk-num">0x80</span>
+    <span class="tk-com">// sret：SIE←SPIE、SPIE←1、SPP←0 —— 规范同一条文的后半句就是&quot;SPP is then set to 0&quot;。</span>
+    <span class="tk-com">// 返回态就是这一位：SPP=1⇒S、SPP=0⇒U。</span>
+    sret_mstatus = (r_mstatus &amp; ~<span class="tk-num">0x122</span>) | ((r_mstatus &amp; <span class="tk-num">0x20</span>) &gt;&gt; <span class="tk-num">4</span>) | <span class="tk-num">0x20</span></pre>
+  </div>
+  <p>三处规范细节，全在这几行里：</p>
+  <ul>
+    <li><strong>trap→S 的 SPP 是"非 U ⇒ 1"</strong>，不是"SPP=1 表示从 U 来"。写反这一位的后果在 Linux 起跑时实测过一次：内核的返回路径把每一次内核态陷阱都当成从用户态来，<code>pt_regs</code> 落到陈旧的 kernel_sp 下方、盖掉还在用的栈帧——表现是 callee-saved 寄存器集体变旧值。</li>
+    <li><strong>mret 把 MPP 复位成"最低支持档"</strong>（规范原文：least-privileged supported mode）。本核最低档现在是 U，所以返回之后 MPP 落 0——同一条规则在第 15 集（还没 U）时落的是 S。</li>
+    <li><strong>sret 返回目标就是 SPP</strong>：SPP=1 ⇒ 回 S，SPP=0 ⇒ 回 U。</li>
+  </ul>
+  <p>还有一个必须挡死的编码：<strong>MPP 的合法集是 {U(0), S(1), M(3)}</strong>，保留编码 2 要向上取到 3。为什么非挡不可？不挡的话软件能把 MPP 写成 2，<code>mret</code> 之后 priv=2——三条 ecall 判据（==0/==1/==3）一条都不成立，陷阱就此<strong>静默消失</strong>，指令照常退休。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · MPP 的 WARL</span></div>
+<pre class="wrap">    <span class="tk-com">//   3) MPP 的合法集是 {U(0), S(1), M(3)}：只有写保留编码 2 才向上取（bit12 落下位 bit11，</span>
+    <span class="tk-com">//      2→3），0 与 1 原样落地。保留编码必须挡：软件能把 MPP 写成 2 的话，mret 之后</span>
+    <span class="tk-com">//      priv=2 —— 三条 ecall 判据（==0/==1/==3）一条都不成立，陷入静默消失、指令照常退休。</span>
+    <span class="tk-com">//      SPP 与 MPP 一样是软件可写的：硬件在 trap 入口写它、sret 清它，但**返回目标态就是</span>
+    <span class="tk-com">//      这一位**，而 Linux 的返回路径把 pt_regs 里存的 sstatus 整字写回（entry.S 的</span>
+    <span class="tk-com">//      csrw CSR_STATUS——这份构建里它就是 CSR_SSTATUS，SR_SPP=0x100）。把它掩成恒 0，</span>
+    <span class="tk-com">//      等于每次内核态陷阱返回都掉进 U，紧接着取内核文本吃 cause 12，实测是同址反复 oops。</span>
+    <span class="tk-com">// 两条写路（mstatus 整写 / sstatus 掩码合并）汇成一份下一拍值，WARL 只落一次。</span>
+    <span class="tk-kw">wire</span> mstatus_wmask : <span class="tk-prim">u64</span> = <span class="tk-num">0x00000000000C79AA</span>      <span class="tk-com">// 本核可写位段（含 FS[14:13]）</span>
+    <span class="tk-kw">wire</span> mstatus_ro    : <span class="tk-prim">u64</span> = <span class="tk-num">0x0000000A00000000</span>      <span class="tk-com">// SXL[35:34]=2、UXL[33:32]=2（只读）</span>
+    <span class="tk-kw">wire</span> mstatus_sw   : <span class="tk-prim">u64</span> = is_mstatus ? csr_wdata : ((r_mstatus &amp; ~sstatus_mask) | (csr_wdata &amp; sstatus_mask))
+    <span class="tk-kw">wire</span> mstatus_warl : <span class="tk-prim">u64</span> = (mstatus_sw &amp; mstatus_wmask) | mstatus_ro | ((mstatus_sw &amp; (<span class="tk-num">1</span> &lt;&lt; <span class="tk-num">12</span>)) &gt;&gt; <span class="tk-num">1</span>)</pre>
+  </div>
+</section>
+
+<section id="s4">
+  <h2>委派：谁家门口的信</h2>
+  <p>陷阱进 M 还是进 S，由两张掩码分工：<strong><code>medeleg</code> 管异常、<code>mideleg</code> 管中断</strong>；命中掩码位且当前态 ≤ S，才走 S 侧。异常侧收全值（每一条异常都可以选择委派），中断侧只收 S 侧的三个源——<code>mideleg</code> 的写侧掩码是 <code>0x222</code>（SSIP(1) / STIP(5) / SEIP(9)），MSI(3) / MTI(7) / MEI(11) 按规范<strong>不可委派</strong>，写进来也落不回。</p>
+  <p>这就是"内核与固件分家"的那一刀：OpenSBI 跑在 M 态，把内核该自己管的缺页、定时器中断委派下去；内核在 S 态处理这些东西，不用每次都敲 M 态的门。而 S 态要碰固件（比如读时间、发核间中断），只有一条 <code>ecall</code>——cause 9，进 M 态，由 OpenSBI 的 trap handler 接活。这就是 SBI。</p>
+</section>
+
+<section id="s5">
+  <h2>三态落地的那几拍</h2>
+  <p>判据表在 <code>ext/csr.prism</code> 的 <code>csr_check</code>：100 拍、28 列、74 组行内期望。把 U 态前后那几拍摘出来（<code>priv</code> 列是当前特权态，<code>csr_illegal_priv</code> 是高侧号的第二重门）：</p>
+  <div class="term">
+    <div class="term-header">$ prism run whitebow/ext/csr.prism --run csr_check --debug   <span class="term-hint">（100 拍 × 28 列，摘 7 拍）</span></div>
+    <div class="term-body">cycle	mret	sret	trap_cause	trap_to_s	csr_illegal_priv	priv
+86	1	0	0	0	0	0      ← mret：MPP=U(0) ⇒ 真落 U 态
+87	0	0	0	0	1	0      ← U 态读 mscratch（M 侧号）：第二重门拦下
+88	0	0	0	0	1	0      ← U 态写 stimecmp：同样拦下
+89	0	0	11	1	0	1      ← 一条 trap、委派放行、当前 U ⇒ 进 S 侧
+91	0	1	0	0	0	0      ← sret：SPP=0 ⇒ 回 U（不是"恒回 S"了）
+93	0	0	11	0	0	3      ← 同一发 trap、这次不委派 ⇒ 进 M
+97	1	0	0	0	0	1      ← mret：MPP=S ⇒ 回 S
+# expect: 74/74 拍有断言 · 6 列 · 全等 ✅</div>
+  </div>
+  <p>对照第 15 集那张表看：那时 <code>sret</code> 出来 priv 恒落 1（S）；现在第 91 拍落的是 0（U）——<strong>同一条指令，多了一个可回的地方</strong>。U 态里摸 M 侧 / S 侧号，全被号表第二重门挡住（87 / 88 两拍）——低特权侧碰不到高特权状态，这一条不靠软件自觉，靠硬件拦截。</p>
+</section>
+
+<section id="s6">
+  <h2>还差一块拼图：谁"消费"这些态</h2>
+  <p>到这一集为止，态切换的机器全齐了——但地址翻译还没有。M / S 态都在跑<strong>物理地址</strong>；<code>satp</code> 号在表上、值存得下、也把三个出口（<code>mmu_en</code> / <code>root_ppn</code> / <code>asid</code>）引了出来，消费它们的 MMU 机构是第五日的事。眼下只把写侧的 WARL 钉住了：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · satp 的 MODE WARL</span></div>
+<pre>    <span class="tk-com">// ---- satp 的 WARL：MODE[63:60] 只收 Bare(0) 与 Sv39(8) ----</span>
+    <span class="tk-com">// 规范：写入不支持的 MODE 时整笔写没有效果，任何一位都不改（不是只掩 MODE 那四位，</span>
+    <span class="tk-com">// 这点与 hgatp 的普通 WARL 相反）。内核探测档位靠 csrw 之后回读：Sv48/Sv57 落不下就</span>
+    <span class="tk-com">// 降一档重试，所以&quot;整笔 NOP&quot;恰好是让它自己退回 Sv39 的那一下。</span>
+    <span class="tk-com">// 不遮的后果比 trap 难查：Sv48 写进来后 [63:60]=9，mmu_sv39 判假 ⇒ 内核以为在翻译、</span>
+    <span class="tk-com">// 我们一路直通。</span>
+    <span class="tk-kw">wire</span> satp_mode_ok : <span class="tk-prim">u1</span>  = csr_wdata[<span class="tk-num">63</span>:<span class="tk-num">60</span>] <span class="tk-kw">in</span> [<span class="tk-num">0</span>, <span class="tk-num">8</span>]
+    <span class="tk-kw">wire</span> satp_warl    : <span class="tk-prim">u64</span> = satp_mode_ok ? csr_wdata : r_satp</pre>
+  </div>
+  <p>顺便把两条"这台机器的脾气"登记在案：<code>wfi</code> 现在译成 <strong>NOP</strong>——不睡，只是白等；计数器与三道门（<code>mcounteren</code> 的 CY/TM/IR、<code>scounteren</code> 第二道、<code>mcountinhibit</code>）已就位，谁读得到 <code>time</code> / <code>cycle</code> 由门说了算。</p>
+</section>
+
+<section id="s7">
+  <h2>小结</h2>
+  <ul>
+    <li><code>ecall</code> 按当前态编 cause（U=8 / S=9 / M=11）、<code>ebreak</code> 报 3；<strong>系统调用是一次陷阱，不是跳转</strong>。</li>
+    <li>特权门控：<code>mret</code> 只 M、<code>sret</code>/<code>sfence.vma</code> ≥S；不够格 = 非法指令 cause 2，不静默。</li>
+    <li>进陷阱压 MPP / SPP 与 PIE，退陷阱弹回来——<strong>特权级只沿 mret / sret 两条路变</strong>；MPP 合法集 {U, S, M}，保留编码 2 必须挡。</li>
+    <li>委派：异常走 <code>medeleg</code>（收全值）、中断走 <code>mideleg</code>（只收 0x222）——内核与固件分家的那一刀。</li>
+    <li>判据：<code>csr_check</code> 100 拍 × 28 列、74 组行内期望全等；U 态落地那几拍逐行摘在上面。</li>
+    <li>没消费的登记在案：<code>satp</code> 只存不译（第五日 MMU）、<code>wfi</code>=NOP。</li>
+  </ul>
+</section>
+
+<section id="s8">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre>pip install prism-hdl
+
+<span class="tk-com"># 白虹仓库（riscv-prism）：</span>
+prism run whitebow/ext/csr.prism --run csr_check --debug   <span class="tk-com"># 100 拍 × 28 列</span>
+
+<span class="tk-com"># 退休序级的整机探针（判决在 tests/test_cpu.py 里）：</span>
+prism run whitebow/whitebow.prism --run whitebow_cpu_demo --debug</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第四日 · 有生命的活物 —— 三态齐了，下一集让长跑跑得起百万拍</span>
+  七日创造 · 第四日 · 有生命的活物 · 第 20 集 · <a href="21-verilator.html">下一集 →</a> · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>

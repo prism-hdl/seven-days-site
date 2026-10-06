@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 38 集 · 预测升级：四件套与返回地址栈 · 创世记 · 第七日 · 安息</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.code pre.wrap { white-space:pre-wrap; word-break:break-word; }
+
+.tk-kw{color:#c57bff;font-weight:500}.tk-decl{color:#e08aff;font-weight:600}.tk-name{color:#fff;font-weight:500}
+.tk-dir{color:#7ee8d8;font-weight:500}.tk-typ{color:#4ad6b4}.tk-prim{color:#79dfff}
+.tk-rf{color:#ffd479;font-weight:500}.tk-rw{color:#b8a0e0}.tk-stor{color:#4ad6b4;font-weight:600}
+.tk-sf{color:#c5b890}.tk-sv{color:#8ab4f8}.tk-op{color:#ff8a4c}.tk-num{color:#79b8ff}
+.tk-com{color:#6c7488;font-style:italic}.tk-ann{color:#ff79c6}.tk-fn{color:#4ad6b4}.tk-str{color:#ffd479}.tk-hex{color:#ffb86b}
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：让芯片开口说话</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与&quot;打拍出数&quot;</span></a></li><li><a href="37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="38-bpred.html" class="on" aria-current="page"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第七日 · 安息 · 第 38 集</div>
+    <h1>预测升级<br><em>四件套与返回地址栈</em></h1>
+    <p class="subtitle">流水线挖到 12 级，猜错的代价跟着翻倍——这一集把"猜"从两级位置前递的余粮里升级出来：<strong>返回地址栈 12 项（由退休推送，误预测不需要修栈）</strong>，主预测器换成四件套——L0-BTB、BTB、双表 BHT、IND-BTB。判据只落在计数器和跑分上——<strong>退休序永远正确，判据选错载体等于没判</strong>。</p>
+    <div class="verse">
+      "就安息了。"
+      <cite>—— 《创世记》 2:3</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="37-mem.html">← 第 37 集 · 非阻塞访存：miss 期间，流水继续退休</a>
+  <a href="39-coremark.html">第 39 集 · CoreMark 跑分：到 A76 那一档 →</a>
+</div>
+
+<section id="s1">
+  <h2>越深越贵：把"猜"升级</h2>
+  <p>第六日的白虹靠一对 BTB + BHT 按 PC 猜方向与目标，猜错冲两拍——五级时代这笔账很便宜。主干 12 级之后，一次误预测要冲掉半条流水线（第 36 集的第一笔账），<strong>预测器的每一分命中，价值都翻倍</strong>。这一集升级两类预测：返回地址（函数返回去哪儿）与主预测器（往哪儿取、跳不跳）。</p>
+</section>
+
+<section id="s2">
+  <h2>返回地址栈：栈只在提交点动</h2>
+  <p>调用 <code>jal ra, func</code>、返回 <code>jalr x0, 0(ra)</code>——每条返回的目标其实就是刚才那条调用的下一条。上一代对 <code>jalr</code> 是"不进表、恒预测不跳"，白等一拍。这一代配一个<strong>返回地址栈（RAS）：12 项，每项存 pc + 特权级</strong>。机制里最关键的一条纪律：</p>
+  <div class="callout key">
+    <span class="callout-title">由"退休"推送，不由"预测"推送</span>
+    栈只在<strong>提交点</strong>动：一条调用<strong>真的退休了</strong>，才把返回地址压栈；一条返回真的退休了，才弹栈。这样栈里的内容是"确定发生过的事"，推测路径只管查、不管改——<strong>误预测不需要修栈，回滚逻辑为零</strong>。（这也是最省事的那条路必须绕开的坑：让预测路径自己推栈，猜错时你就要把推错的栈项找回来——回滚逻辑全回来了。）
+  </div>
+  <p>查栈在取指级完成：<code>jalr</code> 照 PC 查 RAS，命中就顺着栈顶预测跳；不命中再退回"不跳"。</p>
+</section>
+
+<section id="s3">
+  <h2>主预测器四件套</h2>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>件</th><th>规模</th><th>管什么</th></tr>
+      <tr><td><strong>L0-BTB</strong></td><td class="mono">16 项</td><td>取指级就能重定向的"最快一层"：只装最热的几条跳转</td></tr>
+      <tr><td><strong>BTB</strong></td><td class="mono">1024 × 4 路</td><td>目标地址表：这条 PC 跳过吗、跳到哪</td></tr>
+      <tr><td><strong>双表 BHT</strong></td><td class="mono">pre 1024×64 + sel 128×16</td><td>方向预测：一张"主表"给答案、一张"选择表"决定信哪张；<strong>22 位向量历史</strong>参与索引——长历史能认出"上次这串形状时走了哪边"</td></tr>
+      <tr><td><strong>IND-BTB</strong></td><td class="mono">256 项</td><td>间接跳转（查表跳转、switch）的单表缓存，带 8 位路径历史</td></tr>
+    </table>
+  </div>
+  <p>一处<strong>明确不照抄</strong>大核的做法：BTB 的索引粒度。一手参照用 16 字节粒度（<code>pc[12:3]</code>），我们保留自己的 <strong>2 字节粒度 + tag 比对</strong>——这颗核吃过"同一 32 位字里的压缩指令邻居误命中"的亏，2 字节粒度是它的回归判据，不因为"大厂这么写"就换。</p>
+</section>
+
+<section id="s4">
+  <h2>判据怎么钉</h2>
+  <ul>
+    <li><strong>RAS 的收益只能落在计数器上</strong>：返回栈给错目标只是一次误预测，EX 会纠正，<strong>退休序永远正确</strong>。所以判据是"返回类 <code>jalr</code> 误预测计数下降 + 跑分上升"——判据选错载体等于没判。</li>
+    <li><strong>RAS 的反证配套</strong>：把栈从"退休推送"改成"预测路径推送"且不加回滚，返回密集段的误预测计数必须<strong>显著上升</strong>；不动，说明计数器没承重，而不是 RAS 没问题。</li>
+    <li><strong>主预测器</strong>：L0 命中率、BTB 命中率、方向准确率各自进归因表；<code>src_br</code>（第 33 集十源表里的冲刷源）的拍数下降要能按件归因到以上四个。</li>
+    <li><strong>底线不变</strong>：退休序与程序序逐条一致。</li>
+  </ul>
+</section>
+
+<section id="s5">
+  <h2>小结</h2>
+  <ul>
+    <li>深流水让误预测变贵，预测升级不是锦上添花，是把第 36 集那笔账还回来。</li>
+    <li>RAS：12 项、每项 pc + 特权级、<strong>由退休推送</strong>——栈只在提交点动，回滚为零；判据落在"返回类误预测计数"。</li>
+    <li>四件套：L0-BTB 16 + BTB 1024×4 + 双表 BHT（22 位历史）+ IND-BTB 256；BTB 粒度保留自己的 2 字节。</li>
+    <li>下一集：把这一路的账，全部摆到跑分台上。</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第七日 · 安息 · 预测升级 —— 把"猜"的每一分都记在计数器上；下一集：跑分</span>
+  七日创造 · 第七日 · 安息 · 第 38 集 · <a href="39-coremark.html">下一集 →</a> · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>
