@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 8 集 · decoder：理解世界 · 创世记 · 第二日 · 空气与水</title>
+<title>第 8 集 · Decoder：理解世界 · 创世记 · 第二日 · 空气与水</title>
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 :root {
@@ -142,12 +142,12 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html" class="on" aria-current="page"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-cpu-top.html"><span class="n">EP 9</span><span class="t">cpu_top · 一具身体</span></a></li><li><a href="10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">写作中</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">写作中</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">soc.prism · 一片真芯片</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">uart8250 · 让芯片开口说话</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></span></li><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">Verilator · 跑得起百万拍</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">flag · 未达成</span></h3><ul></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html" class="on" aria-current="page"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">写作中</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">写作中</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li class="todo"><span class="row"><span class="n">EP 18</span><span class="t">soc.prism · 一片真芯片</span></span></li><li class="todo"><span class="row"><span class="n">EP 19</span><span class="t">uart8250 · 让芯片开口说话</span></span></li><li class="todo"><span class="row"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></span></li><li class="todo"><span class="row"><span class="n">EP 21</span><span class="t">Verilator · 跑得起百万拍</span></span></li><li class="todo"><span class="row"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">条目待定</span></h3><ul></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">flag · 未达成</span></h3><ul></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">七日创造 · 第二日 · 空气与水 · 第 8 集</div>
-    <h1>理解世界<br><em>decoder</em></h1>
+    <h1>理解世界<br><em>Decoder</em></h1>
     <p class="subtitle">前三颗器官：会走、会记、会算。但它们<strong>不知道该做什么</strong>——指令流进来只是一串 32 位的 0 和 1。这一集造最后一颗器官，它唯一的本事是<strong>理解</strong>。</p>
 
     <div class="verse">
@@ -173,7 +173,7 @@ html.nav-open .nav-scrim { display: block; }
         <line x1="140" y1="128" x2="240" y2="128" stroke="#c9b8ff" stroke-width="2.5" marker-end="url(#a8)"/>
 
         <rect x="244" y="60" width="170" height="136" rx="12" fill="url(#dbody)" stroke="#8a5bff" stroke-width="1.5"/>
-        <text x="329" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" font-weight="600" fill="#fff">decoder</text>
+        <text x="329" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" font-weight="600" fill="#fff">Decoder</text>
         <text x="329" y="140" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="11" fill="rgba(255,255,255,.6)">纯组合 · 只翻译不动手</text>
         <text x="329" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,.4)">opcode / funct3 / funct7</text>
 
@@ -396,7 +396,7 @@ html.nav-open .nav-scrim { display: block; }
 
   <div class="callout warn">
     <span class="callout-title">一个不易察觉的坑：store 的 <code>instr[11:7]</code> 不是 rd</span>
-    <p style="margin:0;">S 型格式把低 5 位当 <code>imm[4:0]</code> 用——那一格<strong>根本不是目的寄存器</strong>。如果 decoder 不门控就把 <code>rd_raw</code> 报出去，store 指令会顺手把一个随机值当寄存器号送到寄存器堆。所以最后加一行：</p>
+    <p style="margin:0;">S 型格式把低 5 位当 <code>imm[4:0]</code> 用——那一格<strong>根本不是目的寄存器</strong>。如果 Decoder 不门控就把 <code>rd_raw</code> 报出去，store 指令会顺手把一个随机值当寄存器号送到寄存器堆。所以最后加一行：</p>
     <pre style="margin:10px 0 0;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#d6d9e0;white-space:pre">rd = reg_wen ? rd_raw : 0</pre>
     <p style="margin:8px 0 0;">不写回时把目的寄存器报成 0——等于写 x0，天然无害。<strong>防御性默认值比"下游自己小心"可靠。</strong></p>
   </div>
@@ -410,7 +410,7 @@ html.nav-open .nav-scrim { display: block; }
   <div class="term">
     <div class="term-header">▸ prism run examples/day2/decoder.prism --run decoder_check --debug</div>
     <div class="term-body">[run] decoder_check: 18 拍 golden 直跑完成
-# run: decoder_check  design: decoder_top  stop: end of stim (18 cycles)
+# run: decoder_check  design: DecoderTop  stop: end of stim (18 cycles)
 cycle  rd  alu_op  alu_src  is_branch  is_jal        imm  is_w_op
 0       1       0        1          0       0          5        0
 1       1       0        1          0       0       1024        0
@@ -436,7 +436,7 @@ cycle  rd  alu_op  alu_src  is_branch  is_jal        imm  is_w_op
   <div class="term">
     <div class="term-header">▸ prism run examples/day2/decoder.prism --run decoder_perm --debug</div>
     <div class="term-body">[run] decoder_perm: 18 拍 golden 直跑完成
-# run: decoder_perm  design: decoder_top  stop: end of stim (18 cycles)
+# run: decoder_perm  design: DecoderTop  stop: end of stim (18 cycles)
 cycle  reg_wen  mem_ren  mem_wen  is_illegal
 0            1        0        0           0
 1            1        0        0           0
@@ -482,7 +482,7 @@ $ prism cosim examples/day2/decoder.prism --run decoder_perm
 
   <div class="callout">
     <span class="callout-title"><code>is_illegal</code> 只是一个位，谁来用它？</span>
-    <p style="margin:0;">这一集的<em>报告</em>是完整的，<em>处置</em>还没装：第九集那颗 <code>cpu_top</code> 不拿这一位做门控，非法编码照样读、照样写回，机器不停——最小机器先把真程序跑通。真核里这道门是装上的，写法是
+    <p style="margin:0;">这一集的<em>报告</em>是完整的，<em>处置</em>还没装：第九集那颗 <code>CpuTop</code> 不拿这一位做门控，非法编码照样读、照样写回，机器不停——最小机器先把真程序跑通。真核里这道门是装上的，写法是
     <code>wire rf_wen_eff : u1 = dec.reg_wen &amp; legal -&gt; rf.wen</code>，一条线把"非法"翻译成"这一拍什么都不许落地"；再往上才是异常：<code>mtvec</code> / <code>mcause</code> 是第三日 CSR 那一集的活。</p>
     <p style="margin:8px 0 0;">倒过来试一次：把 <code>0x63</code> 那一行的 <code>funct3</code> 允许集里删掉 <code>1</code>——<code>bne</code> 也会被判非法。"不认识这条指令"和"这条指令不该在此时出现"是两件事，后者才需要陷阱通路来处置。</p>
   </div>
@@ -523,7 +523,7 @@ prism cosim examples/day2/decoder.prism --run decoder_perm</pre>
 </main>
 
 <footer>
-  <span class="next">第 9 集 · cpu_top：一具身体</span>
+  <span class="next">第 9 集 · CpuTop：一具身体</span>
   七日创造 · 第二日 · 空气与水 · 第 8 集 · <a href="../index.html">返回首页</a>
 </footer>
 
