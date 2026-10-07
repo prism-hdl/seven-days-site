@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 27 集 · PMP：S / U 能访问哪段物理内存 · 创世记 · 第五日 · 照着形象造人</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.code pre.wrap { white-space:pre-wrap; word-break:break-word; }
+
+.tk-kw{color:#c57bff;font-weight:500}.tk-decl{color:#e08aff;font-weight:600}.tk-name{color:#fff;font-weight:500}
+.tk-dir{color:#7ee8d8;font-weight:500}.tk-typ{color:#4ad6b4}.tk-prim{color:#79dfff}
+.tk-rf{color:#ffd479;font-weight:500}.tk-rw{color:#b8a0e0}.tk-stor{color:#4ad6b4;font-weight:600}
+.tk-sf{color:#c5b890}.tk-sv{color:#8ab4f8}.tk-op{color:#ff8a4c}.tk-num{color:#79b8ff}
+.tk-com{color:#6c7488;font-style:italic}.tk-ann{color:#ff79c6}.tk-fn{color:#4ad6b4}.tk-str{color:#ffd479}.tk-hex{color:#ffb86b}
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="23-icache.html"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="24-dcache.html"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="25-bpredict.html"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="26-mmu.html"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="27-pmp.html" class="on" aria-current="page"><span class="n">EP 27</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第五日 · 照着形象造人 · 第 27 集</div>
+    <h1>S / U 能访问哪段物理内存<br><em>PMP：16 个条目的区间与权限寄存器面</em></h1>
+    <p class="subtitle">上一集虚拟地址成立了——但"翻到哪"与"许不许翻"是两件事。进 M 态之外，每一笔取指与访存都该先过一道<strong>物理内存保护</strong>：16 个条目，每条一段区间加一组权限。这一集先把<strong>寄存器面</strong>装上：两条 <code>pmpcfg</code>、16 条 <code>pmpaddr</code>、按条目的锁定与 WARL——匹配判决的接线边界，照实讲在最后一节。</p>
+    <div class="verse">
+      "也要管理地上各样行动的活物。"
+      <cite>—— 《创世记》 1:28</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="26-mmu.html">← 第 26 集 · MMU 与 Sv39：虚拟地址第一次成立</a>
+  <a href="../index.html#day6">第 28 集 ·（第六日，待写）→</a>
+</div>
+
+<section id="s1">
+  <h2>谁需要这道门</h2>
+  <p>MMU 管的是"虚拟地址翻到哪个物理地址"——它翻译，但不挑拣。真正回答"<strong>S 态与 U 态能访问哪段物理内存</strong>"的是另一套机构：PMP（物理内存保护）。规则的形状很朴素：16 个条目，每条给一段区间与一组 R/W/X 权限；M 态默认全通，<strong>M 之外的访问先过它</strong>——连页表遍历也算（按 S 的访问裁决）。</p>
+  <p>头注把规范口径逐行摆开（本集交付的是它的寄存器面，见最后一节）：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/pmp.prism · 规范口径</span></div>
+<pre class="wrap"><span class="tk-com">// 规范口径（§3.7）：</span>
+<span class="tk-com">//   pmpcfg 位段   bit7=L，[6:5] 保留读零，[4:3]=A，bit2=X，bit1=W，bit0=R</span>
+<span class="tk-com">//   RV64 只有偶号 pmpcfg0（条目 0-7）、pmpcfg2（条目 8-15）…，**奇号是非法 CSR**</span>
+<span class="tk-com">//   条目数        实现可选 0/16/64，本核 16；低位条目必须先实现</span>
+<span class="tk-com">//   保留组合      R=0 而 W=1 不允许存在 ⇒ 写入时清掉 W</span>
+<span class="tk-com">//   L 锁定        置 1 后该条目（cfg 与 addr 都算）在本条目内不可再改，直到复位</span>
+<span class="tk-com">//   pmpaddr       RV64 存 PA[55:2]；本核 PA=40 位 ⇒ WARL 只收 [37:0]，其余位读零</span>
+<span class="tk-com">//   匹配          OFF 不匹配；TOR = 上界（下界＝前一条目的 addr，条目 0 下界 0）；</span>
+<span class="tk-com">//                 NA4/NAPOT 都是 4 字节粒度（pmpaddr 低位连续 1 的个数定区域大小）</span>
+<span class="tk-com">//   生效特权      &lt;M 的访问才查（含页表遍历，按 S 算）；M 态默认全通（MMWP/MML 属</span>
+<span class="tk-com">//                 mseccfg＝Smepmp，本步不做）</span>
+<span class="tk-com">//   违例           取指 cause 1 / load cause 5 / store·AMO cause 7，精确定位</span></pre>
+  </div>
+</section>
+
+<section id="s2">
+  <h2>16 个条目怎么放：两个标量、一张阵列</h2>
+  <p>存储形态的选择被写口数量逼出来了：<strong>一次 <code>pmpcfg0</code> 写要同时动 8 个条目</strong>——那是 8 个写口，mem 只有一个，所以 cfg 只能放标量 <code>reg</code>（一份 64 位里逐字节并行落位）；<code>pmpaddr</code> 一拍最多写一项，放阵列里——反正匹配侧要 16 路并行组合读，阵列读是免费的。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/pmp.prism · 号→存储只译一次</span></div>
+<pre class="wrap">    <span class="tk-com">// ---- CSR 侧：号→存储单元只在这里译一次 ----</span>
+    <span class="tk-kw">in</span>  csr_addr  : Signal&lt;<span class="tk-prim">u12</span>&gt;
+    <span class="tk-kw">in</span>  csr_wen   : Signal&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// csr 已把"这条 CSR 指令真的该写"算好（含特权门与 rs1≠0）</span>
+    <span class="tk-kw">in</span>  csr_wdata : Signal&lt;<span class="tk-prim">u64</span>&gt;
+    <span class="tk-kw">out</span> csr_rdata : Signal&lt;<span class="tk-prim">u64</span>&gt;
+    <span class="tk-kw">out</span> is_pmp    : Signal&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// 这个 CSR 号归 PMP（csr 用它上白名单，不再列第二份号表）</span>
+
+    <span class="tk-com">// 一次 pmpcfg0 写要同时动 8 个条目＝8 个写口 ⇒ cfg 只能放标量 reg（mem 一个写口）；</span>
+    <span class="tk-com">// pmpaddr 一拍最多写一项 ⇒ 放阵列里，匹配侧要 16 路并行组合读，阵列读是免费的。</span>
+    <span class="tk-kw">reg</span>  r_pmpcfg0 : <span class="tk-prim">u64</span> = <span class="tk-num">0</span>
+    <span class="tk-kw">reg</span>  r_pmpcfg2 : <span class="tk-prim">u64</span> = <span class="tk-num">0</span>
+    <span class="tk-kw">mem</span>  r_pmpaddr : [<span class="tk-num">16</span>] <span class="tk-prim">u64</span> = <span class="tk-num">0</span>
+
+    <span class="tk-kw">wire</span> is_cfg0  : <span class="tk-prim">u1</span> = csr_addr == <span class="tk-num">0x3A0</span>
+    <span class="tk-kw">wire</span> is_cfg2  : <span class="tk-prim">u1</span> = csr_addr == <span class="tk-num">0x3A2</span>
+    <span class="tk-kw">wire</span> is_paddr : <span class="tk-prim">u1</span> = (csr_addr &gt;= <span class="tk-num">0x3B0</span>) &amp; (csr_addr &lt;= <span class="tk-num">0x3BF</span>)
+    is_pmp    = is_cfg0 | is_cfg2 | is_paddr
+    csr_rdata = is_cfg0 ? r_pmpcfg0 : (is_cfg2 ? r_pmpcfg2 : (is_paddr ? r_pmpaddr[csr_addr[<span class="tk-num">3</span>:<span class="tk-num">0</span>]] : <span class="tk-num">0</span>))</pre>
+  </div>
+  <p>这段代码还有一个结构性决定：<strong>号表单点化</strong>。号→存储的译码、白名单的手续全在 <code>pmp</code> 体内，对外只报一根 <code>is_pmp</code>；CSR 的白名单直接引用它，不再列第二份号表——号只译一次，白名单与存储就不会分叉。</p>
+</section>
+
+<section id="s3">
+  <h2>cfg 落位的两条纪律，用位并行写</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/pmp.prism · cfg 写入</span></div>
+<pre class="wrap">    <span class="tk-com">// ---- cfg 写入的两条落位（一份 64 位里 8 个条目，逐条目并行算）----</span>
+    <span class="tk-com">// 1) 每条目只收 L|A|X|W|R（0x9F）；R=0 而 W=1 是保留组合 ⇒ **W 只在 R=1 时保留**：</span>
+    <span class="tk-com">//    先把所有 W 位清掉（~0x02 掩），再把"R 位左移一位"与原 W 位相与放回去。</span>
+    <span class="tk-com">// 2) 锁定：只看**旧值**里 L=1 的条目（这一拍写进去的 L 当场生效、下一次才挡）⇒ 那一</span>
+    <span class="tk-com">//    整字节保持不动，其余条目照写。故把每字节的 bit7 摊成整字节掩码，逐字节列开——</span>
+    <span class="tk-com">//    乘 0xFF 会被推成 73 位积宽（截断虽无害但报得响），宁可写长一点也不留噪声告警。</span>
+    <span class="tk-kw">wire</span> pmp_w_raw  : <span class="tk-prim">u64</span> = csr_wdata &amp; <span class="tk-num">0x9F9F9F9F9F9F9F9F</span>
+    <span class="tk-kw">wire</span> pmp_w_keep : <span class="tk-prim">u64</span> = pmp_w_raw &amp; <span class="tk-num">0x0202020202020202</span> &amp; ((pmp_w_raw &amp; <span class="tk-num">0x0101010101010101</span>) &lt;&lt; <span class="tk-num">1</span>)
+    <span class="tk-kw">wire</span> pmp_w_fix  : <span class="tk-prim">u64</span> = (pmp_w_raw &amp; <span class="tk-num">0xFDFDFDFDFDFDFDFD</span>) | pmp_w_keep
+    <span class="tk-kw">wire</span> pmp_keep0  : <span class="tk-prim">u64</span> = (r_pmpcfg0[<span class="tk-num">7</span>:<span class="tk-num">7</span>] ? <span class="tk-num">0xFF</span> : <span class="tk-num">0</span>) | (r_pmpcfg0[<span class="tk-num">15</span>:<span class="tk-num">15</span>] ? <span class="tk-num">0xFF00</span> : <span class="tk-num">0</span>) | (r_pmpcfg0[<span class="tk-num">23</span>:<span class="tk-num">23</span>] ? <span class="tk-num">0xFF0000</span> : <span class="tk-num">0</span>) | (r_pmpcfg0[<span class="tk-num">31</span>:<span class="tk-num">31</span>] ? <span class="tk-num">0xFF000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg0[<span class="tk-num">39</span>:<span class="tk-num">39</span>] ? <span class="tk-num">0xFF00000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg0[<span class="tk-num">47</span>:<span class="tk-num">47</span>] ? <span class="tk-num">0xFF0000000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg0[<span class="tk-num">55</span>:<span class="tk-num">55</span>] ? <span class="tk-num">0xFF000000000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg0[<span class="tk-num">63</span>:<span class="tk-num">63</span>] ? <span class="tk-num">0xFF00000000000000</span> : <span class="tk-num">0</span>)
+    <span class="tk-kw">wire</span> pmp_keep2  : <span class="tk-prim">u64</span> = (r_pmpcfg2[<span class="tk-num">7</span>:<span class="tk-num">7</span>] ? <span class="tk-num">0xFF</span> : <span class="tk-num">0</span>) | (r_pmpcfg2[<span class="tk-num">15</span>:<span class="tk-num">15</span>] ? <span class="tk-num">0xFF00</span> : <span class="tk-num">0</span>) | (r_pmpcfg2[<span class="tk-num">23</span>:<span class="tk-num">23</span>] ? <span class="tk-num">0xFF0000</span> : <span class="tk-num">0</span>) | (r_pmpcfg2[<span class="tk-num">31</span>:<span class="tk-num">31</span>] ? <span class="tk-num">0xFF000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg2[<span class="tk-num">39</span>:<span class="tk-num">39</span>] ? <span class="tk-num">0xFF00000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg2[<span class="tk-num">47</span>:<span class="tk-num">47</span>] ? <span class="tk-num">0xFF0000000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg2[<span class="tk-num">55</span>:<span class="tk-num">55</span>] ? <span class="tk-num">0xFF000000000000</span> : <span class="tk-num">0</span>) | (r_pmpcfg2[<span class="tk-num">63</span>:<span class="tk-num">63</span>] ? <span class="tk-num">0xFF00000000000000</span> : <span class="tk-num">0</span>)
+    <span class="tk-kw">wire</span> pmpcfg0_nx : <span class="tk-prim">u64</span> = (r_pmpcfg0 &amp; pmp_keep0) | (pmp_w_fix &amp; ~pmp_keep0)
+    <span class="tk-kw">wire</span> pmpcfg2_nx : <span class="tk-prim">u64</span> = (r_pmpcfg2 &amp; pmp_keep2) | (pmp_w_fix &amp; ~pmp_keep2)</pre>
+  </div>
+  <p>两条纪律逐条读：<strong>① 保留组合当场清</strong>——<code>R=0 而 W=1</code> 不允许存在，所以"W 只在 R=1 时保留"：先把所有 W 位清掉，再把"R 位左移一位"与原 W 位与回去。全程位并行，一拍落 8 个条目。<strong>② 锁定只看旧值</strong>——判定用的是 <code>r_pmpcfg</code>（旧值）里 L=1 的条目：这一拍写进去的 L 当场生效，下一次才挡人。</p>
+  <p>注释里还有一条真实的工程取舍：位掩码本可以乘 <code>0xFF</code> 展开，但那会被推成 73 位积宽（截断虽无害、报得响）——宁可把 8 个字节逐个列开，也不留噪声告警。<strong>判据面要干净，噪声也是一种债。</strong></p>
+</section>
+
+<section id="s4">
+  <h2>pmpaddr：按条目锁定与 WARL</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/pmp.prism · addr 写入</span></div>
+<pre class="wrap">    <span class="tk-com">// ---- addr 写入：先判"被写的这一条"锁没锁 ----</span>
+    <span class="tk-com">// 该条目的 cfg 字节挪到低位再取 bit7：pmp_idx 的低 3 位就是它在自己 cfg 寄存器里的</span>
+    <span class="tk-com">// 字节号（8-15 段减 8 后同样落在低 3 位上，u4 相减不回绕出错）。</span>
+    <span class="tk-kw">wire</span> pmp_wr     : <span class="tk-prim">u1</span>  = csr_wen &amp; is_paddr
+    <span class="tk-kw">wire</span> pmp_idx    : <span class="tk-prim">u4</span>  = csr_addr[<span class="tk-num">3</span>:<span class="tk-num">0</span>]
+    <span class="tk-kw">wire</span> pmp_lane   : <span class="tk-prim">u3</span>  = pmp_idx[<span class="tk-num">2</span>:<span class="tk-num">0</span>]
+    <span class="tk-kw">wire</span> pmp_sel2   : <span class="tk-prim">u64</span> = pmp_idx &lt; <span class="tk-num">8</span> ? r_pmpcfg0 : r_pmpcfg2
+    <span class="tk-kw">wire</span> pmp_lane64 : <span class="tk-prim">u64</span> = pmp_sel2 &gt;&gt; (pmp_lane * <span class="tk-num">8</span>)
+    <span class="tk-kw">wire</span> pmp_addr_lk: <span class="tk-prim">u1</span>  = pmp_lane64[<span class="tk-num">7</span>:<span class="tk-num">7</span>]
+
+    <span class="tk-kw">on</span> <span class="tk-kw">clock</span> {
+        <span class="tk-kw">if</span> (csr_wen &amp; is_cfg0) { r_pmpcfg0' = pmpcfg0_nx }
+        <span class="tk-kw">if</span> (csr_wen &amp; is_cfg2) { r_pmpcfg2' = pmpcfg2_nx }
+        <span class="tk-kw">if</span> (pmp_wr &amp; !pmp_addr_lk) { r_pmpaddr'[pmp_idx] = csr_wdata &amp; <span class="tk-num">0x0000003FFFFFFFFF</span> }
+    }
+}</pre>
+  </div>
+  <p>三点：<strong>锁是按条目的</strong>——要写 <code>pmpaddrN</code>，先看条目 N 自己的 cfg 字节 bit7（<code>pmp_lane64</code> 那两行把字节挪到低位再取；8–15 段减 8 后同样落在低 3 位，u4 相减不回绕）；<strong>WARL 截位</strong>——本核 PA 40 位，<code>pmpaddr</code> 只收 <code>PA[39:2]</code>（掩码 <code>0x3FFFFFFFFF</code>），其余位读零；<strong>RV64 只有偶号 <code>pmpcfg</code></strong>——0x3A1 这类奇号不是号，写被白名单拦下。</p>
+</section>
+
+<section id="s5">
+  <h2>判据：16 拍 × 7 列（行内期望 2 列），四发反证</h2>
+  <div class="term">
+    <div class="term-header">$ prism run whitebow/ext/csr.prism --run csr_pmp --debug   <span class="term-hint">（全表 16 拍）</span></div>
+    <div class="term-body">cycle	csr_addr	funct3	csr_exec	csr_rs1	rs1_data	csr_rdata	csr_wen
+0	928	2	1	0	0	0	0
+1	944	2	1	0	0	0	0
+2	944	1	1	1	18446744073709551615	274877906943	1
+3	928	1	1	1	31	31	1
+4	928	2	1	0	0	31	0
+5	928	1	1	1	2	0	1
+6	928	1	1	1	257	257	1
+7	928	1	1	1	128	128	1
+8	928	1	1	1	257	384	1
+9	944	1	1	1	16	274877906943	1
+10	945	1	1	1	8192	8192	1
+11	944	2	1	0	0	274877906943	0
+12	945	2	1	0	0	8192	0
+13	930	1	1	1	2233785415175766016	2233785415175766016	1
+14	928	2	1	0	0	384	0
+15	929	1	1	1	255	0	0
+<span class="term-ok"># expect: 16/16 拍有断言 · 2 列 · 全等 ✅</span></div>
+  </div>
+  <p>对着表读：<strong>拍 0–1</strong> 复位后两条 cfg 与 <code>pmpaddr0</code> 都是 0；<strong>拍 2</strong> 向 <code>pmpaddr0</code>（0x3B0）写全 1，读回 <code>0x3FFFFFFFFF</code>——高位读零的 WARL 见证；<strong>拍 3–4</strong> 写 <code>pmpcfg0=0x1F</code> 读回同值（L=0、A=TOR、X/W/R 全开）；<strong>拍 5</strong> 写 <code>0x02</code>（R=0 而 W=1）读回 0——保留组合被清；<strong>拍 6–8</strong> 写条目 1、给条目 0 置 L、再写两条目——读回 <code>0x180</code>：已锁的条目 0 保持不动，条目 1 照写；<strong>拍 15</strong> 写 0x3A1（奇号）——<code>csr_wen=0</code>、读回 0，不是号就是写不进去。</p>
+  <p>四发反证打四根柱子（注入在 <code>iu/pmp.prism</code>，实例在 csr 体内——实现只有一份）：保留组合的 W、按条目的 L 锁定、<code>pmpaddr</code> 的位宽 WARL、锁定条目写不动；每条只让 <code>csr_pmp</code> 对应那一行判红，同源 cosim 依旧无感——十六拍的行内期望是唯一能暴露它的判据。</p>
+</section>
+
+<section id="s6">
+  <h2>边界：寄存器面已落地，匹配判决还没接线</h2>
+  <div class="callout warn">
+    <span class="callout-title">照实写：这一集交付的是寄存器面</span>
+    头注里的匹配规则（OFF / TOR / NA4 / NAPOT 的区域判定、生效特权、违例 cause 1 / 5 / 7）是<strong>规范口径与设计稿</strong>（<code>docs/pmp-design.md</code>）；<strong>匹配判决本身与三个消费方（CSR 总线、IFU 取指、LSU 访存）的接线尚未落地</strong>——现在能跑的是：号与存储、WARL 与锁定、白名单引用、16 拍判据。判决接线按设计稿分步落地，何时接上，这一集不提前说。
+  </div>
+  <p>为什么不把话说满：PMP 是本连载里少见的"寄存器面先行"件——寄存器面（号、存储、WARL、锁定）与判决（匹配、生效特权、违例）可以各自独立验收，前者的判据已经在套件里跑；后者一落地就得带上自己的判据（区域边界、TOR 的下界、NAPOT 的连续 1）。<strong>先交付能验收的那一半。</strong></p>
+</section>
+
+<section id="s7">
+  <h2>小结</h2>
+  <ul>
+    <li>PMP 回答"物理内存谁可碰"：16 条目、M 态默认全通、M 之外的访问先过它（含页表遍历按 S 算）——判决接线见边界节。</li>
+    <li>存储形态由写口数决定：cfg 两个标量 <code>reg</code>（一拍 8 条目位并行落位）、<code>pmpaddr</code> 阵列（16 路并行组合读免费）。</li>
+    <li>两条落位纪律：保留组合 <code>R=0∧W=1</code> 当场清；L 锁定只看旧值（当拍生效、下次才挡）。</li>
+    <li>号表单点化（<code>is_pmp</code>）、RV64 偶号、<code>pmpaddr</code> 只收 <code>PA[39:2]</code>；判据 16 拍 × 7 列 + 四发反证。</li>
+  </ul>
+  <div class="verse-inline">
+    "有晚上，有早晨，是第五日。"
+    <cite>—— 《创世记》 1:23</cite>
+  </div>
+</section>
+
+<section id="s8">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre><span class="tk-com"># 白虹仓库（riscv-prism）</span>
+prism run whitebow/ext/csr.prism --run csr_pmp --debug   <span class="tk-com"># 16 拍 × 7 列</span>
+
+<span class="tk-com"># 常驻套件（test_csr_run 里的 csr_pmp 族 + 四发反证）</span>
+python3 run_tests.py</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第五日 · 照着形象造人 · 完 —— 快与守规矩都齐了；第六日：把 Linux 送上 shell</span>
+  七日创造 · 第五日 · 照着形象造人 · 第 27 集 · <a href="../index.html#day6">下一集（待写）→</a> · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>

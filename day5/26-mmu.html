@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 26 集 · MMU 与 Sv39：虚拟地址第一次成立 · 创世记 · 第五日 · 照着形象造人</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.code pre.wrap { white-space:pre-wrap; word-break:break-word; }
+
+.tk-kw{color:#c57bff;font-weight:500}.tk-decl{color:#e08aff;font-weight:600}.tk-name{color:#fff;font-weight:500}
+.tk-dir{color:#7ee8d8;font-weight:500}.tk-typ{color:#4ad6b4}.tk-prim{color:#79dfff}
+.tk-rf{color:#ffd479;font-weight:500}.tk-rw{color:#b8a0e0}.tk-stor{color:#4ad6b4;font-weight:600}
+.tk-sf{color:#c5b890}.tk-sv{color:#8ab4f8}.tk-op{color:#ff8a4c}.tk-num{color:#79b8ff}
+.tk-com{color:#6c7488;font-style:italic}.tk-ann{color:#ff79c6}.tk-fn{color:#4ad6b4}.tk-str{color:#ffd479}.tk-hex{color:#ffb86b}
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="23-icache.html"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="24-dcache.html"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="25-bpredict.html"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="26-mmu.html" class="on" aria-current="page"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="27-pmp.html"><span class="n">EP 27</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第五日 · 照着形象造人 · 第 26 集</div>
+    <h1>虚拟地址第一次成立<br><em>MMU39 + PTW：4 项 TLB、三级走表、缺页 12 / 13 / 15</em></h1>
+    <p class="subtitle">第 20 集那颗 <code style="background:none;border:none;color:#a678ff">satp</code> 只存不译，"三个消费出口留给第五日"——这一集接上消费者：39 位虚地址按三级页表翻成物理地址，4 项全相联 TLB 挡热路径，全核单份遍历引擎 PTW 走表；缺页按访问类型分 12 / 13 / 15 三种 cause 报出。<strong>命中与走表必须同果</strong>——这是 TLB 唯一真正的正确性不变量。</p>
+    <div class="verse">
+      "使他们管理海里的鱼、空中的鸟、地上的牲畜，和全地。"
+      <cite>—— 《创世记》 1:26</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="25-bpredict.html">← 第 25 集 · 分支预测：把两拍惩罚藏起来</a>
+  <a href="27-pmp.html">第 27 集 · PMP：S / U 能访问哪段物理内存 →</a>
+</div>
+
+<section id="s1">
+  <h2>把 satp 的三个出口接上</h2>
+  <p>第 20 集留了三个消费出口：<code>mmu_en</code>、<code>mmu_root_ppn</code>、<code>mmu_asid</code>。这一集它们各就各位：<code>en</code> 决定 Bare 直通还是 Sv39 翻译，<code>root_ppn</code> 给出根表物理页号，<code>asid</code> 进 TLB 的匹配键。<strong>翻译插在访存之前</strong>：LSU 送的虚地址先过 MMU 变物理地址再进 DCache；取指同款，I/D 两侧各例化一份查询器。</p>
+  <p>本模块独立于 CSR：<code>en</code> / <code>root_ppn</code> / <code>acc</code> / <code>priv</code> / <code>mxr</code> / <code>sum</code> / <code>asid</code> 全部从端口喂——核里由 csr 折叠 <code>satp</code> / <code>mstatus</code> / <code>priv</code> 给出。脱离 CSR 也能自证，是这一集判据能立起来的前提。</p>
+</section>
+
+<section id="s2">
+  <h2>Sv39 的位域与三种缺页</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/mmu.prism · Sv39 位域</span></div>
+<pre class="wrap"><span class="tk-com">// SV39（按 RISC-V 特权规范，位域以 openc910 ct_mmu_ptw.v 一手核对）：</span>
+<span class="tk-com">//   39 位虚地址 = VPN[2](38:30) VPN[1](29:21) VPN[0](20:12) offset(11:0)</span>
+<span class="tk-com">//   3 级：L2 叶=1GiB、L1 叶=2MiB、L0 叶=4KiB；每级一个 8 字节 PTE。</span>
+<span class="tk-com">//   PTE 位域：V[0] R[1] W[2] X[3] U[4] G[5] A[6] D[7] RSW[9:8] PPN[37:10]（PA=40⇒PPN 28 位）</span>
+<span class="tk-com">//   leaf 判据 = R|W|X 非 0；超级页对齐 = L1 叶要 PPN[8:0]=0、L2 叶要 PPN[17:0]=0</span>
+<span class="tk-com">//   （对齐 C910 ptw.v:683-684）；缺页 cause：取指 12 / load 13 / store|AMO 15。</span></pre>
+  </div>
+  <p>三条从位域里直接读出来：<strong>叶判据是 R|W|X 非零</strong>（三位全零是"下一级表的指针"）；<strong>超级页要对齐</strong>——2MiB 叶要求 <code>PPN[8:0]=0</code>、1GiB 叶要求 <code>PPN[17:0]=0</code>（对齐 C910 一手 RTL）；<strong>缺页按访问类型报号</strong>：取指 12、load 13、store/AMO 15——同一个空页，三种访问会报出三个不同的 cause，软件据此区分"该往哪边补页"。</p>
+</section>
+
+<section id="s3">
+  <h2>分层：查询面每侧一份，遍历引擎全核一份</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/mmu.prism · 分层与不变量</span></div>
+<pre class="wrap"><span class="tk-com">// 分层（v2 + Step 3 拆分）：</span>
+<span class="tk-com">//   查询与定案在 MMU39（**每侧一份**：D 面在 LSU，I 面接取指时再例化一份）；</span>
+<span class="tk-com">//   遍历引擎 PTW **全核一份**，I/D 两侧各用一组请求/交付口接它（D 压 I，起手后独占</span>
+<span class="tk-com">//   到自己交付；请求侧被冲刷就 abort 撒手——不撒手会把引擎占死）。</span>
+<span class="tk-com">//   命中 → 组合出 paddr（busy=0），一拍完事；未命中 → 请 PTW 走表，交付那一拍</span>
+<span class="tk-com">//   （=PTW 读到末级 PTE 那一拍）锁存定案，下一拍 busy 落 0、结果保持到 req 撤。</span>
+<span class="tk-com">//   权限/A-D/对齐的判定只在 MMU39 的 finalize 里走一遍：命中项与走表交付项汇成同一组</span>
+<span class="tk-com">//   src_*，所以 hit 与 walk 必然同果（这是 TLB 唯一真正的正确性不变量，PTW 不碰定案）。</span></pre>
+  </div>
+  <p>两处值得单说：<strong>一遍定案</strong>——权限、A/D 位、对齐的判定只在 MMU39 的 <code>finalize</code> 里走一遍，命中项与走表交付项汇成同一组 <code>src_*</code>，所以"命中"与"走表"必然同果；PTW 只负责"把 PTE 搬回来"，不碰定案。这是 TLB 唯一真正的正确性不变量。<strong>单引擎的仲裁</strong>照 C910 <code>ct_mmu_arb</code> 的形状：D 侧压 I 侧，起手后独占到自己交付为止；请求方被冲刷就 <code>abort</code> 放弃请求——<strong>不放弃会把引擎占死</strong>。</p>
+</section>
+
+<section id="s4">
+  <h2>TLB：4 项全相联，sfence 一拍清</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/mmu.prism · TLB 口径</span></div>
+<pre class="wrap"><span class="tk-com">// TLB（v2 简化，拍板点②/⑥）：</span>
+<span class="tk-com">//   4 项全相联；TAG 存 {level, global, asid, vpn27}；DATA 存 {flags(8), ppn(28)}；</span>
+<span class="tk-com">//   valid 用 u4 位掩码（sfence 一拍抹 0，不与 mem 单写口冲突）。</span>
+<span class="tk-com">//   命中：VPN 前缀按 level 比（4K 比 27、2M 比 18、1G 比 9）；ASID 严格匹配，</span>
+<span class="tk-com">//   但 global=1 跨 ASID。</span>
+<span class="tk-com">//   Victim：round-robin，r_victim 每填一次自增。</span></pre>
+  </div>
+  <ul>
+    <li><strong>全相联、4 项</strong>：不分路、不散列，VPN 前缀直接跟 4 项挨个比——4KiB 比 27 位、2MiB 比 18 位、1GiB 比 9 位（大页只比自己那一段前缀）。</li>
+    <li><strong>ASID 严格匹配，但 global=1 跨 ASID</strong>：内核映射打了全局旗的页，换进程不必重走表。</li>
+    <li><strong>valid 用 u4 位掩码</strong>：<code>sfence</code> 一拍把 4 位抹 0——绕开 mem 的单写口，不必逐项清。</li>
+    <li><strong>回填只缓存"成功"的叶 PTE</strong>：fault 不缓存（下次仍重走表）；victim 轮转（<code>r_victim</code> 每填一次自增）。</li>
+  </ul>
+</section>
+
+<section id="s5">
+  <h2>查询侧端口：一次把输入面看全</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/mmu.prism · 查询侧端口</span></div>
+<pre class="wrap">    <span class="tk-com">// ---- 查询侧 ----</span>
+    <span class="tk-kw">in</span>  req       : Signal&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// 翻译请求有效（保持到 busy 落 0）</span>
+    <span class="tk-kw">in</span>  en        : Signal&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// 0=Bare 直通，1=SV39 翻译</span>
+    <span class="tk-kw">in</span>  vaddr     : Signal&lt;<span class="tk-prim">u39</span>&gt;     <span class="tk-com">// 39 位虚地址</span>
+    <span class="tk-kw">in</span>  acc       : Signal&lt;<span class="tk-prim">u2</span>&gt;      <span class="tk-com">// 0=取指 1=load 2=store/AMO</span>
+    <span class="tk-kw">in</span>  priv      : Signal&lt;<span class="tk-prim">u2</span>&gt;      <span class="tk-com">// 特权级：0=U 1=S 3=M</span>
+    <span class="tk-kw">in</span>  mxr       : Signal&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// mstatus.MXR：load 可读 X=1 页</span>
+    <span class="tk-kw">in</span>  sum       : Signal&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// mstatus.SUM：S 态可访问 U 页</span>
+    <span class="tk-kw">in</span>  root_ppn  : Signal&lt;<span class="tk-prim">u28</span>&gt;     <span class="tk-com">// satp.PPN：root 表物理页号</span>
+    <span class="tk-kw">in</span>  asid      : Signal&lt;<span class="tk-prim">u16</span>&gt;     <span class="tk-com">// satp.ASID（TLB 按 ASID 匹配，见拍板点⑥）</span>
+    <span class="tk-kw">in</span>  sfence    : Signal&lt;<span class="tk-prim">u1</span>&gt;      <span class="tk-com">// 1=全清 TLB（v1 语义，拍板点②）</span></pre>
+  </div>
+  <p>端口表就是这份"翻译契约"：地址（39 位虚）、访问类型、特权上下文（<code>priv</code> 含 3=M 态该走直通）、两道页级权限开关（<code>mxr</code> / <code>sum</code>）、根表与 ASID、以及清表请求。</p>
+</section>
+
+<section id="s6">
+  <h2>判据：94 拍 92 组，七发反证各打一根柱子</h2>
+  <p>行内期望 94 拍 / 92 组，家族覆盖：Bare 直通、4KiB 三级、V=0、2MiB 大页与错位、1GiB 巨页、权限矩阵（R-W-X · U · SUM · MXR）、A/D 位，加上 TLB 六条（命中≡走表、大页前缀、ASID 严格、global 跨 ASID、sfence 全清、命中拍重算权限）与两条定案判据（只认它交付的那条 VPN、同页换偏移 paddr 跟着走）。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">摘录：Bare / 三级走表 / 缺页 13 / 2MiB 大页 / 取指缺页 12 / store 缺页 15 / 尾组命中</span></div>
+<pre class="wrap">$ prism run whitebow/iu/mmu.prism --run mmu_check --debug
+# run: mmu_check  design: MmuSramTop  stop: end of stim (94 cycles)
+cycle	mm_req	mm_en	mm_vaddr	mm_acc	mm_asid	mm_sfence	mm_busy	mem_ren	mem_addr	mm_fault	mm_cause	mm_paddr	cur_ppn	rlvl	tlb_v	victim
+0	1	0	3231740195	1	0	0	0	0	0	0	0	3231740195	0	0	0	0
+1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+2	1	1	3231740195	1	0	0	1	1	24	1	13	291	0	2	0	0
+3	1	1	3231740195	1	0	0	1	1	4136	1	13	291	1	1	0	0
+4	1	1	3231740195	1	0	0	1	1	8248	0	13	196899	2	0	0	0
+5	1	1	3231740195	1	0	0	0	0	8248	0	13	196899	2	0	1	1
+6	1	1	3231740196	1	0	0	0	0	8248	0	13	196900	2	0	1	1
+…
+11	1	1	3231744291	1	0	0	0	0	8256	1	13	291	2	0	1	1
+…
+17	1	1	2166370595	1	0	0	1	1	16	1	13	291	0	2	1	1
+18	1	1	2166370595	1	0	0	1	1	4168	0	13	4206883	1	1	1	1
+19	1	1	2166370595	1	0	0	0	0	4168	0	13	4206883	1	1	3	2
+…
+32	1	1	5381296401	0	0	0	1	1	40	1	12	1086329105	0	2	7	3
+33	1	1	5381296401	0	0	0	1	1	4144	1	12	1086329105	1	1	7	3
+34	1	1	5381296401	0	0	0	1	1	8200	1	12	327953	2	0	7	3
+35	1	1	5381296401	0	0	0	0	0	8200	1	12	327953	2	0	7	3
+…
+39	1	1	5381300497	2	0	0	1	1	8208	1	15	327953	2	0	7	3
+40	1	1	5381300497	2	0	0	0	0	8208	1	15	327953	2	0	7	3
+…
+92	1	1	3231715619	1	0	0	0	0	8200	0	13	327971	2	0	3	2
+93	0	0	0	0	0	0	0	0	8200	0	0	0	2	0	3	2
+<span class="term-ok"># expect: 92/92 拍有断言 · 4 列 · 全等 ✅</span></pre>
+  </div>
+  <p>看几处关键拍：<strong>拍 0</strong> Bare（en=0）组合直通，paddr 原样交回；<strong>拍 2–4</strong> 三级走表——<code>mem_addr</code> 24 → 4136 → 8248 一级一个 PTE 地址，三级各读一次；<strong>拍 5</strong> 定案 <code>0x30123</code>，<strong>拍 6</strong> 同页换偏移交回 <code>0x30124</code>（取指侧的常态：锁死整根地址的写法在这一拍就会露馅）；<strong>拍 11</strong> V=0 缺页 cause 13；<strong>拍 17–19</strong> 2MiB 大页两级即到叶，定案 <code>0x403123</code>；<strong>拍 32–35</strong> 取指缺页 cause 12；<strong>拍 39–40</strong> store 缺页 cause 15；<strong>拍 92–93</strong> 尾组命中交回 <code>0x50123</code>。</p>
+  <p>PTW 自己另有一张 9 拍表——三级逐拍读（<code>mem_addr</code> 24 → 4136 → 8200）、末拍交回 PTE、D 压 I 的仲裁、被冲刷时放弃请求：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ prism run whitebow/iu/mmu.prism --run ptw_check --debug · 全表</span></div>
+<pre class="wrap">$ prism run whitebow/iu/mmu.prism --run ptw_check --debug
+# run: ptw_check  design: PtwSramTop  stop: end of stim (9 cycles)
+cycle	ptw_d_req	ptw_d_vpn	ptw_i_req	ptw_i_vpn	ptw_d_done	ptw_i_done	mem_ren	mem_addr	ptw_d_pte	ptw_d_lvl	rlvl	owner
+0	0	0	0	0	0	0	0	0	0	0	0	0
+1	1	788993	0	0	0	0	1	24	1025	2	2	0
+2	1	788993	0	0	0	0	1	4136	2049	1	1	0
+3	1	788993	0	0	1	0	1	8200	82119	0	0	0
+4	0	0	0	0	0	0	0	8200	0	0	0	0
+5	1	788993	1	526849	0	0	1	24	1025	2	2	0
+6	0	788993	1	526849	0	0	0	24	0	2	2	0
+7	0	788993	1	526849	0	0	1	16	1025	2	2	1
+8	0	0	0	0	0	0	0	16	0	2	2	1
+<span class="term-ok"># expect: 9/9 拍有断言 · 5 列 · 全等 ✅</span></pre>
+  </div>
+  <p>七发反证，每条只让对应那一族判红：①–② PTW（超级页对齐 / Svade 的 A/D）；③–⑥ TLB（忽略 ASID、sfence 空操作、大页按整 27 位 VPN 比、命中路径整体失效）；⑦ 定案不比 VPN（held 漏到别页）。另有 <code>mmu_dc_check</code>：PTW 经<strong>冷 DCache</strong> 走表（mem_ready 握手），终值按页表镜像手算——反证把 <code>mem_ready</code> 改接常量 1（等价于握手断线），期望必须判红。核级探针（<code>mmu_cpu_probe</code>）把整段 S 态代码跑在翻译页上：取指过 ITLB、走表读命中页、sw 写命中页再从另一条 VA 读回、数据缺页与取指缺页两发分流（<code>x13</code> 就是那条指令的 PC、<code>scause=12</code>），判据里还有一条逐拍序列——<strong>走表期间 rd 一帧 PTE 都不许进</strong>。</p>
+</section>
+
+<section id="s7">
+  <h2>小结</h2>
+  <ul>
+    <li>satp 三个出口接上消费者：Bare 直通 / Sv39 三级翻译，翻译插在访存（与取指）之前。</li>
+    <li>叶判据 R|W|X 非零；超级页对齐按 C910 一手值；缺页 12 / 13 / 15 按访问类型报号。</li>
+    <li>MMU39 每侧一份、PTW 全核一份（D 压 I、被冲刷要放弃请求）；定案只有一处（<code>finalize</code>），命中≡走表是唯一真不变量。</li>
+    <li>TLB 4 项全相联、ASID 严格 + global 跨 ASID、valid 位掩码 sfence 一拍清、只回填成功的叶。</li>
+    <li>判据：94 拍 92 组 + 七发反证 + 冷缓存走表 + 核级探针（含"rd 不得写入 PTE"的逐拍序列）。</li>
+  </ul>
+  <div class="verse-inline">
+    "要生养众多，遍满地面。"
+    <cite>—— 《创世记》 1:28</cite>
+  </div>
+</section>
+
+<section id="s8">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre><span class="tk-com"># 白虹仓库（riscv-prism）</span>
+prism run whitebow/iu/mmu.prism --run mmu_check --debug      <span class="tk-com"># 94 拍 × 4 列</span>
+prism run whitebow/iu/mmu.prism --run ptw_check --debug      <span class="tk-com"># 9 拍 × 5 列</span>
+prism run whitebow/iu/mmu.prism --run mmu_dc_check --debug   <span class="tk-com"># PTW 经冷 DCache 走表</span>
+
+<span class="tk-com"># 常驻套件（test_mmu 含七发反证；核级探针 mmu_cpu_probe 在 test_cpu 里）</span>
+python3 run_tests.py</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第五日 · 照着形象造人 —— 虚拟地址成立了；下一集：S / U 能访问哪段物理内存</span>
+  七日创造 · 第五日 · 照着形象造人 · 第 26 集 · <a href="27-pmp.html">下一集 →</a> · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>

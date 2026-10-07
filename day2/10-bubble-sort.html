@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 10 集 · 跑一段冒泡排序 · 创世记 · 第二日 · 空气与水</title>
+<title>第 10 集 · 跑一段真程序：从 C 到裸镜像 · 创世记 · 第二日 · 空气与水</title>
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 :root {
@@ -150,7 +150,7 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="10-bubble-sort.html" class="on" aria-current="page"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="10-bubble-sort.html" class="on" aria-current="page"><span class="n">EP 10</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">EP 27</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 
 <header class="hero">
@@ -185,7 +185,7 @@ html.nav-open .nav-scrim { display: block; }
     <div class="stk"><div class="k">⑤ 跑</div><div class="t">181 拍</div><div class="d">golden 与 RTL 逐拍全等，判据在拍 180 成立</div></div>
   </div>
 
-  <p>芯片这一侧<strong>什么都没学</strong>：它只认得 <code>im</code> 里那些 32 位的字。把 C 变成那些字，是工具链的活——这一集就把这条通路走一遍，每一步都留真输出。</p>
+  <p>芯片这一侧<strong>一行都没改</strong>：它只认得 <code>im</code> 里那些 32 位的字。把 C 变成那些字，是工具链的事——这一集就把这条通路走一遍，每一步都留真输出。</p>
 </section>
 
 <section id="s2">
@@ -224,6 +224,10 @@ html.nav-open .nav-scrim { display: block; }
         <span class="tk-kw">if</span> (swapped == <span class="tk-num">0</span>)
             <span class="tk-kw">break</span>;
     }
+
+    <span class="tk-kw">while</span> (<span class="tk-num">1</span>)
+        ;
+}
 </pre>
   </div>
 
@@ -233,7 +237,7 @@ html.nav-open .nav-scrim { display: block; }
     <li><strong>全程没有乘除法。</strong>M 扩展是第四日以后的事。</li>
   </ul>
 
-  <p>还有一处是替<strong>验证</strong>着想的：这段程序里<strong>没有任何"报告"</strong>。排没排好不由它说——它排完就 <code>while (1);</code> 停在原地，判由测试台去读 <code>dm</code> 里那六个字。程序自报一个完工位，判据就只是信了它一次；测试台自己读产物，判据才有自己的眼睛。</p>
+  <p>还有一处是替<strong>验证</strong>着想的：这段程序里<strong>没有任何"报告"</strong>。排没排好不由它说——它排完就 <code>while (1);</code> 停在原地，判由测试台去读 <code>dm</code> 里那六个字。程序自报一个完工位，判据就只是采信了程序的自报；测试台自己读产物，判据才独立于被测程序。</p>
 </section>
 
 <section id="s3">
@@ -250,7 +254,7 @@ html.nav-open .nav-scrim { display: block; }
  *   im  <span class="tk-num">0x000</span>..<span class="tk-num">0x3FF</span>   1KB —— <span class="tk-num">256</span> 字 × <span class="tk-num">32</span> 位（取指只看 pc[<span class="tk-num">9</span>:<span class="tk-num">2</span>]）
  *   dm  <span class="tk-num">0x400</span>..<span class="tk-num">0x7FF</span>   1KB —— dm 的后半；前半是第 <span class="tk-num">9</span> 集那台自测程序写 dm[<span class="tk-num">0</span>] 的地方
  * dm 一共 2KB（访存只看 ex.result[<span class="tk-num">10</span>:<span class="tk-num">3</span>]），所以 <span class="tk-num">0x400</span> 起这 1KB 是它的合法窗口，
- * 越过 <span class="tk-num">0x800</span> 就绕回 <span class="tk-num">0</span> —— 地址图的边界是硬件给的，不是链接脚本说了算。
+ * 越过 <span class="tk-num">0x800</span> 就绕回 <span class="tk-num">0</span> —— 地址图的边界是硬件给的，不由链接脚本决定。
  *
  * .bss 不需要镜像：dm 的复位值本来就是 <span class="tk-num">0</span>（memory.prism 里 `<span class="tk-stor">mem</span> ram : [SIZE] W = <span class="tk-num">0</span>`），
  * 清零这一段交给硬件，编译器只管有初值的 .data。
@@ -284,7 +288,7 @@ SECTIONS {
   <ul>
     <li><strong>同一个位置有两种币种。</strong><code>.data</code> 摆在 <code>0x400</code>：装载窗口按字节写 <code>dm[1024:]</code>，<code>expose</code> 按格写 <code>dm.ram[128]</code>——1024 ÷ 8 = 128，因为 dm 一个元素是 8 字节。六个数就落在第 128..133 格。</li>
     <li><strong>有初值的进 <code>.data</code>，零初始化的进 <code>.bss</code>，而 <code>.bss</code> 不需要镜像。</strong>dm 的复位值本来就是 0（<code>mem ram : [SIZE] W = 0</code>）——清零交给硬件，编译器只管真有内容的那一段。本例只有一个带初值的数组，所以段表里连 <code>.bss</code> 都没有。</li>
-    <li><strong>上限是硬件给的，不是链接脚本说了算。</strong>dm 只看 <code>ex.result[10:3]</code>，覆盖 2KB；所以 RAM 段只能落在 <code>0x400..0x7FF</code>，越过 <code>0x800</code> 就绕回开头——那是别名，不是另一块存储。</li>
+    <li><strong>上限是硬件给的，不由链接脚本决定。</strong>dm 只看 <code>ex.result[10:3]</code>，覆盖 2KB；所以 RAM 段只能落在 <code>0x400..0x7FF</code>，越过 <code>0x800</code> 就绕回开头——那是别名，不是另一块存储。</li>
   </ul>
 </section>
 
@@ -374,7 +378,7 @@ riscv64-elf-objcopy -O binary --only-section=.data sort.elf sort.data.bin
     </table>
   </div>
 
-  <p><strong>9 种组合、20 条，没有一条需要给硬件加线。</strong>第码对不对由编译器负责；我只核对一件事——这颗核认不认得它。</p>
+  <p><strong>9 种组合、20 条，没有一条需要给硬件加线。</strong>机器码对不对由编译器负责；我只核对一件事——这颗核是否接受它。</p>
 </section>
 
 <section id="s5">
@@ -384,7 +388,7 @@ riscv64-elf-objcopy -O binary --only-section=.data sort.elf sort.data.bin
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">cpu.prism · bubble_sort</span></div>
 <pre><span class="tk-com">// bubble_sort —— 第十集加的第二个 run：还是这颗 CpuTop，一行都不改，只换镜像。</span>
-<span class="tk-com">// 这一回的镜像不是手抄的第码，是 riscv64-elf-gcc 从 sort.c 打出来的 ELF 拆出来的</span>
+<span class="tk-com">// 这一回的镜像不是手抄的机器码，是 riscv64-elf-gcc 从 sort.c 打出来的 ELF 拆出来的</span>
 <span class="tk-com">// 两段裸二进制（build_sort.sh）：.text 进 im，.data 进 dm。</span>
 <span class="tk-com">// 窗口两个数都是字节：dm 的偏移 1024 = 链接脚本里 .data 的 VMA 0x400，</span>
 <span class="tk-com">// 长度由文件自己量（48 字节 = 六个字）。.bss 那个完工位不用装——dm 的复位值就是 0。</span>
@@ -435,7 +439,7 @@ cycle   pcv     a0      a1      a2      a3      a4      a5
   <p>三处值得停：</p>
   <ul>
     <li><strong>一次换位改两格，分两拍看见。</strong>拍 11 低格从 9 变 7、拍 12 高格才从 7 变 9；中间那一拍数组是 <code>7 7 5 …</code>。两个 <code>sd</code> 之间本来就有这个半完成态——它不是 bug，是这两条指令要各落一个边沿。</li>
-    <li><strong><code>pc</code> 的轨迹跟着编译器的摆法走</strong>：4→8→…→24→44→…→68，再一条 <code>j</code> 回 24。想按手写程序的直觉去核对拍数会一头雾水；能核对的是<strong>格子值</strong>。</li>
+    <li><strong><code>pc</code> 的轨迹跟着编译器的摆法走</strong>：4→8→…→24→44→…→68，再一条 <code>j</code> 回 24。想按手写程序的直觉去核对拍数会对不上号；能核对的是<strong>格子值</strong>。</li>
     <li><strong>判据成立的那一拍，就是数组最后一次变化的那一拍。</strong>拍 180 之前它一直是假，拍 180 六个字同时对上——因为判据读的就是这六个字本身，中间没有任何"程序宣布完成"的环节要等。</li>
   </ul>
 
@@ -452,7 +456,7 @@ cycle   pcv     a0      a1      a2      a3      a4      a5
 
 <section id="s7">
   <h2>这条判据会不会骗你</h2>
-  <p>判据读的是产物，那它有没有牙？两发实测，芯片、地址图、装载语句一个字都不动。</p>
+  <p>判据读的是产物，那它能不能失败？两发实测，芯片、地址图、装载语句一个字都不动。</p>
 
   <p><strong>① 只把排序的比较写反</strong>——<code>if (a[j] &gt; a[j+1])</code> 改成 <code>&lt;</code>，重跑 <code>build_sort.sh</code>。数组从初值起就没动过（降序对它来说"已经有序"），<code>pc</code> 停在自跳那一格：</p>
 
@@ -492,7 +496,7 @@ cycle   pcv     a0      a1      a2      a3      a4      a5
     <li>181 拍把 <code>9 7 5 3 2 1</code> 排成 <code>1 2 3 5 7 9</code>，golden 与 RTL 逐拍逐列全等。</li>
     <li>判据不读程序的自报，只读 <code>dm</code> 里那六个字——所以程序坏掉它就永不成立，而把它换成数拍子，同一份坏镜像立刻"通过"。</li>
   </ul>
-  <p>第二日到这一集收束：从一颗 <code>pc</code> 到一段别人编译出来的程序。这台机器接下来要学的不是更多电路，是<strong>更快的节拍</strong>与<strong>异常处理</strong>。</p>
+  <p>程序跑通了：从一颗 <code>pc</code> 到一段别人编译出来的程序。下一集先补验证的第四个裁判；再往后，这台机器要补的不是更多电路，而是<strong>更快的节拍</strong>与<strong>异常处理</strong>。</p>
 </section>
 
 <section id="s9">
@@ -515,7 +519,7 @@ prism cosim examples/day2/cpu.prism --run bubble_sort</pre>
 </main>
 
 <footer>
-  <span class="next">第二日 · 空气与水 · 完 —— 第 5 集到第 10 集，从一颗 <code>pc</code> 到一段真程序</span>
+  <span class="next">第二日 · 空气与水 —— 第 5 集到第 10 集：从一颗 <code>pc</code> 到一段真程序；下一集请第四个裁判进场</span>
   七日创造 · 第二日 · 空气与水 · 第 10 集 · <a href="11-sail.html">下一集 →</a> · <a href="../index.html">返回首页</a>
 </footer>
 

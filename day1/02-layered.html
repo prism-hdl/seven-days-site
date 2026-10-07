@@ -178,7 +178,7 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="02-layered.html" class="on" aria-current="page"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="02-layered.html" class="on" aria-current="page"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">EP 27</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 <header class="hero">
   <div class="hero-inner">
@@ -308,7 +308,7 @@ html.nav-open .nav-scrim { display: block; }
 
 <section id="s2">
   <h2>module：一只盒子</h2>
-  <p>一门语言先要能装东西。Prism 的容器是 <code>module</code>——一只<strong>盒子</strong>：<strong>皮</strong>是端口（数据进出的孔），<strong>里</strong>是线（中间的值）和状态（跨拍的记忆）。盒子外面只通过端口交互——里面怎么算，是它自己的事。</p>
+  <p>一门语言先要能装下部件。Prism 的容器是 <code>module</code>——一只<strong>盒子</strong>：<strong>边界</strong>是端口（数据进出的口），<strong>内部</strong>是线（中间的值）和状态（跨拍的记忆）。盒子外面只通过端口交互——里面怎么算，是它自己的事。</p>
 
   <figure class="modfig">
     <svg viewBox="0 24 760 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一只 module 盒子：左边 in 端口 a、b、bus_en 进入，右边 out 端口 sum、full 出去，bus 为 both 双向；盒内一条 wire、一个求和节点与一块 reg；clk 从盒外指向盒底、接到 reg">
@@ -368,9 +368,9 @@ html.nav-open .nav-scrim { display: block; }
     <figcaption>一只盒子的皮与骨（示意图）：端口（in / out / both）· 线（wire）· 状态（reg，clk 由编译器自动生成）</figcaption>
   </figure>
 
-  <p>皮上三种孔：<code>in</code> 进、<code>out</code> 出、<code>both</code> 双向；里有两样东西：<strong>具名的线</strong>——<code>wire</code>，中间算出来的值可以起名字、随取随用；<strong>状态</strong>——<code>reg</code>，带时钟沿的小方块，记住上一拍。第一集那颗加法器里 <code>sum = a + b</code> 算出的值落在出口上；给它起个中间名字，就成了盒子里的一条 <code>wire</code>。第二日的器官、整颗 CPU，到头来都是这样的盒子一层层装起来。</p>
+  <p>边界上三种方向：<code>in</code> 进、<code>out</code> 出、<code>both</code> 双向；内部有两类声明：<strong>具名的线</strong>——<code>wire</code>，中间算出来的值可以起名字、随取随用；<strong>状态</strong>——<code>reg</code>，带时钟沿的小方块，记住上一拍。第一集那颗加法器里 <code>sum = a + b</code> 算出的值落在出口上；给它起个中间名字，就成了盒子里的一条 <code>wire</code>。第二日的器官、整颗 CPU，到头来都是这样的盒子一层层装起来。</p>
 
-  <p><strong>写之前还有三件小事</strong>：注释只有 <code>//</code> 一种，没有块注释；换行是标点——一条语句写一行、块内条目靠换行分隔；标识符里不许出现连续两个 <code>__</code>（那是编译器代起名的段分隔符——<code>w__&lt;实例&gt;__&lt;端口&gt;</code>，用户占用会撞名，词法层直接拒）。</p>
+  <p><strong>写之前还有三条规则</strong>：注释只有 <code>//</code> 一种，没有块注释；换行是标点——一条语句写一行、块内条目靠换行分隔；标识符里不许出现连续两个 <code>__</code>（那是编译器代起名的段分隔符——<code>w__&lt;实例&gt;__&lt;端口&gt;</code>，用户占用会撞名，词法层直接拒）。</p>
 
   <p>顺着这只盒子，本集往下走：<strong>端口</strong>（皮）、<strong>类型</strong>（线上流什么）、<strong>表达式</strong>（线怎么算）、<strong>on clock 与 fsm</strong>（状态怎么记）。先看皮——端口。（下面几节的代码都是<strong>算法层片段</strong>——module 体内；完整可跑的模块在最后的"装起来"一节。）</p>
 </section>
@@ -409,7 +409,7 @@ html.nav-open .nav-scrim { display: block; }
 </section>
 
 <section id="s4">
-  <h2>类型：位宽的账在这里算清</h2>
+  <h2>类型：位宽规则在这里算清</h2>
   <p>Prism 没有动态类型、没有字符串、没有递归——信号域里只有四个类型：</p>
 
   <table class="fields">
@@ -424,7 +424,7 @@ html.nav-open .nav-scrim { display: block; }
     </tbody>
   </table>
 
-  <p>位宽的账有三条规矩，读完基本不会写错：</p>
+  <p>位宽规则有三条，读完基本不会写错：</p>
   <ul>
     <li><strong>端口位宽由声明钉死</strong>，不随表达式浮动；表达式只在<strong>落位处</strong>（赋值目标）按 2<sup>N</sup> 回绕，无饱和。</li>
     <li><strong>中间算术按全精度算</strong>——加减带进位保护位、乘法按两操作数位宽之和——不会半路丢位。</li>
@@ -523,7 +523,7 @@ html.nav-open .nav-scrim { display: block; }
   </ul>
 
   <div class="callout">
-    <span class="callout-title"><code>~</code> 的口径：操作数说了算</span>
+    <span class="callout-title"><code>~</code> 的口径：由操作数决定</span>
     <p style="margin:0;">对<strong>定宽值</strong>（reg / 端口 / 切片）取反，按<strong>操作数自己的位宽</strong>来、不越位：<code>reg x : u8</code> 时 <code>(~x) + 1</code> 得 <code>256</code>，不是全精度二补数的 0；字面量和复合表达式不钉宽，走全精度（<code>~255</code> 参与运算时是 <code>-256</code>）。</p>
   </div>
 
@@ -532,7 +532,7 @@ html.nav-open .nav-scrim { display: block; }
 
 <section id="s6">
   <h2>时序：on clock 是唯一的写法</h2>
-  <p>跨拍状态用 <code>reg</code> 声明，更新只写在 <code>on clock</code> 里，用 <strong>prime 记号</strong> <code>'</code>：等号右边读的是<strong>本拍值</strong>，左边写的是<strong>下一拍值</strong>。这就是 Prism 里唯一的时序写法——没有"阻塞 / 非阻塞"，没有别的语法能碰时序。</p>
+  <p>跨拍状态用 <code>reg</code> 声明，更新只写在 <code>on clock</code> 里，用 <strong>prime 记号</strong> <code>'</code>：等号右边读的是<strong>本拍值</strong>，左边写的是<strong>下一拍值</strong>。这就是 Prism 里唯一的时序写法——没有"阻塞 / 非阻塞"，没有别的语法能写时序。</p>
 
   <div class="code">
     <div class="code-header">
@@ -678,7 +678,7 @@ html.nav-open .nav-scrim { display: block; }
   </figure>
 
   <ul>
-    <li><strong>四个谓词，一个读法</strong>——<code>proc.is(S)</code> 本拍在 S、<code>proc.was(S)</code> 上一拍在 S、<code>proc.will(S)</code> 下一个沿会进 S（组合量）、<code>proc.state</code> 编码值（只读）。三个谓词可以出现在任何表达式位置；<code>will</code> 不许进 guard（会成组合环）。</li>
+    <li><strong>三个谓词与一个只读编码值</strong>——<code>proc.is(S)</code> 本拍在 S、<code>proc.was(S)</code> 上一拍在 S、<code>proc.will(S)</code> 下一个沿会进 S（组合量）、<code>proc.state</code> 编码值（只读）。三个谓词可以出现在任何表达式位置；<code>will</code> 不许进 guard（会成组合环）。</li>
     <li><strong>转移恒为同步</strong>——当前态 + guard → 下一态，每拍一次；同一源态多条转移，<strong>书写顺序即优先级</strong>；从 <code>reset</code> 不可达的态报错。</li>
     <li><strong>转移表里永不出现编码字样</strong>——怎么编、编几位只写在 <code>enc</code> 属性行：改编码不动转移表。这就是"状态与编码分开"。</li>
     <li><strong>不手写编码</strong>——禁止用 <code>on clock</code> 去写态寄存器、禁止拿 <code>proc.state</code> 的数值当转移条件；写转移表，别写 if 链。</li>
@@ -881,7 +881,7 @@ html.nav-open .nav-scrim { display: block; }
     BLOCKED: io_done  <span class="tk-op">-&gt;</span> RUN   <span class="tk-com">// ❌ 应该回 READY：先去就绪队列，等调度</span></pre>
   </div>
 
-  <p>编译照过、跑也照跑——直到第 14 拍对不上：<code>io_done</code> 拉着的那拍，<code>state</code> 期望 1（<code>READY</code>）实得 2（<code>RUN</code>），<code>on_cpu</code> 也提前回到 1。更隐蔽的是后面三拍：它没经调度器就私自上了 CPU，<code>cpu_time</code> 跟着漂——15 / 16 / 17 三拍全多了 1。</p>
+  <p>编译照过、跑也照跑——直到第 14 拍对不上：<code>io_done</code> 拉着的那拍，<code>state</code> 期望 1（<code>READY</code>）实得 2（<code>RUN</code>），<code>on_cpu</code> 也提前回到 1。更隐蔽的是后面三拍：它没经调度器就进入了运行态，<code>cpu_time</code> 跟着漂——15 / 16 / 17 三拍全多了 1。</p>
 
   <div class="term">
     <div class="term-header">▸ 这一行改坏之后的输出（截取）</div>
@@ -902,7 +902,7 @@ html.nav-open .nav-scrim { display: block; }
 
   <div class="callout warn">
     <span class="callout-title">教训：状态图就是需求——每支箭头都有原因</span>
-    <p style="margin:0;"><code>BLOCKED</code> 出去的那支箭头只回 <code>READY</code>：I/O 完成的身份是<strong>"就绪"</strong>，不是"在跑"——上不上 CPU 由调度器说了算（<code>dispatch</code> 说了算）。一支箭头指错目标态，表里连着两列、连着三拍都跟着错——所以转移表要与状态图逐支对读，别凭"接着跑"的直觉接。</p>
+    <p style="margin:0;"><code>BLOCKED</code> 出去的那支箭头只回 <code>READY</code>：I/O 完成的身份是<strong>"就绪"</strong>，不是"在跑"——上不上 CPU 由调度器决定（<code>dispatch</code> 决定）。一支箭头指错目标态，表里连着两列、连着三拍都跟着错——所以转移表要与状态图逐支对读，别凭"接着跑"的直觉接。</p>
   </div>
 </section>
 
@@ -932,7 +932,7 @@ html.nav-open .nav-scrim { display: block; }
 }</pre>
   </div>
 
-  <p>声明一行写三段：深度 <code>[4]</code>、元素类型 <code>u64</code>、初值 <code>= 0</code>。四件事都要量过：</p>
+  <p>声明一行写三段：深度 <code>[4]</code>、元素类型 <code>u64</code>、初值 <code>= 0</code>。三段都要核对：</p>
 
   <ul>
     <li><strong>初值决定上电是不是一个确定的数。</strong>标量 <code>= 0</code> 把每格铺成 0，逐格 <code>= [10, 20, 30, 40]</code> 各给各的；<strong>不写初值</strong>，那一格上电就是 <code>x</code>（未定）——同一份激励实测：表里 <code>r</code> 列是 <code>x</code>，期望写 0 就当场红。阵列里但凡有必须从 0 起算的（寄存器堆的 32 格、存储器的整块阵列），初值那一格就得写。</li>
@@ -959,7 +959,7 @@ html.nav-open .nav-scrim { display: block; }
 }</pre>
   </div>
 
-  <p>多大、几读几写、长成寄存器堆还是 SRAM，都不在这一层——那是 <code>@schedule</code> 的 <code>storage</code> 一行，第 6 集整集就在用这个分别把同一份 <code>ram</code> 摆成指令侧与数据侧。</p>
+  <p>多大、几读几写、映射成寄存器堆还是 SRAM，都不在这一层——那是 <code>@schedule</code> 的 <code>storage</code> 一行，第 6 集整集就在用这个分别把同一份 <code>ram</code> 摆成指令侧与数据侧。</p>
 </section>
 
 <section id="s12">
@@ -1022,7 +1022,7 @@ cycle  w0   w1   w2   w3
 0        0    0    7    9   <span class="term-hint"># 同一行 @load("boot.bin")，被换成 /tmp/other.bin 的内容</span></div>
   </div>
 
-  <p>装错地方是装不进去的，四条都响亮拒绝（都是实测原文）：</p>
+  <p>装错地方是装不进去的，四条都明确报错（都是实测原文）：</p>
 
   <ul>
     <li>文件不存在——<code>'dut.blk' 的 @load 文件不存在：/tmp/mi/nope.bin（相对主文件解析）</code>；路径可以绝对，也可以相对<strong>主文件</strong>；</li>
@@ -1036,7 +1036,7 @@ cycle  w0   w1   w2   w3
 
 <section id="s13">
   <h2>泛型：把位宽和深度做成参数</h2>
-  <p>泛型让同一段源码长出多个版本——<code>&lt;T: bits&gt;</code> 是位宽形参，例化时代入：</p>
+  <p>泛型让同一段源码派生多个版本——<code>&lt;T: bits&gt;</code> 是位宽形参，例化时代入：</p>
 
   <div class="code">
     <div class="code-header">
@@ -1056,7 +1056,7 @@ cycle  w0   w1   w2   w3
 }</pre>
   </div>
 
-  <p>形参收的不只位宽，也收深度：<code>mem blk : [4] u64</code> 里那个 4 同样可以写成 <code>[SIZE]</code>。第 6 集那颗 <code>RAM&lt;SIZE: int, W: bits, A: bits&gt;</code> 就是同一份源码长出两个实例——<code>im</code> 取 <code>W = u32</code>（指令字恒 32 位），<code>dm</code> 取 <code>W = i64</code>（数据 64 位），差别只在实例参数一行上。反过来，只有一个宽度样本的就别留形参：第 5–7 集的 <code>pc</code> / <code>regfile</code> / <code>alu</code> 把位数直接钉在声明里——泛型要有第二个实例才有意义。</p>
+  <p>形参收的不只位宽，也收深度：<code>mem blk : [4] u64</code> 里那个 4 同样可以写成 <code>[SIZE]</code>。第 6 集那颗 <code>RAM&lt;SIZE: int, W: bits, A: bits&gt;</code> 就是同一份源码派生两个实例——<code>im</code> 取 <code>W = u32</code>（指令字恒 32 位），<code>dm</code> 取 <code>W = i64</code>（数据 64 位），差别只在实例参数一行上。反过来，只有一个宽度样本的就别留形参：第 5–7 集的 <code>pc</code> / <code>regfile</code> / <code>alu</code> 把位数直接钉在声明里——泛型要有第二个实例才有意义。</p>
 
 </section>
 
@@ -1066,7 +1066,7 @@ cycle  w0   w1   w2   w3
   <ul>
     <li><strong>盒子</strong>——<code>module</code>：皮是端口，里是线与状态；顺带三件小事：注释一种、换行是标点、<code>__</code> 是禁地；</li>
     <li><strong>端口</strong>——<code>in</code> / <code>out</code> / <code>both</code>，方向显式，电平与握手流两族；</li>
-    <li><strong>类型</strong>——<code>bit</code> / <code>i&lt;N&gt;</code> / <code>u&lt;N&gt;</code>；位宽由声明钉死、回绕在落位处、转换只换视角；</li>
+    <li><strong>类型</strong>——<code>bit</code> / <code>i&lt;N&gt;</code> / <code>u&lt;N&gt;</code> 与阵列 <code>[N] T</code>；位宽由声明钉死、回绕在落位处、转换只换视角；</li>
     <li><strong>分支</strong>——表达式级：两路三元、多路 <code>match</code>、集合 <code>in</code>；语句级：一组寄存器整体切换写 <code>if</code>/<code>else</code>、按值多路写 <code>switch</code>；</li>
     <li><strong>时序</strong>——唯一写法 <code>on clock</code> + prime；时钟与复位由编译器生成；</li>
     <li><strong>状态</strong>——<code>fsm</code> 写转移表（自环可省：缺省=保持），谓词编码无关，编码归调度层；</li>
