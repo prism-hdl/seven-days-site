@@ -92,6 +92,9 @@ footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',se
 .two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
 .two .box h4 { font-size:15px; margin-bottom:6px; }
 .two .box p { font-size:14px; color:var(--ink-3); }
+.modfig { margin: 26px 0; padding: 20px 16px 12px; background: var(--cream); border: 1px solid var(--line); border-radius: var(--radius); }
+.modfig svg { width: 100%; height: auto; display: block; }
+.modfig figcaption { text-align: center; margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--mute); letter-spacing: .02em; }
 @media (max-width:720px){ .two { grid-template-columns:1fr; } }
 @media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
 </style>
@@ -156,7 +159,7 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="16-interrupts.html" class="on" aria-current="page"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：让芯片开口说话</span></a></li><li><a href="20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="16-interrupts.html" class="on" aria-current="page"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 
 
@@ -164,7 +167,7 @@ html.nav-open .nav-scrim { display: block; }
   <div class="hero-inner">
     <div class="hero-eyebrow">七日创造 · 第四日 · 有生命的活物 · 第 16 集</div>
     <h1>中断<br><em>CLINT 与 PLIC</em></h1>
-    <p class="subtitle">第 15 集那颗 CSR 留了三根线——<code style="background:none;border:none;color:#a678ff">mtip / msip / meip</code>，当时表里全是 0——那三根线上没有接任何中断源。这一集给它们接上源：<strong>一颗管时间，一颗管排队。</strong>跑通之后才看得见：中断是两级门控，而第二级的"不点头"，才是它最容易被写错的地方。</p>
+    <p class="subtitle">第 15 集那颗 CSR 留了三根线——<code style="background:none;border:none;color:#a678ff">mtip / msip / meip</code>，当时表里全是 0——那三根线上没有接任何中断源。这一集给它们接上源：<strong>一颗管时间，一颗管排队。</strong>跑通之后才看得见：中断是两级门控，而第二级门控的判定，才是它最容易被写错的地方。</p>
     <div class="verse">
       "地要生出活物来，各从其类。"
       <cite>—— 《创世记》 1:24</cite>
@@ -188,6 +191,79 @@ html.nav-open .nav-scrim { display: block; }
     <div class="box"><h4>meip · 机器外部中断</h4><p>设备在叫你。几十个外设共用这一根线，所以它后面必须站一个 PLIC。</p></div>
     <div class="box"><h4>还有一根内向的</h4><p>第 15 集那颗 CSR 自己就能抬 <code>mip</code> 的位——软件写 <code>mip</code> 是合法的，硬件线只是最常见的那类源。</p></div>
   </div>
+  <p>先看全貌：这三根线从哪来、接进核里的哪颗模块、经过哪些门才真的进陷阱——</p>
+  <figure class="modfig">
+    <svg viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="中断关键连线：CLINT 出 mtip 与 msip、PLIC 出 meip，三根线接进 CPU 内 CSR 的 mip 三位；经 mie 位与 mstatus.MIE 两级门控后进陷阱（mtvec）。CPU 经读写口配置 CLINT（mtimecmp / msip）与 PLIC（enable / threshold、claim / complete）；外设源线进 PLIC">
+      <defs>
+        <marker id="iArB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a86c8"/>
+        </marker>
+        <marker id="iArG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8b95a8"/>
+        </marker>
+        <marker id="iArO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#ff8a4c"/>
+        </marker>
+      </defs>
+
+      <!-- CPU 容器 -->
+      <rect x="40" y="60" width="420" height="500" rx="12" fill="#f7f8fb" stroke="#8b95a8" stroke-width="1.5"/>
+      <text x="64" y="92" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600" fill="#1c2333">CPU · 白虹核</text>
+      <text x="64" y="112" font-family="Noto Serif SC, serif" font-size="11" fill="#7c8698">流水 + 陷阱逻辑</text>
+
+      <!-- CSR 子框 -->
+      <rect x="80" y="140" width="340" height="340" rx="10" fill="#eef4fc" stroke="#4a86c8" stroke-width="1.5"/>
+      <text x="100" y="172" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600" fill="#1c2333">CSR · 中断判定</text>
+      <text x="100" y="202" font-family="JetBrains Mono, monospace" font-size="12" fill="#31618f">mip：三根线合成这三位</text>
+      <text x="100" y="232" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">MTIP(7)  ← mtip</text>
+      <text x="100" y="260" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">MSIP(3)  ← msip</text>
+      <text x="100" y="288" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">MEIP(11) ← meip</text>
+      <line x1="96" y1="312" x2="404" y2="312" stroke="#c9d8ea" stroke-width="1"/>
+      <text x="100" y="338" font-family="JetBrains Mono, monospace" font-size="12" fill="#31618f">两级门控</text>
+      <text x="100" y="362" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">mie 位 ∧ mstatus.MIE</text>
+      <line x1="250" y1="374" x2="250" y2="394" stroke="#4a86c8" stroke-width="1.8" marker-end="url(#iArB)"/>
+      <text x="100" y="414" font-family="JetBrains Mono, monospace" font-size="12" fill="#3a2fa8">进陷阱：mtvec / mcause</text>
+      <text x="64" y="532" font-family="Noto Serif SC, serif" font-size="11" fill="#7c8698">线只是源——两级门不开，不进陷阱</text>
+
+      <!-- CLINT -->
+      <rect x="580" y="52" width="340" height="224" rx="12" fill="#efeafd" stroke="#6b5cff" stroke-width="1.5"/>
+      <text x="600" y="88" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600" fill="#3a2fa8">CLINT · 时间与软件中断</text>
+      <text x="600" y="116" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">mtime：每拍 +1，只增不减</text>
+      <text x="600" y="144" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">mtimecmp：阈值，复位全 1（永远不到）</text>
+      <text x="600" y="172" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">mtime ≥ mtimecmp → mtip（电平）</text>
+      <text x="600" y="200" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">msip 寄存器 → msip 线</text>
+      <text x="600" y="228" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">stimecmp → stip（Sstc，S 态那条）</text>
+
+      <!-- PLIC -->
+      <rect x="580" y="300" width="340" height="240" rx="12" fill="#fff3e8" stroke="#ff8a4c" stroke-width="1.5"/>
+      <text x="600" y="332" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600" fill="#8a4a14">PLIC · 外部中断聚合</text>
+      <text x="600" y="360" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">网关：源电平 → pending（只置不清）</text>
+      <text x="600" y="388" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">仲裁：pending ∧ enable，号小优先</text>
+      <text x="600" y="416" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">通知：优先级 &gt; threshold → meip</text>
+      <text x="600" y="444" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">claim（读）/ complete（写）</text>
+      <text x="600" y="472" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a5468">整机版：32 源 · M / S 每 context 一份</text>
+
+      <!-- 外设源 -->
+      <rect x="640" y="584" width="260" height="40" rx="8" fill="#fff3e8" stroke="#ff8a4c" stroke-width="1.5"/>
+      <text x="770" y="609" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="12" fill="#8a4a14">外设源：uart → 源 1 ……</text>
+      <line x1="770" y1="584" x2="770" y2="541" stroke="#ff8a4c" stroke-width="1.8" marker-end="url(#iArO)"/>
+
+      <!-- 三根中断线：CLINT / PLIC → CSR 的 mip 位 -->
+      <line x1="580" y1="232" x2="420" y2="232" stroke="#4a86c8" stroke-width="2" marker-end="url(#iArB)"/>
+      <text x="500" y="222" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a86c8">mtip</text>
+      <line x1="580" y1="260" x2="420" y2="260" stroke="#4a86c8" stroke-width="2" marker-end="url(#iArB)"/>
+      <text x="500" y="250" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a86c8">msip</text>
+      <line x1="580" y1="320" x2="420" y2="320" stroke="#4a86c8" stroke-width="2" marker-end="url(#iArB)"/>
+      <text x="500" y="310" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#4a86c8">meip</text>
+
+      <!-- 读写口（虚线）：CPU → CLINT / PLIC -->
+      <line x1="460" y1="96" x2="580" y2="96" stroke="#8b95a8" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#iArG)"/>
+      <text x="520" y="86" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#7c8698">读写口</text>
+      <line x1="460" y1="420" x2="580" y2="420" stroke="#8b95a8" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#iArG)"/>
+      <text x="520" y="410" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#7c8698">claim / complete</text>
+    </svg>
+    <figcaption>三根线接进 CSR 的 mip（三位由硬件线直接合成）；两级门控（mie 位 ∧ mstatus.MIE）之后才进陷阱。配置与应答走读写口。</figcaption>
+  </figure>
   <p>这一集两件活：<strong>CLINT</strong> 负责时间与软中断，<strong>PLIC</strong> 负责让一堆设备共用一根线。两个样例都在 <code>examples/day4/</code>，各自一张手算表、各自撞 RTL。</p>
 </section>
 
@@ -209,7 +285,7 @@ html.nav-open .nav-scrim { display: block; }
         _      =&gt; <span class="tk-num">0</span>,
     }
 
-    <span class="tk-com">// 两个比较器，两条线：阈值到了就一直抬着（电平，不是脉冲）——</span>
+    <span class="tk-com">// 两个比较器，两条线：阈值到了就一直拉高（电平，不是脉冲）——</span>
     <span class="tk-com">// 这也是为什么中断服务里必须写 mtimecmp：不挪阈值，它会一直报。</span>
     mtip  = r_mtime &gt;= r_mtimecmp
     stip  = r_mtime &gt;= stimecmp
@@ -219,7 +295,7 @@ html.nav-open .nav-scrim { display: block; }
   <p>三行代码，三个要讲清的点：</p>
   <ul>
     <li><strong>复位值给全 1，不是给 0。</strong>给 0 的话上电第一拍就"时间到了"——机器还没起来就先挨一发中断。<code>0xFFFFFFFFFFFFFFFF</code> 在 100 MHz 下要跑一万年，等于"永远不到"。</li>
-    <li><strong>比较器是电平，不是脉冲。</strong><code>mtip</code> 一旦抬起来就一直抬着，直到软件把阈值挪走。<strong>所以中断服务程序里必须写 <code>mtimecmp</code></strong>——忘了这一步，中断会一直报，机器卡在"进门"上出不去。</li>
+    <li><strong>比较器是电平，不是脉冲。</strong><code>mtip</code> 一旦拉高就一直保持高，直到软件把阈值挪走。<strong>所以中断服务程序里必须写 <code>mtimecmp</code></strong>——忘了这一步，中断会一直报，机器卡在"进门"上出不去。</li>
     <li><strong>Sstc 的 <code>stimecmp</code> 也挂在这里。</strong>它是 S 态的定时器阈值（规范里的 Sstc 扩展），比出来的 <code>stip</code> 走 S 态那条路。为什么放在 CLINT 里？因为它要跟 <code>mtime</code> 比，而 <code>mtime</code> 只在这一颗里。</li>
   </ul>
   <div class="term">
@@ -227,19 +303,19 @@ html.nav-open .nav-scrim { display: block; }
     <div class="term-body">cycle	mtip	stip	msip	mtime
 0	0	0	0	1
 1	0	0	0	2
-2	1	0	0	3      ← 阈值 3 到了：mtip 抬起
-3	1	0	0	4      ← 还抬着（电平，不是脉冲）
+2	1	0	0	3      ← 阈值 3 到了：mtip 拉高
+3	1	0	0	4      ← 还保持高（电平，不是脉冲）
 4	0	0	0	5      ← 写回全 1：当拍就落
 …
 6	0	0	1	7      ← 软件写 msip
 8	0	0	0	9      ← 写 0 才落
-10	0	1	0	11     ← S 态阈值 5 到了：stip 抬起</div>
+10	0	1	0	11     ← S 态阈值 5 到了：stip 拉高</div>
   </div>
 </section>
 
 <section id="s3">
-  <h2>PLIC：谁在按门铃，谁先说话</h2>
-  <p>几十个设备共用 <code>meip</code> 一根线。PLIC 要做的就三件事：<strong>登记</strong>（谁按了）、<strong>排队</strong>（谁先说话）、<strong>销账</strong>（说完了）。</p>
+  <h2>PLIC：登记、仲裁与销账</h2>
+  <p>几十个设备共用 <code>meip</code> 一根线。PLIC 要做的就三件事：<strong>登记</strong>（哪个源有请求）、<strong>仲裁</strong>（谁先得到响应）、<strong>销账</strong>（完成后归还）。</p>
   <p>第一件事有个容易写反的细节：<strong>网关只置位、不清位</strong>。</p>
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/plic.prism · 网关与认领</span></div>
@@ -285,8 +361,8 @@ html.nav-open .nav-scrim { display: block; }
 </section>
 
 <section id="s4">
-  <h2>两级门控：线抬起来，不等于要进陷阱</h2>
-  <p>第 15 集那颗 CSR 收到线之后，还要过两道自己的门：<strong><code>mie</code> 里对应位允许 + 全局 <code>mstatus.MIE</code> 打开</strong>。所以外设拼命抬线，核可以全当没看见——这不是 bug，是设计。</p>
+  <h2>两级门控：线拉高，不等于要进陷阱</h2>
+  <p>第 15 集那颗 CSR 收到线之后，还要过两道自己的门：<strong><code>mie</code> 里对应位允许 + 全局 <code>mstatus.MIE</code> 打开</strong>。所以外设持续拉高这根线，核可以全当没看见——这不是 bug，是设计。</p>
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/day4/intr_link.prism · 把 CLINT 接上 CSR</span></div>
 <pre><span class="tk-decl">design</span> IntrLinkTop {
@@ -317,8 +393,8 @@ html.nav-open .nav-scrim { display: block; }
 <span class="tk-com">// 一张表说清两级门控：同一根 mtip，先不开使能，再开。</span>
 <span class="tk-com">//   拍 0  给 CLINT 写阈值 3；给 CSR 写 mie = 0x80（bit7 = 定时器中断）</span>
 <span class="tk-com">//   拍 1  mtime 2 &lt; 3 → 线还低</span>
-<span class="tk-com">//   拍 2  mtime 3 ≥ 3 → 线抬起；使能已开 → pending 同拍起</span>
-<span class="tk-com">//   拍 3  还抬着（电平）——所以服务程序里必须挪 mtimecmp</span></pre>
+<span class="tk-com">//   拍 2  mtime 3 ≥ 3 → 线拉高；使能已开 → pending 同拍起</span>
+<span class="tk-com">//   拍 3  还保持高（电平）——所以服务程序里必须挪 mtimecmp</span></pre>
   </div>
   <p>样例同时驱动两边：给 CLINT 写阈值、给 CSR 写使能。两组地址口重名，所以 stim 里用 <code>实例.端口</code> 的限定写法。</p>
   <div class="term">
@@ -326,11 +402,11 @@ html.nav-open .nav-scrim { display: block; }
     <div class="term-body">cycle	mtip_v	pending_v
 0	0	0      ← 写阈值 3、写 mie bit7
 1	0	0      ← mtime 2 < 3
-2	1	1      ← 线抬起；使能开着 → CSR 认账
+2	1	1      ← 线拉高；使能开着 → pending 成立
 3	1	1      ← 还挂着
-4	1	0      ← 把使能关掉：线照样抬着，CSR 不认了</div>
+4	1	0      ← 把使能关掉：线照样拉高，pending 不再成立</div>
   </div>
-  <p>最后两拍是这一集最该记住的对照：<strong>同一个硬件、同一根线，第 4 拍与第 3 拍唯一的差别就是 <code>mie</code> 那一位</strong>。<code>pending</code> 是"线 + 使能"的与——这也是为什么调试中断时第一件事是读 <code>mip</code> 和 <code>mie</code>：先分清是"中断源没有抬线"，还是"抬了线但使能位没开"。三张表都撞了 RTL，逐拍全等。</p>
+  <p>最后两拍是这一集最该记住的对照：<strong>同一个硬件、同一根线，第 4 拍与第 3 拍唯一的差别就是 <code>mie</code> 那一位</strong>。<code>pending</code> 是"线 + 使能"的与——这也是为什么调试中断时第一件事是读 <code>mip</code> 和 <code>mie</code>：先分清是"中断源没有拉高"，还是"拉了高但使能位没开"。三张表都撞了 RTL，逐拍全等。</p>
 </section>
 
 <section id="s5">
@@ -339,7 +415,7 @@ html.nav-open .nav-scrim { display: block; }
     <div class="stk"><div class="k">没有</div><div class="t">真的跳进陷阱</div><div class="d">这一片只验到"该进陷阱了"。真正跳 <code>mtvec</code>、保存现场、mret 回来，要等整机把流水与 CSR 接起来（第 18 集之后）。</div></div>
     <div class="stk"><div class="k">只有</div><div class="t">8 个中断源</div><div class="d">白虹的 PLIC 要长到 32 源、每 context 一份 enable/threshold。教学版取 8 个，结构一样，位数不同。</div></div>
     <div class="stk"><div class="k">简化了</div><div class="t">mtime 的频率</div><div class="d">这里每拍 +1；真机上一个 tick 对应 10 ns（100 MHz），固件据此换算墙上时间。</div></div>
-    <div class="stk"><div class="k">没有</div><div class="t">优先级抢占</div><div class="d">服务中被更高优先级打断要 context 自己管；PLIC 只保证"门铃按顺序响"。</div></div>
+    <div class="stk"><div class="k">没有</div><div class="t">优先级抢占</div><div class="d">服务中被更高优先级打断要 context 自己管；PLIC 只保证按优先级与源序发出通知。</div></div>
   </div>
 </section>
 
@@ -349,8 +425,8 @@ html.nav-open .nav-scrim { display: block; }
     <li>三根线三件事：<code>mtip</code> 管时间、<code>msip</code> 管"叫你一下"、<code>meip</code> 管设备。</li>
     <li>CLINT：<code>mtime</code> 只增、<code>mtimecmp</code> 复位给"永远不到"、<strong>比较器是电平</strong>（服务程序必须挪阈值）。</li>
     <li>PLIC：网关<strong>只置不清</strong>、同优先级按号小、claim 交出并转 <code>in_service</code>、<code>complete</code> 才销账。</li>
-    <li><strong><code>threshold</code> 只门控通知，不门控 claim</strong>——醒来的人要把活干完。</li>
-    <li>中断是两级门控：线抬起只是第一级，<code>mie</code> 与 <code>mstatus.MIE</code> 才决定要不要进陷阱。</li>
+    <li><strong><code>threshold</code> 只门控通知，不门控 claim</strong>——被通知的 context 要把已领取的工作做完。</li>
+    <li>中断是两级门控：线拉高只是第一级，<code>mie</code> 与 <code>mstatus.MIE</code> 才决定要不要进陷阱。</li>
   </ul>
   <div class="verse-inline">
     "有晚上，有早晨，是第四日。"
@@ -377,7 +453,7 @@ prism cosim examples/day4/intr_link.prism --run intr_link_check  <span class="tk
 </main>
 
 <footer>
-  <span class="next">第四日 · 有生命的活物 —— 会疼会躲了，下一集让它会算会锁</span>
+  <span class="next">第四日 · 有生命的活物 —— 异常与中断都接上了，下一集补 M · A · C</span>
   七日创造 · 第四日 · 有生命的活物 · 第 16 集 · <a href="17-isa-mac.html">下一集 →</a> · <a href="../index.html">返回首页</a>
 </footer>
 
