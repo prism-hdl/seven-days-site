@@ -158,13 +158,13 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：让芯片开口说话</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="33-gap.html" class="on" aria-current="page"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与&quot;打拍出数&quot;</span></a></li><li><a href="37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段冒泡排序</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：让芯片开口说话</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></span></li><li class="todo"><span class="row"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递的账要重算</span></span></li><li class="todo"><span class="row"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></span></li><li class="todo"><span class="row"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></span></li><li class="todo"><span class="row"><span class="n">EP 27</span><span class="t">PMP：S / U 能碰哪段内存，它说了算</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="33-gap.html" class="on" aria-current="page"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">七日创造 · 第七日 · 安息 · 第 33 集</div>
     <h1>差在五处<br><em>五级顺序单发射 vs 现代高性能核</em></h1>
-    <p class="subtitle">第六日的白虹把 Linux 送进了 shell——那是一台"一条道、走到底"的机器：一拍一条、按序不回头、访存一停全停。这一集把它的样子和它在第七日长成的样子摆上同一张桌，把差量成<strong>五处</strong>、再把差立成<strong>三个可自证的数</strong>。不造硬件，只把"差在哪"量清楚。</p>
+    <p class="subtitle">第六日的白虹把 Linux 送进了 shell。那台机器一拍只处理一条指令、严格按顺序执行；访存不返回数据，整条流水线就得等。这一集不造新硬件——只做两件事：对比第六日与第七日的白虹、讲清<strong>五处关键差异</strong>；给出<strong>三个可测量的数</strong>，作为接下来五集的验收基准。</p>
     <div class="verse">
       "天地万物都造齐了。"
       <cite>—— 《创世记》 2:1</cite>
@@ -180,22 +180,11 @@ html.nav-open .nav-scrim { display: block; }
 </div>
 
 <section id="s1">
-  <h2>两台机器，放在同一张桌上</h2>
-  <p>第六日结束时，白虹是一台<strong>五级流水、单发射、按序执行</strong>的机器，它把 Linux 送进了 shell——这是实打实的成绩。它的形状里藏着四条写死的假设：<strong>一拍只译码一条</strong>；<strong>"在流水里的位置"就是指令的年龄</strong>；<strong>存储器的读是组合的、同拍出数</strong>；<strong>任何一个部件在等，整条流水线陪着停</strong>。</p>
-  <p>这四条假设换来的是简单：裁决表小、前递两级就够、缓存不需要握手。它们也换出一句天花板：<strong>每拍最多退休 1 条；而且一条 load 去等存储器，后面所有的指令都陪着等</strong>。第七日，白虹换了个形状。</p>
-  <div class="two">
-    <div class="box"><h4>第六日的白虹</h4><p>五级流水 · 单发射 · 按序提交 · 命中组合出数 · 占用即停顿。成绩：OpenSBI、Linux 到 shell。</p></div>
-    <div class="box"><h4>第七日的白虹</h4><p>主干 12 级 · 四发乱序（译码 3 / 重命名 4 / 提交 3）· ROB 64 · 非阻塞访存 + 私有 L2 · 四件套预测。成绩：CoreMark 同频归一到 A76 那一档。</p></div>
-  </div>
-  <p>这一集不动烙铁：两台机器摆上桌，<strong>先把"差在哪"量清楚</strong>——差在五处。接下来五集各拆一处，最后一集把跑分摆上来。</p>
-</section>
+  <h2>五级顺序单发射：三处结构性限制</h2>
+  <p>第六日的白虹是一台五级流水、单发射、按序执行的处理器。这个结构实现简单、行为容易验证，把 Linux 送进了 shell；但它的性能上限由结构本身决定，靠调参数无法突破。下面逐条给出代码依据与实测数据。</p>
 
-<section id="s2">
-  <h2>四条现状，各有代码作证</h2>
-  <p>说"旧"不能靠形容词。四条假设，各抽一段真代码出来看。</p>
-
-  <h3>① 一拍一条</h3>
-  <p>整台机器的节拍写在 <code>@schedule</code> 里——五级、每级一拍：</p>
+  <h3>① 吞吐上限：每拍最多一条指令</h3>
+  <p>译码段每拍只处理一条指令，五级之间各一颗边界寄存器；节拍写在 <code>@schedule</code> 里：</p>
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/whitebow.prism · 节拍</span></div>
 <pre><span class="tk-ann">@schedule</span> WhitebowCpu {
@@ -207,36 +196,12 @@ html.nav-open .nav-scrim { display: block; }
     latency   : <span class="tk-num">5</span> cycle
 }</pre>
   </div>
-  <p>五级之间是四颗边界寄存器，一拍只流过一条指令。<strong>"每拍退休条数"的硬上限就是 1</strong>——之后无论把缓存做多大、时钟做多快，这个 1 不动。想动它，先动形状。</p>
+  <p>无论流水线里有多少条已就绪的指令，每拍最多进入一条、退休一条——<strong>IPC 的理论上限是 1.0</strong>。实测 0.787 说明流水线空闲时间已经不多，但这个上限本身无法通过调参数提高：要每拍多条，取指、译码、寄存器堆与提交口必须成组加宽（第 35 集）。</p>
 
-  <h3>② 位置即年龄</h3>
-  <p>EX 段要操作数时先看它现在在哪。前递只做两级——按<strong>在流水里的位置</strong>分档：</p>
+  <h3>② 顺序等待：一条指令等数据，后续指令全部阻塞</h3>
+  <p>冒险裁决列出十个停顿/冲刷源；其中八类停顿合成一根前端冻结信号 <code>hold_fe</code>——任意一类有效，PC 与 IF/ID 一并冻结：</p>
   <div class="code">
-    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/hazard.prism · 前递</span></div>
-<pre>    fwd_a = <span class="tk-kw">match</span> {
-        (mem_reg_wen &amp; (mem_rd != <span class="tk-num">0</span>) &amp; (mem_rd == ex_rs1)) =&gt; <span class="tk-num">1</span>,
-        (wb_reg_wen  &amp; (wb_rd  != <span class="tk-num">0</span>) &amp; (wb_rd  == ex_rs1)) =&gt; <span class="tk-num">2</span>,
-        _                                                  =&gt; <span class="tk-num">0</span>,
-    }</pre>
-  </div>
-  <p>同一条操作数可能同时挂在两处（同一颗寄存器被连续两条指令写）。按序执行下，<strong>EX/MEM 里那条一定更年轻</strong>，所以先选它——"位置排序"能替代"年龄排序"，全靠按序。乱序之后这个等式就塌了：同一个位置的条目未必是老的（第 34 集拆这一处）。</p>
-
-  <h3>③ 组合读出数</h3>
-  <p>缓存和存储器一样，<strong>读是组合的——命中即出数、不占拍</strong>：</p>
-  <div class="code">
-    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/icache.prism · 头注</span></div>
-<pre class="wrap"><span class="tk-com">// =============================================================================
-// icache.prism — 指令缓存（直接映射，16 行 × 每行 4 字）
-//
-// 容量 64 字 = 256 字节；行大小 4 字（16 字节，装得下 4 条标准指令或 8 条 RVC）；
-// 直接映射，无替换策略；命中组合读出（同拍出，与 im 的 1RW 口径一致）。</span></pre>
-  </div>
-  <p>数据侧同款口径：命中同拍出数，未命中只认<strong>一笔在途事务</strong>，然后把整条流水线冻到数据回来。"读得干脆"与"等得彻底"是一枚硬币的两面——第 37 集要把这枚硬币翻过来。</p>
-
-  <h3>④ 占用即停顿</h3>
-  <p>会"停"的事，白虹列成了一张十行的表（八停顿 + 两冲刷）：</p>
-  <div class="code">
-    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/hazard.prism · 停与冲的十个源</span></div>
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/hazard.prism · 停顿与冲刷的十个源</span></div>
 <pre class="wrap">    src_fetch = icache_miss
     src_load  = load_use
     src_div   = div_hold
@@ -248,63 +213,95 @@ html.nav-open .nav-scrim { display: block; }
     src_br    = ex_redirect
     src_trap  = mem_except</pre>
   </div>
-  <p>八个停顿源合成一根 <code>hold_fe</code>——一压压全流水；两个冲刷源负责把走错的推测杀回来。这十行是这一日全部工程的原材料：第 34–38 集要动的就是它们；第 39 集的计数器，也按这十个事件编号。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/hazard.prism · 前端冻结</span></div>
+<pre class="wrap">    hold_fe   = (src_fetch | src_load | src_div | src_fdiv | src_dmiss | src_mmiss | src_amo | src_mis) &amp; !redirect</pre>
+  </div>
+  <p>后果很直接：一条 load 等待 miss（几十到上百拍）、一条除法等待 35 拍，这期间后续指令即使与它完全无关，也一条都不能执行。600 拍实测中 128 拍（21.3%）空置，主要来源就是这张表。顺序语义要求"等待也按程序序排队"，这是空拍的结构性来源（第 34 集处理）。</p>
+  <p>按序的约束还体现在前递上：操作数按"在流水里的位置"分两级取——位置即年龄：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/hazard.prism · 两级前递</span></div>
+<pre>    fwd_a = <span class="tk-kw">match</span> {
+        (mem_reg_wen &amp; (mem_rd != <span class="tk-num">0</span>) &amp; (mem_rd == ex_rs1)) =&gt; <span class="tk-num">1</span>,
+        (wb_reg_wen  &amp; (wb_rd  != <span class="tk-num">0</span>) &amp; (wb_rd  == ex_rs1)) =&gt; <span class="tk-num">2</span>,
+        _                                                  =&gt; <span class="tk-num">0</span>,
+    }</pre>
+  </div>
+  <p>这条规则的成立同样依赖"流水线严格按序"；年龄改用唯一编号（tag）之后，前递匹配方式一并更换（第 34 集）。</p>
+
+  <h3>③ 频率上限：一拍内的组合路径过长</h3>
+  <p>缓存与存储器按组合逻辑读：命中在当拍返回数据——</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/icache.prism · 头注</span></div>
+<pre class="wrap"><span class="tk-com">// =============================================================================
+// icache.prism — 指令缓存（直接映射，16 行 × 每行 4 字）
+//
+// 容量 64 字 = 256 字节；行大小 4 字（16 字节，装得下 4 条标准指令或 8 条 RVC）；
+// 直接映射，无替换策略；命中组合读出（同拍出，与 im 的 1RW 口径一致）。</span></pre>
+  </div>
+  <p>时钟周期不能短于一拍内最长的组合路径。取指这一拍里串着完整的 SRAM 读出，访存那一拍同样；切成五段之后每段仍然很长，主频因此受限。<strong>要提高频率，必须先把"读"移出当拍（改为在拍沿寄存），再细分流水段</strong>（第 36 集）。</p>
+
+  <h3>另有两处问题被上面的结构放大</h3>
+  <p><strong>访存延迟</strong>：停顿表里 <code>dmiss</code> / <code>mmiss</code> / <code>amo</code> 三项都来自访存，且一次缺失就冻结整条流水线——它是空拍的最大单一来源，需要把访存改为非阻塞（第 37 集）。<strong>误预测代价</strong>：一旦流水线加深（③ 的解法），同样一次猜错要冲刷的级数更多，预测准确率的价值随之放大（第 38 集）。</p>
+</section>
+
+<section id="s2">
+  <h2>对症的五种技术：各自的引入条件</h2>
+  <p>上面三处限制与两处放大问题，逐一对应五种技术。每一种都有明确的<strong>引入条件</strong>与<strong>前置依赖</strong>——不是"越多越好"，而是针对哪类瓶颈、在什么前提下才成立：</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>要解决的问题</th><th>技术</th><th>引入条件</th><th>前置依赖</th></tr>
+      <tr><td>② 顺序等待：一条等数据，后续全部阻塞</td><td><strong>乱序执行</strong>：重命名 + ROB + 发射队列 + 访存队列</td><td>等待事件的时间远大于指令本身（miss 几十到上百拍、除法 35 拍），且等待点之后有足够多独立指令可执行</td><td>每条指令有唯一编号（tag）；前递与唤醒从"按位置"改为"按 tag"</td></tr>
+      <tr><td>① 吞吐上限：IPC 逼近 1.0</td><td><strong>多发射</strong>：取指 / 译码 / 重命名 / 提交加宽</td><td>单发射成为下一瓶颈：等待类停顿被处理之后，流水线中仍有可并行的指令流</td><td>寄存器堆多端口、旁路网络按 tag 匹配、提交口支持一拍多条</td></tr>
+      <tr><td>③ 组合路径限制主频</td><td><strong>深流水 + 同步读</strong></td><td>瓶颈是频率而不是每拍条数时（组合路径无法再压缩）</td><td>各级输入必须"上一拍就绪"——缓存与寄存器堆先改同步读，前端拆分流水级并加指令缓冲</td></tr>
+      <tr><td>访存延迟冻结整条流水线</td><td><strong>非阻塞访存 + 私有 L2 + 总线换代</strong></td><td>miss 是空拍的最大来源，且乱序已能承接"流水线继续执行"</td><td>在途登记（地址表 + 填充表）；收益由乱序兑现</td></tr>
+      <tr><td>深流水放大误预测代价</td><td><strong>预测升级</strong>：返回地址栈 + 四件套预测器</td><td>流水线加深之后，或分支密集负载上冲刷损失占比上升时</td><td>无（可独立生效）；收益判据只能落在计数器上</td></tr>
+    </table>
+  </div>
+  <p>依赖关系决定改动顺序：<strong>tag 与重命名是乱序和多发射的共同前提</strong>（多发射的旁路匹配同样靠它）；<strong>同步读是深流水的前提</strong>；<strong>非阻塞访存的收益必须由乱序兑现</strong>（没有乱序，miss 期间本来就没有指令可以继续执行）；<strong>预测升级是对深流水的回应</strong>。顺序不是任意的：先备好地基（同步读、tag），再做宽度与深度上的加法。</p>
 </section>
 
 <section id="s3">
   <h2>五处差异</h2>
-  <p>把两台机器逐维摆开，差在五处：</p>
+  <p>逐项对照两台机器：</p>
   <div class="tbl-wrap">
     <table>
       <tr><th>维</th><th>第六日的白虹</th><th>第七日的白虹</th><th>拆在</th></tr>
-      <tr><td><strong>乱序</strong></td><td>按序不回头；前递按"级的位置"分两档</td><td>重命名 + ROB 64 + 分队列发射；年龄改用 <strong>tag</strong> 记</td><td class="mono">EP 34</td></tr>
-      <tr><td><strong>多发射</strong></td><td>一拍一条：译码、提交都是单口</td><td>取指 3 / 译码 3 / 重命名 4 / 提交 3；寄存器堆与递交口成组加宽</td><td class="mono">EP 35</td></tr>
-      <tr><td><strong>深流水</strong></td><td>五级；级间靠组合读直接取数</td><td>主干 12 级；前端 4 级 + 指令缓冲；缓存改同步读、打拍出数</td><td class="mono">EP 36</td></tr>
-      <tr><td><strong>访存</strong></td><td>命中组合出数；miss 冻整条；直接映射 512B</td><td>4 路 64KB、write-back；非阻塞（地址 8 + 填充 2 在途）；私有 L2 512KB；对外 AXI4</td><td class="mono">EP 37</td></tr>
-      <tr><td><strong>预测</strong></td><td>BTB + BHT 按 PC 猜；误预测冲 2 拍</td><td>L0-BTB + BTB 1024×4 + 双表 BHT + IND-BTB；RAS 12 项</td><td class="mono">EP 38</td></tr>
+      <tr><td><strong>乱序</strong></td><td>按序执行；前递按位置两级分档，位置即年龄</td><td>重命名 + ROB 64 + 分队列发射；年龄改用 <strong>tag</strong> 记录</td><td class="mono">EP 34</td></tr>
+      <tr><td><strong>多发射</strong></td><td>一拍一条：译码、提交都是单口</td><td>取指 3 / 译码 3 / 重命名 4 / 提交 3；寄存器堆与提交口成组加宽</td><td class="mono">EP 35</td></tr>
+      <tr><td><strong>深流水</strong></td><td>五级；存储读为组合逻辑，同拍返回</td><td>主干 12 级；前端 4 级 + 指令缓冲；缓存改同步读</td><td class="mono">EP 36</td></tr>
+      <tr><td><strong>访存</strong></td><td>命中组合出数；miss 冻结整条流水线；直接映射 512B</td><td>4 路 64KB、write-back；非阻塞（地址 8 + 填充 2 在途）；私有 L2 512KB；对外 AXI4</td><td class="mono">EP 37</td></tr>
+      <tr><td><strong>预测</strong></td><td>BTB + BHT 按 PC 预测；误预测冲刷 2 级</td><td>L0-BTB + BTB 1024×4 + 双表 BHT + IND-BTB；RAS 12 项</td><td class="mono">EP 38</td></tr>
     </table>
   </div>
-  <p>五处不是五个独立选项，是一条线上的五个结：<strong>多发射</strong>让一拍最多要读八个操作数——寄存器堆端口与旁路网络跟着成倍长；<strong>深流水</strong>让误预测的代价变贵——先把预测器升级再谈加深；<strong>非阻塞访存</strong>的收益只有乱序能兑现（miss 期间"还能退休几条"是第 37 集的判据）；而乱序要成立，先得有 ② 那条"年龄"的新记法。顺序拆得开，改动拆不开。</p>
 </section>
 
 <section id="s4">
-  <h2>先立三个数——不靠形容词</h2>
-  <p>"差很多"不算结论。三个数互证：一个看总量，一个看构成，一个看潜力。</p>
+  <h2>三个可自证的度量</h2>
+  <p>判断"性能差"与"改动有效"，需要独立于实现的度量。三个量互相独立：总量（每拍退休条数）、构成（空拍按源归因）、潜力（miss 期间可退休拍数）。</p>
 
-  <h3>数① 每拍退休条数（IPC）</h3>
-  <p>固定 600 拍窗口实测：有退休的 <strong>472 拍</strong>、空的 <strong>128 拍</strong>——<strong>IPC 0.787</strong>。单发射的天花板是 1.0，它就在头顶上。</p>
+  <h3>度量① 每拍退休条数（IPC）</h3>
+  <p>固定 600 拍窗口实测：有退休的 <strong>472 拍</strong>、空的 <strong>128 拍</strong>——<strong>IPC 0.787</strong>。单发射的理论上限是 1.0——已经离得很近。</p>
 
-  <h3>数② 空拍率与按源归因</h3>
-  <p>128 拍空拍占 600 拍的 <strong>21.3%</strong>。关键不是这个百分比，而是<strong>每一拍空拍都能被上表十个源里的至少一个解释</strong>——这叫归因闭合：归因按"或"覆盖，不许对不上账；对不上就按拍打印十个源的取值，直接点名缺了哪一类。<strong>判据要写成"什么情况下它会红"</strong>——"覆盖率 ≥95%"那种写法永远不会红。这套账本已经有硬件对应：十个源 + 两个缓存起手在 <code>csr</code> 里各有计数器（<code>mhpmcounter3–14</code> 固定绑定，事件号即位序），第 39 集把它接到跑分上。</p>
+  <h3>度量② 空拍率与按源归因</h3>
+  <p>128 拍空拍占 600 拍的 <strong>21.3%</strong>。关键不是这个百分比，而是<strong>每一拍空拍都能被前面十个源中的至少一个解释</strong>——归因要闭合：按"或"覆盖，不许对不上账；对不上就按拍打印十个源的取值，直接点名缺了哪一类。<strong>判据要写成"什么情况下它会红"</strong>——"覆盖率 ≥95%"那种写法永远不会红。这套账本已有硬件对应：十个源 + 两个缓存起手在 <code>csr</code> 里各有计数器（<code>mhpmcounter3–14</code> 固定绑定，事件号即位序），第 39 集把它接到跑分上。</p>
 
-  <h3>数③ miss 期间，还能退休几条</h3>
-  <p>第三个数第一、二代机器没有：从一笔 load miss 发出、到数据交付的整段里，<strong>还能退休几条指令</strong>。按序核这个数恒为 0——miss 就是"全停"，没有第二种可能；只有非阻塞的机器才第一次给出非零值。它是第 37 集唯一诚实的度量。</p>
+  <h3>度量③ miss 期间，还能退休几条</h3>
+  <p>第三个量只有非阻塞访存的机器才有意义：从一笔 load miss 发出、到数据交付的整段里，<strong>还能退休几条指令</strong>。按序核这个量恒为 0——miss 期间整条流水线停住；只有非阻塞的机器才第一次给出非零值。它是第 37 集的核心判据。</p>
 
   <div class="callout key">
-    <span class="callout-title">三个数怎么读</span>
-    ① 与 ② 描述"现在慢在哪"；③ 描述"换形状之后能快在哪"。改动前后各跑一遍同一张归因表——<strong>收益兑现不兑现，当场可见</strong>。
+    <span class="callout-title">三个量怎么用</span>
+    ①②描述"当前瓶颈在哪"，③描述"改结构之后能快在哪"。每处改动前后各跑一遍同一张归因表——<strong>收益是否兑现，逐一可见</strong>。
   </div>
 </section>
 
 <section id="s5">
-  <h2>五处各要动多深</h2>
-  <ul>
-    <li><strong>乱序（第 34 集）</strong>：把"位置即年龄"换成"tag 即年龄"——重命名、ROB 64、分队列发射、访存队列，四件一起上；恢复靠一次整表写回，不做快照。</li>
-    <li><strong>多发射（第 35 集）</strong>：宽度是全机参数——译码 3、重命名 4、提交 3；寄存器堆端口成组；相邻指令先融合——收益记在后面几档的账上。</li>
-    <li><strong>深流水（第 36 集）</strong>：主干 12 级——先把"读"改成打拍出数，前端拆成四级加指令缓冲；误预测惩罚、前递级距、栅栏生效拍数全部重算。</li>
-    <li><strong>访存（第 37 集）</strong>：非阻塞 DCache（地址 8 + 填充 2 在途）、写合并缓冲、私有 L2 512KB、对外换 AXI4——miss 期间，流水继续退休。</li>
-    <li><strong>预测（第 38 集）</strong>：返回地址栈（12 项，由退休推送）+ 四件套：L0-BTB、BTB 1024×4、双表 BHT、IND-BTB。</li>
-  </ul>
-  <p>然后（第 39 集）跑分：CoreMark 两档 + Dhrystone，同频归一后与 A76 对着看。</p>
-</section>
-
-<section id="s6">
   <h2>小结</h2>
   <ul>
-    <li>第六日的白虹（五级 · 单发射 · 按序）与第七日的白虹（12 级 · 四发乱序）——<strong>差在五处：乱序、多发射、深流水、访存、预测</strong>。</li>
-    <li>四条现状各有代码出处：一拍一条（<code>@schedule</code>）、位置即年龄（两级前递）、组合读出数（缓存头注）、占用即停顿（十个源）。</li>
-    <li>三个可自证的量：IPC 0.787（600 拍窗）、空拍 21.3% 且逐拍闭合归因、miss 期间可退休拍数（按序核恒 0）。</li>
-    <li>接下来五集各拆一处，改动前后跑同一张归因表——<strong>先立判据，再动烙铁</strong>。</li>
+    <li>三处结构性限制：每拍一条（吞吐上限）、等待连坐（顺序语义）、组合路径限制主频；另有两处被放大：访存延迟冻结流水线、深流水放大误预测代价。</li>
+    <li>五种技术各有引入条件与前置依赖；改动顺序由依赖决定：先备同步读与 tag 这两块地基，再做宽度与深度上的加法。</li>
+    <li>三个可自证的度量：IPC 0.787（600 拍窗口）、空拍 21.3% 且逐拍可归因、miss 期间可退休拍数（按序核恒 0）。</li>
+    <li>接下来五集各处理一种技术；改动前后跑同一张归因表——<strong>先立判据，再动硬件</strong>。</li>
   </ul>
   <div class="verse-inline">
     "到第七日，神造物的工已经完毕。"
@@ -316,7 +313,7 @@ html.nav-open .nav-scrim { display: block; }
   <h2>复现本集</h2>
   <div class="code">
     <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
-<pre><span class="tk-com"># 白虹仓库：四条现状与十源表都在源码里，随手可查</span>
+<pre><span class="tk-com"># 白虹仓库：三处限制的代码出处与十源表，都在源码里</span>
 sed -n <span class="tk-str">'1,30p'</span>    whitebow/whitebow.prism    <span class="tk-com"># 五级与策略表</span>
 sed -n <span class="tk-str">'159,200p'</span> whitebow/iu/hazard.prism  <span class="tk-com"># 十个源与两级前递</span>
 head -20           whitebow/iu/icache.prism   <span class="tk-com"># 缓存口径（组合读）</span>
@@ -329,7 +326,7 @@ prism run whitebow/ext/csr.prism --run csr_pmu --debug</pre>
 </main>
 
 <footer>
-  <span class="next">第七日 · 安息 · 差在五处 —— 两代机器摆上桌；下一集拆第一处：乱序</span>
+  <span class="next">第七日 · 安息 · 差在五处 —— 两代白虹逐项对照；下一集拆第一处：乱序</span>
   七日创造 · 第七日 · 安息 · 第 33 集 · <a href="34-ooo.html">下一集 →</a> · <a href="../index.html">返回首页</a>
 </footer>
 
