@@ -9,15 +9,15 @@
 :root {
   --ink: #0f1420; --ink-2: #1c2333; --ink-3: #4a5468; --mute: #8892a6;
   --line: #e5e8ef; --paper: #ffffff; --cream: #fbf9f4;
-  --prism: #5b4bff; --prism-2: #a678ff; --prism-3: #ff8a4c;
-  --ok: #12a060; --warn: #d84a4a;
+  --prism: #5b4bff; --prism-2: #a678ff;   --ok: #12a060; --warn: #d84a4a;
+  --accent: #ffd479; --accent-2: #ff8a4c;
   --code-bg: #10131c; --code-fg: #d6d9e0; --radius: 10px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif; color: var(--ink); background: var(--paper); line-height: 1.7; font-size: 17px; -webkit-font-smoothing: antialiased; }
 
-.hero { position: relative; padding: 92px 24px 74px; background: radial-gradient(ellipse 950px 500px at 28% 32%, rgba(255,214,150,.22) 0%, transparent 55%), radial-gradient(ellipse 750px 440px at 74% 66%, rgba(91,75,255,.28) 0%, transparent 55%), #05070e; color: #fff; overflow: hidden; }
+.hero { position: relative; padding: 90px 24px 72px; background: radial-gradient(ellipse 820px 460px at 28% 30%, rgba(255,212,121,.16) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(255,138,76,.14) 0%, transparent 55%), #060910; color: #fff; overflow: hidden; }
 .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
 .hero-eyebrow { display: inline-block; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.16); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; margin-bottom: 22px; color: #ffe6c0; }
 .hero h1 { font-family: 'Noto Serif SC', serif; font-weight: 700; font-size: clamp(32px, 5.2vw, 52px); line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.01em; }
@@ -33,7 +33,7 @@ body { font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif; color: 
 main { max-width: 780px; margin: 0 auto; padding: 76px 24px 120px; }
 section { margin-bottom: 72px; }
 h2 { font-family: 'Noto Serif SC', serif; font-size: 30px; font-weight: 700; margin-bottom: 20px; padding-top: 8px; }
-h2::before { content: ''; display: inline-block; width: 32px; height: 3px; background: linear-gradient(90deg, var(--prism-3), var(--prism)); border-radius: 2px; vertical-align: middle; margin-right: 12px; transform: translateY(-6px); }
+h2::before { content: ''; display: inline-block; width: 32px; height: 3px; background: linear-gradient(90deg, var(--accent-2), var(--prism)); border-radius: 2px; vertical-align: middle; margin-right: 12px; transform: translateY(-6px); }
 h3 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; color: var(--ink-2); }
 p { margin-bottom: 16px; color: var(--ink-2); }
 p code, li code, td code { font-family: 'JetBrains Mono', monospace; font-size: .93em; padding: 2px 6px; background: var(--cream); border: 1px solid var(--line); border-radius: 4px; color: var(--prism); font-weight: 500; }
@@ -55,24 +55,24 @@ li { margin-bottom: 8px; }
 .code-file { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--mute); }
 .code pre { padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; line-height: 1.65; color: var(--code-fg); }
 
-.tk-kw   { color: #c57bff; font-weight: 500; }
+.tk-kw { color: #c57bff; font-weight: 500; }
 .tk-decl { color: #e08aff; font-weight: 600; }
 .tk-name { color: #ffffff; font-weight: 500; }
-.tk-num  { color: #79b8ff; }
-.tk-com  { color: #6c7488; font-style: italic; }
-.tk-fn   { color: #4ad6b4; }
-.tk-str  { color: #ffd479; }
+.tk-num { color: #79b8ff; }
+.tk-com { color: #6c7488; font-style: italic; }
+.tk-fn { color: #4ad6b4; }
+.tk-str { color: #ffd479; }
 .code pre.wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
-.tk-dir  { color: #7ee8d8; font-weight: 500; }
-.tk-typ  { color: #4ad6b4; }
+.tk-dir { color: #7ee8d8; font-weight: 500; }
+.tk-typ { color: #4ad6b4; }
 .tk-prim { color: #79dfff; }
-.tk-rf   { color: #ffd479; font-weight: 500; }
-.tk-rw   { color: #b8a0e0; }
+.tk-rf { color: #ffd479; font-weight: 500; }
+.tk-rw { color: #b8a0e0; }
 .tk-stor { color: #4ad6b4; font-weight: 600; }
-.tk-sf   { color: #c5b890; }
-.tk-sv   { color: #8ab4f8; }
-.tk-op   { color: #ff8a4c; }
-.tk-ann  { color: #ff79c6; }
+.tk-sf { color: #c5b890; }
+.tk-sv { color: #8ab4f8; }
+.tk-op { color: #ff8a4c; }
+.tk-ann { color: #ff79c6; }
 
 .term { margin: 18px 0; background: #060810; border-radius: var(--radius); overflow: hidden; border: 1px solid #1c1f2e; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; }
 .term-header { padding: 8px 14px; background: #10131c; border-bottom: 1px solid #1c1f2e; color: var(--mute); font-size: 11px; letter-spacing: .1em; }
@@ -87,7 +87,7 @@ td { padding: 11px 14px; border-bottom: 1px solid var(--line); color: var(--ink-
 
 .callout { padding: 18px 22px; background: var(--cream); border-left: 3px solid var(--prism); border-radius: 0 var(--radius) var(--radius) 0; margin: 24px 0; font-size: 15.5px; }
 .callout-title { font-weight: 600; color: var(--ink); margin-bottom: 6px; display: block; }
-.callout.warn { border-left-color: var(--prism-3); background: #fff5ec; }
+.callout.warn { border-left-color: var(--accent-2); background: #fff5ec; }
 
 .pn { display: flex; justify-content: space-between; gap: 12px; padding: 16px 0 32px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 56px; font-size: 14px; color: var(--mute); }
 .pn a { color: var(--prism); text-decoration: none; font-weight: 500; }
@@ -163,7 +163,7 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="01-why-prism.html"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="04-let-there-be-light.html" class="on" aria-current="page"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">EP 27</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="01-why-prism.html"><span class="n">第 1 集</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="02-layered.html"><span class="n">第 2 集</span><span class="t">分层与语法骨架</span></a></li><li><a href="03-cpu-top.html"><span class="n">第 3 集</span><span class="t">聚在一处</span></a></li><li><a href="04-let-there-be-light.html" class="on" aria-current="page"><span class="n">第 4 集</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">第 5 集</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">第 6 集</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">第 7 集</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">第 8 集</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">第 9 集</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">第 10 集</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">第 11 集</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">第 12 集</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">第 13 集</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">第 14 集</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">第 15 集</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">第 16 集</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">第 17 集</span><span class="t">指令集扩展：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">第 18 集</span><span class="t">把 CPU 装进 SoC</span></a></li><li><a href="../day4/19-uart.html"><span class="n">第 19 集</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">第 20 集</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">第 21 集</span><span class="t">换成跑得更快的 Verilator</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">第 22 集</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">第 23 集</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">第 24 集</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">第 25 集</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">第 26 集</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">第 27 集</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已写完</span></h3><ul><li><a href="../day6/28-fpu.html"><span class="n">第 28 集</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></a></li><li><a href="../day6/29-misaligned.html"><span class="n">第 29 集</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></a></li><li><a href="../day6/30-initramfs.html"><span class="n">第 30 集</span><span class="t">挂根：initramfs 与它的三条软规矩</span></a></li><li><a href="../day6/31-shell.html"><span class="n">第 31 集</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/32-gap.html"><span class="n">第 32 集</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/33-ooo.html"><span class="n">第 32 集</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/34-width.html"><span class="n">第 32 集</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/35-deep.html"><span class="n">第 32 集</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/36-mem.html"><span class="n">第 32 集</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/37-bpred.html"><span class="n">第 32 集</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/38-coremark.html"><span class="n">第 32 集</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 <header class="hero">
   <div class="hero-inner">
@@ -195,7 +195,7 @@ html.nav-open .nav-scrim { display: block; }
         <!-- 源码 -->
         <rect x="24" y="112" width="196" height="100" rx="12" fill="url(#src)" stroke="#a678ff" stroke-width="1.5"/>
         <text x="122" y="148" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600" fill="#e9e2ff">mini_cpu.prism</text>
-        <text x="122" y="170" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="11" fill="rgba(255,255,255,.55)">第三集的迷你数据通路</text>
+        <text x="122" y="170" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="11" fill="rgba(255,255,255,.55)">第 3 集的迷你数据通路</text>
         <text x="122" y="190" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" fill="rgba(255,255,255,.42)">97 行 · 3 模块 + 1 design</text>
 
         <!-- 入口箭头 -->
@@ -246,12 +246,12 @@ html.nav-open .nav-scrim { display: block; }
 
 <section id="s1">
   <h2>先放源码：mini_cpu.prism</h2>
-  <p>前三集交齐了三件东西：语言的形状（第一集）、一颗模块的写法（第二集）、多颗模块的组装（第三集）——组装的结果就是这颗 <code>MiniCpu</code>。这一集<strong>不写新代码</strong>：把 prism 命令行一条一条走完，每一件工具都围绕<strong>这一份源码</strong>工作。先把完整源码放这儿（全 97 行，第三集拼的那份，一字未改）——接下来每件工具的输出，都可以回到这里对上任意一行：</p>
+  <p>前三集交齐了三件东西：语言的形状（第 1 集）、一颗模块的写法（第 2 集）、多颗模块的组装（第 3 集）——组装的结果就是这颗 <code>MiniCpu</code>。这一集<strong>不写新代码</strong>：把 prism 命令行一条一条走完，每一件工具都围绕<strong>这一份源码</strong>工作。先把完整源码放这儿（全 97 行，第 3 集拼的那份，一字未改）——接下来每件工具的输出，都可以回到这里对上任意一行：</p>
 
   <div class="code">
     <div class="code-header"><span class="code-lang">prism</span><span class="code-file">examples/mini_cpu.prism · 全 97 行</span></div>
 <pre><span class="tk-com">// =============================================================================</span>
-<span class="tk-com">// mini_cpu.prism —— 第三集样例：用 design + connect + wire + expose 把三颗</span>
+<span class="tk-com">// mini_cpu.prism —— 第 3 集样例：用 design + connect + wire + expose 把三颗</span>
 <span class="tk-com">// 独立模块拼成一颗&quot;迷你数据通路&quot;。</span>
 <span class="tk-com">//</span>
 <span class="tk-com">//   Ticker  →（wire：+1）→  Doubler  →  Thresh</span>
@@ -432,7 +432,7 @@ module Thresh@h:
   <ul>
     <li>一屏其实是<strong>六段</strong>：三颗模块的"原型"，加三个例化点的"特化版"——<code>Ticker@t</code> / <code>Doubler@d</code> / <code>Thresh@h</code>（标着 <code>(specialized from …)</code>）。同一颗模块，在不同例化点各有一份自己的账。</li>
     <li>每段六个字段：<code>level</code>（拍级精确，还是无时序）、<code>has_schedule</code>、<code>latency</code>、<code>can_lower_rtl</code>、<code>bitwidths</code>（<strong>每个信号被推成多少位</strong>：<code>cnt=7, c=7</code>……）、<code>signedness</code>（u / i）。</li>
-    <li>没有一个数字是跑出来的，全是<strong>编译期推出来的</strong>——第二集说"位宽规则在编译器里算清"，这里就是那份清单。特化段还多算了端口（<code>en=u</code> 这种）。</li>
+    <li>没有一个数字是跑出来的，全是<strong>编译期推出来的</strong>——第 2 集说"位宽规则在编译器里算清"，这里就是那份清单。特化段还多算了端口（<code>en=u</code> 这种）。</li>
     <li><strong>什么时候用它</strong>：位宽或符号跟预期不符时——"它到底被算成了多少位，来对一对"；把某张 <code>@schedule</code> 删掉再跑，它会把缺的字段一件件列出来（<code>missing fields: ['bitwidth', 'clock', …]</code>）。</li>
   </ul>
 
@@ -603,7 +603,7 @@ module Thresh@h:
   <ul>
     <li>整棵树 76 行、源码 97 行——同一份东西的两种记法，顺序一一对应；<code>@L12</code> 这种标记是回指源码的行号。</li>
     <li>前六段：三颗 <code>module</code>（端口 / reg / <code>on clock</code> / 组合赋值）+ 三张 <code>@schedule</code>（五个字段原样成树）。第七段 <code>design</code>：三次 <code>inst</code>、两根 <code>wire</code>、两条 <code>connect</code>、一条 <code>expose</code>。</li>
-    <li><code>connect __wire__.step -&gt; d.x</code>——第三集的"具名线"在树里显了形：wire 是节点，"接"是显式关系。</li>
+    <li><code>connect __wire__.step -&gt; d.x</code>——第 3 集的"具名线"在树里显了形：wire 是节点，"接"是显式关系。</li>
     <li>连 <code>run</code> 段都在树里：<code>reset / repeat / until</code>、stim 表逐拍、期望组、show 列，一条不落——你手算的那张表，在编译器的内部表示里就是这个形状。</li>
     <li><strong>什么时候用它</strong>：怀疑"编译器理解的和我想的不一样"时——先看树，再谈问题；给工具报 bug 时贴这棵树最省口径。</li>
   </ul>
@@ -785,9 +785,9 @@ module Thresh@h:
   </div>
   <ul>
     <li><strong>第三方一眼可读</strong>：没有自定义运行时、没有库——就是普通 SV：<code>always_ff</code> + <code>assign</code> + 例化。丢给 iverilog（下一节）、或丢给综合器（后面几日）都直接用。</li>
-    <li><strong>顶层端口表兑现第三集的"推导"</strong>：<code>t__en</code> 是没被接走的输入、<code>h__hit</code> 是没被接走的输出——顶层那几个孔就是这么来的。</li>
+    <li><strong>顶层端口表兑现第 3 集的"推导"</strong>：<code>t__en</code> 是没被接走的输入、<code>h__hit</code> 是没被接走的输出——顶层那几个孔就是这么来的。</li>
     <li><strong><code>expose</code> 绕了一层</strong>：给 <code>Ticker_rtl</code> 加一个 <code>xpose__cnt</code> 观测端口，顶层 <code>assign ticks = w__xpose__t__cnt</code>——跨层次的读被拆成"端口 + 线"（yosys 不认跨层次引用，绕这一下才不静默丢线）。</li>
-    <li>中间线名 <code>w__t__c</code> / <code>w__d__y</code> 就是第二集讲过的 <code>__</code> 段分隔符——段接段，可逆读回层级。</li>
+    <li>中间线名 <code>w__t__c</code> / <code>w__d__y</code> 就是第 2 集讲过的 <code>__</code> 段分隔符——段接段，可逆读回层级。</li>
   </ul>
 
   <h3><code>gen-tlm</code> · SystemC 模型源码</h3>
@@ -1031,7 +1031,7 @@ module Thresh@h:
 <span class="tk-kw">int</span> sc_main(<span class="tk-kw">int</span> argc, <span class="tk-kw">char</span>** argv) { prism_tlm_trace(); <span class="tk-kw">return</span> <span class="tk-num">0</span>; }</pre>
   </div>
   <ul>
-    <li>头部的 <code>V4</code> 结构：值带着"确定 / 高阻 / 未知"三种状态——z 与 x 要能原样运到表上，才有第三集 <code>both</code> 那种逐字对撞的资格。</li>
+    <li>头部的 <code>V4</code> 结构：值带着"确定 / 高阻 / 未知"三种状态——z 与 x 要能原样运到表上，才有第 3 集 <code>both</code> 那种逐字对撞的资格。</li>
     <li>每颗模块一个 <code>SC_MODULE</code>，名字带着<strong>实例</strong>（<code>Ticker_t_tlm</code>）：<code>settle()</code> 算组合、<code>tick()</code> 在沿上推进——求值协议就写在注释里。</li>
     <li>顶层的 <code>drv()</code> 留着一处历史缺陷的注释：时钟由驱动线程<strong>手动拉</strong>——"<code>sc_clock</code> 在 t=0 白送一个上升沿，整张表会比 golden 提前一拍（三方对撞抓到的第一个真 bug）"。工具自己的教训，留在了生成物里。</li>
   </ul>
@@ -1062,7 +1062,7 @@ cycle  t_en  ticks  step  res  h_hit
 9      1     10     11    22   1
 <span class="term-ok"># expect: 10/10 拍有断言 · 4 列 · 全等 ✅</span></div>
   </div>
-  <p>不需要任何外部工具——解释器就是 Python。表尾那行说：stim 里<strong>手算的期望</strong>逐拍全中。（<code>--debug</code> = <code>--show</code> 出表 + <code>--util</code> 判期望；不给就只跑 stim/until，不出表——第一集的参数规则。）</p>
+  <p>不需要任何外部工具——解释器就是 Python。表尾那行说：stim 里<strong>手算的期望</strong>逐拍全中。（<code>--debug</code> = <code>--show</code> 出表 + <code>--util</code> 判期望；不给就只跑 stim/until，不出表——第 1 集的参数规则。）</p>
 
   <h3>② RTL：iverilog 真仿真</h3>
   <div class="code">
@@ -1095,7 +1095,7 @@ cycle  t_en  ticks  step  res  h_hit
   </div>
   <p>这一档把 <code>gen-tlm</code> 的源码真的编译、真的跑：<code>g++</code> + SystemC，跑完按同一张表逐字对。三张表并排看——<strong>逐字相同</strong>：不同语言、不同执行者，对着同一份手算期望交同一份卷。</p>
 
-  <p>两档重型后端要外部工具（iverilog / SystemC）：缺了会当场报错并给安装指引；<code>prism deps</code> 一次自检、<code>prism deps --install</code> 按操作系统补装（第一集见过它的输出，这里不重复）。</p>
+  <p>两档重型后端要外部工具（iverilog / SystemC）：缺了会当场报错并给安装指引；<code>prism deps</code> 一次自检、<code>prism deps --install</code> 按操作系统补装（第 1 集见过它的输出，这里不重复）。</p>
 </section>
 
 <section id="s5">
@@ -1162,10 +1162,10 @@ cycle  t_en  ticks  step  res  h_hit
     <tbody>
       <tr><td>第二日 · 空气与水</td><td>所有原料：四颗器官各自能测；组装成顶层后跑冒泡排序——一台能执行程序的处理器</td></tr>
       <tr><td>第三日 · 天上光体</td><td>立 flag：造一颗能跑 Linux 的处理器——白虹（Whitebow）。五级流水线数据通路、冒险与前递、CSR 与特权级</td></tr>
-      <tr><td>第四日 · 有生命的活物</td><td>CLINT/PLIC 中断、指令面长大（M·A·C）、<code>soc.prism</code> 连成一片真芯片（字节口径地址图 + DDR 槽位表）、uart8250 接宿主、模式切换与 syscall；再请官方 sail 规范模型作第四方对撞、换 Verilator 这条腿跑起百万拍，OpenSBI 打出 banner 并交棒</td></tr>
+      <tr><td>第四日 · 有生命的活物</td><td>CLINT/PLIC 中断、指令集扩展（M·A·C）、<code>soc.prism</code> 连成一片真芯片（字节口径地址图 + DDR 槽位表）、uart8250 接宿主、模式切换与 syscall；再请官方 sail 规范模型作第四方对撞、换 Verilator 这条腿跑起百万拍，OpenSBI 打出 banner 并交棒</td></tr>
       <tr><td>第五日 · 照着形象造人</td><td>更快也更守规矩：ICache、DCache、分支预测、MMU 与 Sv39、PMP</td></tr>
-      <tr><td>第六日 · 安息前的最后一班岗</td><td>交棒内核、进入 shell：浮点（F / D）与非对齐访存、Linux 起跑的两处 oops、initramfs 挂根、交互控制台</td></tr>
-      <tr><td>第七日 · 安息</td><td>白虹的下一个形状：乱序四发 10+ 级施工图（P0–P5），对标 Cortex-A76 核形状</td></tr>
+      <tr><td>第六日 · 安息前的最后一班岗</td><td>交棒内核、进入 shell：浮点（F / D）与非对齐访存、initramfs 挂根、交互控制台</td></tr>
+      <tr><td>第七日 · 安息</td><td>从五级顺序单发射到现代高性能核：差在五处（乱序 / 多发射 / 深流水 / 访存 / 预测）→ 逐处深改造（重命名 4 宽 / 提交 3 宽、主干 12 级）→ CoreMark 同频归一到 A76 那一档</td></tr>
     </tbody>
   </table>
 

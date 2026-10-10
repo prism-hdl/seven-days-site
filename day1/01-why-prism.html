@@ -9,8 +9,8 @@
 :root {
   --ink: #0f1420; --ink-2: #1c2333; --ink-3: #4a5468; --mute: #8892a6;
   --line: #e5e8ef; --paper: #ffffff; --cream: #fbf9f4;
-  --prism: #5b4bff; --prism-2: #a678ff; --prism-3: #ff8a4c;
-  --ok: #12a060; --warn: #d84a4a;
+  --prism: #5b4bff; --prism-2: #a678ff;   --ok: #12a060; --warn: #d84a4a;
+  --accent: #ffd479; --accent-2: #ff8a4c;
   --code-bg: #10131c; --code-fg: #d6d9e0; --radius: 10px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,7 +18,7 @@ html { scroll-behavior: smooth; }
 body { font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif; color: var(--ink); background: var(--paper); line-height: 1.7; font-size: 17px; -webkit-font-smoothing: antialiased; }
 
 /* Hero */
-.hero { position: relative; padding: 96px 24px 80px; background: radial-gradient(ellipse 900px 500px at 30% 40%, rgba(166,120,255,.35) 0%, transparent 55%), radial-gradient(ellipse 700px 400px at 70% 60%, rgba(255,138,76,.22) 0%, transparent 55%), #050810; color: #fff; overflow: hidden; }
+.hero { position: relative; padding: 90px 24px 72px; background: radial-gradient(ellipse 820px 460px at 28% 30%, rgba(255,212,121,.16) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(255,138,76,.14) 0%, transparent 55%), #060910; color: #fff; overflow: hidden; }
 .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
 .hero-eyebrow { display: inline-block; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.16); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; margin-bottom: 22px; color: #d6d0ff; }
 .hero h1 { font-family: 'Noto Serif SC', serif; font-weight: 700; font-size: clamp(34px, 5.4vw, 54px); line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.01em; }
@@ -37,7 +37,7 @@ body { font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif; color: 
 main { max-width: 780px; margin: 0 auto; padding: 76px 24px 120px; }
 section { margin-bottom: 72px; }
 h2 { font-family: 'Noto Serif SC', serif; font-size: 30px; font-weight: 700; margin-bottom: 20px; padding-top: 8px; position: relative; }
-h2::before { content: ''; display: inline-block; width: 32px; height: 3px; background: linear-gradient(90deg, var(--prism), var(--prism-3)); border-radius: 2px; vertical-align: middle; margin-right: 12px; transform: translateY(-6px); }
+h2::before { content: ''; display: inline-block; width: 32px; height: 3px; background: linear-gradient(90deg, var(--prism), var(--accent-2)); border-radius: 2px; vertical-align: middle; margin-right: 12px; transform: translateY(-6px); }
 h3 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; color: var(--ink-2); }
 p { margin-bottom: 16px; color: var(--ink-2); }
 p code, li code { font-family: 'JetBrains Mono', monospace; font-size: .93em; padding: 2px 6px; background: var(--cream); border: 1px solid var(--line); border-radius: 4px; color: var(--prism); font-weight: 500; }
@@ -46,7 +46,7 @@ em { color: var(--ink); font-style: italic; }
 ul, ol { margin: 0 0 20px 24px; color: var(--ink-2); }
 li { margin-bottom: 8px; }
 
-.verse-inline { padding: 18px 22px; margin: 22px 0; background: linear-gradient(90deg, #fdf6ec 0%, transparent 60%); border-left: 3px solid var(--prism-3); border-radius: 0 var(--radius) var(--radius) 0; font-family: 'Noto Serif SC', serif; font-style: italic; color: var(--ink-3); }
+.verse-inline { padding: 18px 22px; margin: 22px 0; background: linear-gradient(90deg, #fdf6ec 0%, transparent 60%); border-left: 3px solid var(--accent-2); border-radius: 0 var(--radius) var(--radius) 0; font-family: 'Noto Serif SC', serif; font-style: italic; color: var(--ink-3); }
 .verse-inline cite { display: block; margin-top: 6px; font-style: normal; font-size: 13px; color: var(--mute); }
 
 /* Split cards */
@@ -56,15 +56,15 @@ li { margin-bottom: 8px; }
 .split-card .body { font-size: 14.5px; color: var(--ink-2); line-height: 1.65; }
 .split-card.rtl { border-left: 3px solid var(--warn); }
 .split-card.rtl .name { color: var(--warn); }
-.split-card.tlm { border-left: 3px solid var(--prism-3); }
-.split-card.tlm .name { color: var(--prism-3); }
+.split-card.tlm { border-left: 3px solid var(--accent-2); }
+.split-card.tlm .name { color: var(--accent-2); }
 
 /* Beam table */
 .beams { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0; }
 .beam { padding: 18px 16px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); text-align: center; }
 .beam .swatch { width: 32px; height: 4px; border-radius: 2px; margin: 0 auto 12px; }
 .beam-rtl .swatch { background: var(--warn); }
-.beam-tlm .swatch { background: var(--prism-3); }
+.beam-tlm .swatch { background: var(--accent-2); }
 .beam-gold .swatch { background: var(--prism); }
 .beam .name { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
 .beam .use { font-size: 13.5px; color: var(--ink-3); line-height: 1.55; }
@@ -75,24 +75,24 @@ li { margin-bottom: 8px; }
 .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; color: var(--prism-2); text-transform: uppercase; font-weight: 600; }
 .code-file { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--mute); }
 .code pre { padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13.5px; line-height: 1.65; color: var(--code-fg); }
-.tk-kw   { color: #c57bff; font-weight: 500; }
+.tk-kw { color: #c57bff; font-weight: 500; }
 .tk-decl { color: #e08aff; font-weight: 600; }
 .tk-name { color: #ffffff; font-weight: 500; }
-.tk-dir  { color: #7ee8d8; font-weight: 500; }
-.tk-typ  { color: #4ad6b4; }
+.tk-dir { color: #7ee8d8; font-weight: 500; }
+.tk-typ { color: #4ad6b4; }
 .tk-prim { color: #79dfff; }
-.tk-rf   { color: #ffd479; font-weight: 500; }
-.tk-rw   { color: #b8a0e0; }
+.tk-rf { color: #ffd479; font-weight: 500; }
+.tk-rw { color: #b8a0e0; }
 .tk-stor { color: #4ad6b4; font-weight: 600; }
-.tk-sf   { color: #c5b890; }
-.tk-sv   { color: #8ab4f8; }
-.tk-op   { color: #ff8a4c; }
-.tk-num  { color: #79b8ff; }
-.tk-hex  { color: #79b8ff; font-weight: 500; }
-.tk-com  { color: #6c7488; font-style: italic; }
-.tk-ann  { color: #ff79c6; }
-.tk-str  { color: #ffd479; }
-.tk-fn   { color: #4ad6b4; }
+.tk-sf { color: #c5b890; }
+.tk-sv { color: #8ab4f8; }
+.tk-op { color: #ff8a4c; }
+.tk-num { color: #79b8ff; }
+.tk-hex { color: #79b8ff; font-weight: 500; }
+.tk-com { color: #6c7488; font-style: italic; }
+.tk-ann { color: #ff79c6; }
+.tk-str { color: #ffd479; }
+.tk-fn { color: #4ad6b4; }
 
 /* Terminal */
 .term { margin: 18px 0; background: #060810; border-radius: var(--radius); overflow: hidden; border: 1px solid #1c1f2e; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; }
@@ -190,7 +190,7 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="01-why-prism.html" class="on" aria-current="page"><span class="n">EP 1</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="02-layered.html"><span class="n">EP 2</span><span class="t">分层与语法骨架</span></a></li><li><a href="03-cpu-top.html"><span class="n">EP 3</span><span class="t">聚在一处</span></a></li><li><a href="04-let-there-be-light.html"><span class="n">EP 4</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">EP 5</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">EP 6</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">EP 7</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">EP 8</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">EP 9</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">EP 10</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">EP 11</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">EP 12</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">EP 13</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">EP 14</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">EP 15</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">EP 16</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">EP 17</span><span class="t">指令面长大：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">EP 18</span><span class="t">soc.prism：把核放进一片真芯片</span></a></li><li><a href="../day4/19-uart.html"><span class="n">EP 19</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">EP 20</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">EP 21</span><span class="t">Verilator 第二后端：跑得起百万拍</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">EP 22</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">EP 23</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">EP 24</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">EP 25</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">EP 26</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">EP 27</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已定题</span></h3><ul><li class="todo"><span class="row"><span class="n">EP 28</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></span></li><li class="todo"><span class="row"><span class="n">EP 29</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></span></li><li class="todo"><span class="row"><span class="n">EP 30</span><span class="t">两处 oops：SPP 记反与一次没让位</span></span></li><li class="todo"><span class="row"><span class="n">EP 31</span><span class="t">挂根：initramfs 与它的三条软规矩</span></span></li><li class="todo"><span class="row"><span class="n">EP 32</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></span></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/33-gap.html"><span class="n">EP 33</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/34-ooo.html"><span class="n">EP 34</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/35-width.html"><span class="n">EP 35</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/36-deep.html"><span class="n">EP 36</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/37-mem.html"><span class="n">EP 37</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/38-bpred.html"><span class="n">EP 38</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/39-coremark.html"><span class="n">EP 39</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="01-why-prism.html" class="on" aria-current="page"><span class="n">第 1 集</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="02-layered.html"><span class="n">第 2 集</span><span class="t">分层与语法骨架</span></a></li><li><a href="03-cpu-top.html"><span class="n">第 3 集</span><span class="t">聚在一处</span></a></li><li><a href="04-let-there-be-light.html"><span class="n">第 4 集</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">第 5 集</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">第 6 集</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">第 7 集</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">第 8 集</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">第 9 集</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">第 10 集</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">第 11 集</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">第 12 集</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">第 13 集</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">第 14 集</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">第 15 集</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">第 16 集</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">第 17 集</span><span class="t">指令集扩展：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">第 18 集</span><span class="t">把 CPU 装进 SoC</span></a></li><li><a href="../day4/19-uart.html"><span class="n">第 19 集</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">第 20 集</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">第 21 集</span><span class="t">换成跑得更快的 Verilator</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">第 22 集</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">第 23 集</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">第 24 集</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">第 25 集</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">第 26 集</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">第 27 集</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已写完</span></h3><ul><li><a href="../day6/28-fpu.html"><span class="n">第 28 集</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></a></li><li><a href="../day6/29-misaligned.html"><span class="n">第 29 集</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></a></li><li><a href="../day6/30-initramfs.html"><span class="n">第 30 集</span><span class="t">挂根：initramfs 与它的三条软规矩</span></a></li><li><a href="../day6/31-shell.html"><span class="n">第 31 集</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/32-gap.html"><span class="n">第 32 集</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/33-ooo.html"><span class="n">第 32 集</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/34-width.html"><span class="n">第 32 集</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/35-deep.html"><span class="n">第 32 集</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/36-mem.html"><span class="n">第 32 集</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/37-bpred.html"><span class="n">第 32 集</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/38-coremark.html"><span class="n">第 32 集</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 <header class="hero">
   <div class="hero-inner">
@@ -282,7 +282,7 @@ html.nav-open .nav-scrim { display: block; }
 
 <div class="pn">
   <a href="../index.html">← 七日创造</a>
-  <span>第 1 集 · 全连载 39 集</span>
+  <span>第 1 集 · 全连载 38 集</span>
   <a href="02-layered.html">下一集 · 分层与语法骨架 →</a>
 </div>
 
@@ -355,7 +355,7 @@ html.nav-open .nav-scrim { display: block; }
 
 <section id="s3">
   <h2>最小的一束光：一颗加法器</h2>
-  <p>第一集不谈深——只把这份"同源三下降"落到最小可行示例。三个端口、一句 <code>sum = a + b</code>、一段 <code>run</code> 激励；20 分钟从源码走到三份产物、再三路全绿。</p>
+  <p>第 1 集不谈深——只把这份"同源三下降"落到最小可行示例。三个端口、一句 <code>sum = a + b</code>、一段 <code>run</code> 激励；20 分钟从源码走到三份产物、再三路全绿。</p>
 
   <div class="code">
     <div class="code-header">
@@ -558,12 +558,12 @@ cd seven-days</pre>
 
   <p>两条参数规则先记牢：<code>--debug</code> 把观测一次开全——它等于 <code>--show</code>（出逐拍表）加 <code>--util</code>（判行内期望），想只要一样就单给那一个；<code>--rtl</code> 与 <code>--sim systemc</code> 负责换腿（默认 golden）。<code>--run 名字</code> 可以省——不给就跑遍文件里所有 <code>run</code> 块，一个文件有多段 <code>run</code> 时才需要点名。拿不准就<strong>裸跑 <code>prism</code></strong>：全部命令与用法，它当面打给你看。</p>
 
-  <p>本集跑的 ①②③ 三条命令，就是 <code>run</code> 这条命令的最小用法；完整的九件工具，第四集一次走完。</p>
+  <p>本集跑的 ①②③ 三条命令，就是 <code>run</code> 这条命令的最小用法；完整的九件工具，第 4 集一次走完。</p>
 </section>
 
 <section id="s6">
   <h2>神看光是好的</h2>
-  <p>这就是第一集要讲完的唯一一件事——Prism 存在的理由：<strong>把两遍写、两遍盯、两遍改，合成一遍</strong>。</p>
+  <p>这就是第 1 集要讲完的唯一一件事——Prism 存在的理由：<strong>把两遍写、两遍盯、两遍改，合成一遍</strong>。</p>
   <p>一颗 32 位加法器 <code>sum = a + b</code>——同一行代码，20 分钟前只是一段字符，现在它同时是：</p>
   <ul>
     <li>一段可综合 SystemVerilog，可以送进 yosys / Vivado 出 bitfile；</li>
@@ -577,7 +577,9 @@ cd seven-days</pre>
     <cite>—— 《创世记》 1:4–5</cite>
   </div>
 
-  <p>光有了。从下一集起，我们把这份光<strong>拆开</strong>——第二集讲 Prism 的分层与语法骨架：`module` 与 `@schedule` 为什么必须分开，类型系统怎么把位宽和符号钉死，`reg` 与 `on clock` 与 `mem` 与 `fsm` 各自扮演什么角色。</p>
+  <p>光有了。从下一集起，我们把这份光<strong>拆开</strong>——第 2 集讲 Prism 的分层与语法骨架：`module` 与 `@schedule` 为什么必须分开，类型系统怎么把位宽和符号钉死，`reg` 与 `on clock` 与 `mem` 与 `fsm` 各自扮演什么角色。</p>
+
+  <p style="font-size:14px;color:var(--mute)">一桩体例说明：本连载借《创世记》七日做骨架，但经文跟着<strong>内容意象</strong>走，不跟着日序走——第一日的四集写的是"光怎么被拆开、聚起、打出去"，引的自然是"分水""聚水"那几段；从第二日起，各集经文才与日序一一对应。读者按意象读，不必按日历查。</p>
   <p>第一日之后不再讲语法——因为光已经分开了。</p>
 </section>
 

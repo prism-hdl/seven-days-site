@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 31 集 · 进入 shell：从"能打印"到"能对话" · 创世记 · 第六日 · 安息前的最后一班岗</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.code pre.wrap { white-space:pre-wrap; word-break:break-word; }
+
+.tk-kw { color: #c57bff; font-weight: 500; }.tk-decl { color: #e08aff; font-weight: 600; }.tk-name { color: #ffffff; font-weight: 500; }
+.tk-dir { color: #7ee8d8; font-weight: 500; }.tk-typ { color: #4ad6b4; }.tk-prim { color: #79dfff; }
+.tk-rf { color: #ffd479; font-weight: 500; }.tk-rw { color: #b8a0e0; }.tk-stor { color: #4ad6b4; font-weight: 600; }
+.tk-sf { color: #c5b890; }.tk-sv { color: #8ab4f8; }.tk-op { color: #ff8a4c; }.tk-num { color: #79b8ff; }
+.tk-com { color: #6c7488; font-style: italic; }.tk-ann { color: #ff79c6; }.tk-fn { color: #4ad6b4; }.tk-str { color: #ffd479; }.tk-hex { color: #79b8ff; font-weight: 500; }
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">第 1 集</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">第 2 集</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">第 3 集</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">第 4 集</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">第 5 集</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">第 6 集</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">第 7 集</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">第 8 集</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">第 9 集</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">第 10 集</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">第 11 集</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">第 12 集</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">第 13 集</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">第 14 集</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">第 15 集</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">第 16 集</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">第 17 集</span><span class="t">指令集扩展：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">第 18 集</span><span class="t">把 CPU 装进 SoC</span></a></li><li><a href="../day4/19-uart.html"><span class="n">第 19 集</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">第 20 集</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">第 21 集</span><span class="t">换成跑得更快的 Verilator</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">第 22 集</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">第 23 集</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">第 24 集</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">第 25 集</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">第 26 集</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">第 27 集</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已写完</span></h3><ul><li><a href="28-fpu.html"><span class="n">第 28 集</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></a></li><li><a href="29-misaligned.html"><span class="n">第 29 集</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></a></li><li><a href="30-initramfs.html"><span class="n">第 30 集</span><span class="t">挂根：initramfs 与它的三条软规矩</span></a></li><li><a href="31-shell.html" class="on" aria-current="page"><span class="n">第 31 集</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/32-gap.html"><span class="n">第 32 集</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/33-ooo.html"><span class="n">第 32 集</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/34-width.html"><span class="n">第 32 集</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/35-deep.html"><span class="n">第 32 集</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/36-mem.html"><span class="n">第 32 集</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/37-bpred.html"><span class="n">第 32 集</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/38-coremark.html"><span class="n">第 32 集</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第六日 · 安息前的最后一班岗 · 第 31 集</div>
+    <h1>进入 shell<br><em>从"能打印"到"能对话"</em></h1>
+    <p class="subtitle">串口早就在出字了，可那只是单向。要一个能输入命令的 shell，缺的是四件各自独立的事：设备树里的串口要变成 platform device、控制台要从 <code style="background:none;border:none;color:#a678ff">bootconsole</code> 换到 <code style="background:none;border:none;color:#a678ff">ttyS0</code>、键盘那条路要走完 PLIC 双 context 与 <code style="background:none;border:none;color:#a678ff">seip</code>、THRE 要在中断线上。四件都不影响"能打印"，所以这一集的判据只看往返。</p>
+    <div class="verse">
+      "神看着一切所造的都甚好。"
+      <cite>—— 《创世记》 1:31</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="30-initramfs.html">← 第 30 集 · 挂根：initramfs 与它的三条软规矩</a>
+  <a href="../day7/32-gap.html">第 32 集 · 差在五处：五级顺序单发射 vs 现代高性能核 →</a>
+</div>
+
+<section id="s1">
+  <h2>"能打印"与"能对话"差的是四件事</h2>
+  <p>到第 31 集为止，串口已经能出字：OpenSBI 的 banner、内核的每一行打印，都从 <code>uart8250</code> 的 TX 落到宿主。但那只是<strong>单向</strong>。要成一个可以输入命令的 shell，缺的不是串口本身，而是四件各自独立的事：</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>缺的那件</th><th>不做的表现</th><th>在哪一层</th></tr>
+      <tr><td>设备树里的 <code>serial@10000000</code> 变成 platform device</td><td>8250 驱动一次都不碰寄存器面，<code>console=ttyS0</code> 注册不上，用户态开 <code>/dev/console</code> 得 <code>ENODEV</code></td><td>内核配置</td></tr>
+      <tr><td>控制台从 <code>bootconsole</code> 换到 <code>ttyS0</code></td><td>早登期间是 SBI 代发字符，接管之后才走驱动</td><td>内核与固件的交接</td></tr>
+      <tr><td>键盘那条路：PLIC 的双 context 与 <code>seip</code> 全链</td><td>输出正常、输入无反应——RX 中断进不到 S 态</td><td>SoC 连线 + PLIC</td></tr>
+      <tr><td>THRE 上中断线（第 19 集立过）</td><td>用户态 <code>write()</code> 的前 16 字节进了 FIFO 就再无下文</td><td>UART 中断源</td></tr>
+    </table>
+  </div>
+  <p>四件事的共同点是：<strong>每一件都能让"能打印"保持不变</strong>。所以这一集的判据不看输出，看往返。</p>
+</section>
+
+<section id="s2">
+  <h2>内核侧只加一行配置</h2>
+  <p>随镜像入库的那份内核配置，头部就写明了它与上游的差：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">text</span><span class="code-file">fw/prism.defconfig · 与上游的差</span></div>
+<pre class="wrap">#   与上游那份 prism.defconfig 的差：只多点 CONFIG_SERIAL_OF_PLATFORM=y
+#     （把设备树里的 serial@10000000 变成 platform device，8250 驱动才会来碰寄存器面；
+#      没有它 = console=ttyS0 注册不上 = 用户态开 /dev/console 得 ENODEV），</pre>
+  </div>
+
+  <p>机制是这样：设备树里那条 <code>serial@10000000</code> 只是"这里有个 8250"的<strong>描述</strong>，而 8250 驱动挂在 platform bus 上——它需要有人把这条 DT 节点变成 platform device。<code>CONFIG_SERIAL_OF_PLATFORM</code> 就是那个人。少它，寄存器面读写路径一次都不会被建立，串口却照样能被 SBI 用来打印——于是症状是"能打印、不能对话"，与硬件完全无关。绑定成功的那一刻，内核自己会讲：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">/tmp/shell.tx · 驱动来碰寄存器面了</span></div>
+<pre class="wrap">$ ./run_soc.sh --out /tmp/shell --time 12000ms
+10000000.serial: ttyS0 at MMIO 0x10000000 (irq = 2, base_baud = 10000000) is a 16550A</pre>
+  </div>
+
+  <p>接管的那一刻在控制台上有两行：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">/tmp/shell.tx · 控制台换人</span></div>
+<pre class="wrap">$ ./run_soc.sh --out /tmp/shell --time 12000ms   # 控制台换人那两行（原文，含重复打印）
+printk: bootconsole [sbi0] enabled
+printk: console [ttyS0] disabled
+printk: console [ttyS0] enabled
+printk: console [ttyS0] enabled</pre>
+  </div>
+  <p>早登那一段是 SBI 代发的，它依赖另一条配置：<code>earlycon=sbi</code> 要 <code>CONFIG_SERIAL_EARLYCON_RISCV_SBI=y</code> 才有效，否则整条早登是空话——设备树的注释把这条也记着：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">dts</span><span class="code-file">fw/sbi.dts · 内核命令行的唯一来源与早登</span></div>
+<pre class="wrap">		/* 内核 cmdline 的唯一来源就是这里（CONFIG_CMDLINE 要 EXTEND/FORCE 才参与，
+		 * 我们的 prism.dts 是 CMDLINE_FALLBACK + 不 FORCE）。档位不靠 no4lvl/no5lvl 钉：核里
+		 * satp.MODE 只收 Bare(0) 与 Sv39(8)，写进来的 Sv48/Sv57 整笔不落地，内核
+		 * set_satp_mode() 回读探测到就自己退回 Sv39——与下面 mmu-type 一致。earlycon=sbi 要
+		 * CONFIG_SERIAL_EARLYCON_RISCV_SBI=y 才有效，否则整条早登是空话。</pre>
+  </div>
+
+</section>
+
+<section id="s3">
+  <h2>键盘那条路：PLIC 的字节图与 <code>seip</code></h2>
+  <p>输入方向是中断驱动的：UART 收到字节 → 拉高 source[1] → PLIC 仲裁 → 通知线进核 → S 态 ISR 来读。这一路的地址图与规范差距都在头注里：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">text</span><span class="code-file">soc/ip/plic.prism · riscv,plic0 字节图</span></div>
+<pre class="wrap">// 寄存器图（**字节偏移**，标准 riscv,plic0 的地址图；窗口由 memmap 给：字节 0xC000000
+// 起 0x4000000 = 64MB，正好顶到 UART 的 0x10000000 前）：
+//   0x000000 + 4×id   priority[id]（u3，0=永不转发；id 0 保留：读恒 0、写忽略）
+//   0x001000          pending（u32，**只读**状态视图）
+//   0x002000 + 0x80×c enable[c]（u32；c=0 → hart0 M、c=1 → hart0 S）
+//   0x200000 + 0x1000×c threshold[c]（u3；转发要求 priority **严格大于** 阈值）
+//   0x200000 + 0x1000×c + 4  claim/complete（读=claim：交回最高优先级的候选并登记
+//                             in_service；写=complete：认写进来的 id 才放号）
+//
+// 每个源一位 gateway：源拉高时锁存进 pending，claim 摘走并登记"在服务中"，
+// complete 才放回去——放回时源若仍是高，下一拍重新 pend。</pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">text</span><span class="code-file">soc/ip/plic.prism · 有意保留的差距（已记档）</span></div>
+<pre class="wrap">// 与规范的差距（有意保留、已记档）：
+//   · 仲裁在候选集合上取**最小编号**，不按 priority 值排序——本核与内核都把各源优先
+//     级置成同一个值（Linux plic 驱动全量写 1），等优先级取低号与规范一致；优先级
+//     不等时的次序留给以后（priority 寄存器本身读写如实）。
+//   · 只有 2 个 context（单 hart 的 M/S）。claim/complete 的 in_service 全局一份。</pre>
+  </div>
+
+  <p>两个 context 是这件事的关键：<code>c=0</code> 是 hart0 的 M 侧、<code>c=1</code> 是 S 侧，内核用的是后者。所以通知线也分两根——<code>meip</code> 给固件，<code>seip</code> 给内核：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">soc/ip/plic.prism · S-context 的通知</span></div>
+<pre class="wrap">    seip = (elig1 &amp; above1) != <span class="tk-num">0</span></pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · 核收下这一根</span></div>
+<pre class="wrap">    <span class="tk-kw">in</span>   seip       : Signal&lt;<span class="tk-prim">u1</span>&gt;       <span class="tk-com">// PLIC 外部中断（S 态；S-context 通知）</span></pre>
+  </div>
+
+  <p>验收台里专门有一行钉 context 分家：<code>enable1</code> 上的源只推 <code>seip</code>、<code>meip</code> 恒 0，S 侧的 claim/complete 独立走。这一格错了，表现就是"内核收不到键盘"，而 banner 照打——所以它必须有独立判据，不能靠整机输出反推。</p>
+</section>
+
+<section id="s4">
+  <h2>与第 19 集的分工：IP 与整机是两层</h2>
+  <p>UART 本身（8N1 引擎、8250 寄存器面、FIFO 口径、THRE 为什么必须上中断线）是第 19 集的事。这一集用的是它的<strong>结果</strong>，两层的分界就在 host 绑定这一行上：芯片里的 UART 引脚接给宿主的文件，跑什么由镜像决定。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">soc/soc.prism · host 控制台绑定</span></div>
+<pre class="wrap">// host 控制台绑定在 uart.tx_pin / uart.rx_pin：--host console=file:&lt;前缀&gt;。对它喂什么
+// 回什么的是 `--run whitebow_soc_console` 那份回显固件（10 条，写在它的 image 段里）：</pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">soc/soc.prism · 绑定本身</span></div>
+<pre class="wrap">        console = uart_8n1(tx = uart.tx_pin, rx = uart.rx_pin, divisor = <span class="tk-num">10</span>)</pre>
+  </div>
+
+  <p>控制台的往返能不能过，判据不看"有没有打印"，而是<strong>宿主喂进去的字节 == CPU 写出来的字节</strong>。三条下降路径跑同一份产物：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">python</span><span class="code-file">tests/test_soc.py · 收侧背靠背为什么是整机正控</span></div>
+<pre class="wrap">    # 收侧背靠背：26 字节连着进来，一帧 100 拍＝与发侧同速。没有接收 FIFO 时架上
+    # 那个字节会被后来的帧覆盖（实测缺下标 16 的那个），所以这条是 RX FIFO 的整机正控。
+    burst = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    for tag, 通路 in (("golden", "golden"), ("RTL", "rtl")):
+        # 整机 golden 是固定成本 3.4s + 10.2ms/拍（约 5.2k 拍的这条≈56s），离默认
+        # 60s 顶只差 4s——重机负载下会假红（实测 exit=124、收到 23/26 字节）。这条
+        # 单给 180s 预算；判据仍是逐字节全等，预算不参与判定。</pre>
+  </div>
+
+</section>
+
+<section id="s5">
+  <h2>收官：从 banner 到提示符</h2>
+  <p>整机跑一次到 shell（RTL 腿，verilator，仿真时长上限 12000 ms）。控制台输出的关键几段：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ ./run_soc.sh --out /tmp/shell --time 12000ms</span></div>
+<pre class="wrap">$ ./run_soc.sh --out /tmp/shell --time 12000ms
+<span class="term-hint"># /tmp/shell.tx 的关键片段（原文，未删行；共 6491 字节）</span>
+Linux version 6.6.0 (zhiguo.zzg@ea134-v-sw-remote-dev02.eng.xrvm.cn) (riscv64-unknown-linux-gnu-gcc (Xuantie-900 linux-6.6.36 glibc gcc Toolchain V3.4.0 B-20260323) 14.3.0, GNU ld (GNU Binutils) 2.42.50) #1 PREEMPT Tue Oct  6 11:23:50 CST 2026
+10000000.serial: ttyS0 at MMIO 0x10000000 (irq = 2, base_baud = 10000000) is a 16550A
+printk: console [ttyS0] enabled
+Run /linuxrc as init process
+BusyBox v1.36.1 (2026-10-04 15:26:05 CST) built-in shell (ash)
+…
+Freeing unused kernel image (initmem) memory: 160K
+Kernel memory protection not selected by kernel config.
+mount: mounting devtmpfs on /dev failed: No such device
+#</pre>
+  </div>
+  <p>这几段就是第六日的终点：<code>Run /linuxrc as init process</code> 说明第 30 集那条 <code>rdinit=</code> 生效了，<code>console [ttyS0] enabled</code> 与 <code>bootconsole [sbi0] disabled</code> 说明接管发生了，最后 BusyBox 的 ash 打出提示符 <code># </code>——<code>/bin/sh</code> 已经在读控制台了（这一次跑到 12000 ms 上限就停在这里）。中间那行 <code>mount: mounting devtmpfs on /dev failed</code> 是第 30 集边界注记里说的那件事，如实打在日志上。</p>
+  <p>要说清这份捕获<strong>没有</strong>证明什么：宿主侧的输入是在上电那一刻喂进去的，早于串口驱动建立，所以它不是一发"敲了 <code>ls /</code> 看到目录"的往返证据。输入侧的往返由第 4 节那两条判据钉：回显固件的逐字节相同，与 26 字节背靠背（16 深度接收 FIFO 的整机正控）。</p>
+  <div class="callout">
+    <span class="callout-title">这一集不宣称什么</span>
+    <p style="margin:0;">① PID 1 在 U 态是内核的行为（Linux 把 init 起在最低特权级），本核的 U 态与特权门在第 20 集落地；<strong>这份控制台捕获没有插桩特权级</strong>，所以它是机制的推论，不是这一跑的观测值。② 全程无 oops / 无 panic / 无 unhandled signal 是这次跑完后的核对结论，核对方法是把 <code>.tx</code> 全文对这三个词扫一遍——扫描本身不是判据，常驻判据是第 30 集那套（槽位对账）与第 14 集后记的真值表。③ 交互能力只验到 shell 起提示符与输入被读到，没有验完整的登录与作业控制。</p>
+  </div>
+</section>
+
+<section id="s6">
+  <h2>小结</h2>
+  <ul>
+    <li>"能打印"到"能对话"差四件事：platform device、控制台接管、PLIC 双 context 的 <code>seip</code> 全链、THRE 上中断线（第 19 集）。每一件都不影响输出，所以判据必须看往返。</li>
+    <li>内核侧的改动只有一行 <code>CONFIG_SERIAL_OF_PLATFORM=y</code>——设备树描述硬件，platform bus 才让驱动来碰它。</li>
+    <li>PLIC 按 <code>riscv,plic0</code> 字节图实现，双 context 分 <code>meip</code> / <code>seip</code>；S 侧收不到键盘与 banner 照打可以同时成立，必须分开钉。</li>
+    <li>控制台走 host 绑定：芯片引脚接宿主文件，跑什么由镜像决定；三条下降路径同一份产物，收侧 26 字节背靠背是 RX FIFO 的整机正控。</li>
+    <li>终点：内核 init 无 oops 跑到 <code>Run /linuxrc as init process</code>，<code>ttyS0</code> 接管，BusyBox 的 ash 打出提示符。</li>
+  </ul>
+</section>
+
+<section id="s7">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre># 白虹仓库（riscv-prism）
+./run_soc.sh --out /tmp/shell --time 12000ms   # 跑到 shell，落 /tmp/shell.tx
+# 输入侧的往返用源里那份回显固件（喂什么回什么）：
+prism run soc/soc.prism --run whitebow_soc_console --host console=file:/tmp/rt
+grep -c 'Oops\|Kernel panic\|unhandled signal' /tmp/shell.tx   # 收官核对：期望 0
+python3 -m pytest tests/test_soc.py -k console -s -q   # 控制台往返三路 + 收侧 26 字节
+grep -n 'CONFIG_SERIAL_OF_PLATFORM' fw/prism.defconfig
+# 整机侧的判据与注入点都在 tests/test_soc.py 的 test_soc_console</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第六日 · 安息前的最后一班岗 · 完 —— 七日造物的工到此完毕；第七日看它还差什么</span>
+  七日创造 · 第六日 · 安息前的最后一班岗 · 第 31 集 · <a href="../day7/32-gap.html">下一集 →</a> · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>

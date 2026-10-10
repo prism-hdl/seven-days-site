@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 28 集 · FPU（F / D）：一半是算术，一半是特权 · 创世记 · 第六日 · 安息前的最后一班岗</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.code pre.wrap { white-space:pre-wrap; word-break:break-word; }
+
+.tk-kw { color: #c57bff; font-weight: 500; }.tk-decl { color: #e08aff; font-weight: 600; }.tk-name { color: #ffffff; font-weight: 500; }
+.tk-dir { color: #7ee8d8; font-weight: 500; }.tk-typ { color: #4ad6b4; }.tk-prim { color: #79dfff; }
+.tk-rf { color: #ffd479; font-weight: 500; }.tk-rw { color: #b8a0e0; }.tk-stor { color: #4ad6b4; font-weight: 600; }
+.tk-sf { color: #c5b890; }.tk-sv { color: #8ab4f8; }.tk-op { color: #ff8a4c; }.tk-num { color: #79b8ff; }
+.tk-com { color: #6c7488; font-style: italic; }.tk-ann { color: #ff79c6; }.tk-fn { color: #4ad6b4; }.tk-str { color: #ffd479; }.tk-hex { color: #79b8ff; font-weight: 500; }
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">第 1 集</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">第 2 集</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">第 3 集</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">第 4 集</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">第 5 集</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">第 6 集</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">第 7 集</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">第 8 集</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">第 9 集</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">第 10 集</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">第 11 集</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">第 12 集</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">第 13 集</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">第 14 集</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">第 15 集</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">第 16 集</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">第 17 集</span><span class="t">指令集扩展：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">第 18 集</span><span class="t">把 CPU 装进 SoC</span></a></li><li><a href="../day4/19-uart.html"><span class="n">第 19 集</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">第 20 集</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">第 21 集</span><span class="t">换成跑得更快的 Verilator</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">第 22 集</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">第 23 集</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">第 24 集</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">第 25 集</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">第 26 集</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">第 27 集</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已写完</span></h3><ul><li><a href="28-fpu.html" class="on" aria-current="page"><span class="n">第 28 集</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></a></li><li><a href="29-misaligned.html"><span class="n">第 29 集</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></a></li><li><a href="30-initramfs.html"><span class="n">第 30 集</span><span class="t">挂根：initramfs 与它的三条软规矩</span></a></li><li><a href="31-shell.html"><span class="n">第 31 集</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/32-gap.html"><span class="n">第 32 集</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/33-ooo.html"><span class="n">第 32 集</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/34-width.html"><span class="n">第 32 集</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/35-deep.html"><span class="n">第 32 集</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/36-mem.html"><span class="n">第 32 集</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/37-bpred.html"><span class="n">第 32 集</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/38-coremark.html"><span class="n">第 32 集</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第六日 · 安息前的最后一班岗 · 第 28 集</div>
+    <h1>FPU（F / D）<br><em>一半是算术，一半是特权</em></h1>
+    <p class="subtitle">第 22 集的启动报告早就广告了 <code style="background:none;border:none;color:#a678ff">rv64imafdc</code>，核里却少这两门。补上它们，算术只是其中一半——<strong>另一半是 <code style="background:none;border:none;color:#a678ff">mstatus.FS</code> 的三态、由硬件置的 Dirty、派生出来的 SD、以及 <code style="background:none;border:none;color:#a678ff">FS=Off</code> 时整族判非法</strong>。内核按 <code style="background:none;border:none;color:#a678ff">sstatus.FS</code> 决定要不要保存浮点上下文：这一半做错，代价是上下文切换时静默丢寄存器，不 trap、不报错、结果错。</p>
+    <div class="verse">
+      "神就照着自己的形像造人，乃是照着他的形像造男造女。"
+      <cite>—— 《创世记》 1:27</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="../day5/27-pmp.html">← 第 27 集 · PMP：S / U 能访问哪段物理内存</a>
+  <a href="29-misaligned.html">第 29 集 · 非对齐访存：一笔装不下，就拆两笔 →</a>
+</div>
+
+<section id="s1">
+  <h2>广告与能力必须一致：为什么这一日补 F / D</h2>
+  <p>第 22 集 OpenSBI 的启动报告里那一行 <code>Base ISA : rv64imafdc</code> 当时就注明是<strong>编译期口径</strong>——固件按 <code>rv64imafdc</code> 编出来，核里却只有 I · M · A · C。设备树写的是同一件事：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">dts</span><span class="code-file">fw/sbi.dts · 内核据此决定要不要保存浮点上下文</span></div>
+<pre>riscv,isa = "rv64imafdc_zicsr_zifencei_sstc";</pre>
+  </div>
+
+  <p>内核的 <code>has_fpu()</code> 读的就是这份设备树。于是两种不一致各有各的坏法：<strong>广告了而硬件没有</strong>，浮点指令变成非法指令，用户程序收一发信号，至少看得见；<strong>硬件有了而状态位不置</strong>，内核按 <code>sstatus.FS</code> 判断"这一版上下文没有浮点要存"，于是<strong>不 trap、不报错、结果错</strong>。后一种坏法写在 <code>ext/csr.prism</code> 的注释里，是这一集真正要防的那件事：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · 为什么 Dirty 必须由硬件置</span></div>
+<pre class="wrap">        } else <span class="tk-kw">if</span> (fp_state_wen) {
+            <span class="tk-com">// 硬件置 Dirty 的第二支：f 寄存器写回。这支是内核 save_fp 的依据——Linux 读</span>
+            <span class="tk-com">// sstatus.FS 决定要不要存浮点上下文，我们不置 Dirty，上下文切换就**静默丢**</span>
+            <span class="tk-com">// 浮点寄存器（不 trap、不报错、结果错）。</span>
+            <span class="tk-com">// 口径（写死，别被"顺手补全"）：只有**写**浮点状态才置 Dirty。FSW/FSD 只读</span>
+            <span class="tk-com">// f 寄存器、FMV.X.F / FCVT.X.F / FCLASS 的结果进整数 rd，都不算浮点状态写入，</span>
+            <span class="tk-com">// 生产方（lsu.fp_wen）不许把它们算进来；trap/mret/sret 三档都不动 FS[14:13]</span>
+            <span class="tk-com">// （掩码 0x1888/0x122 都绕开这两位），所以它们抢走那一拍时 Dirty 轮不到。</span>
+            <span class="tk-com">// 不看 FS 现值：Off 状态下这一拍本不该出现（②的指令门会先把浮点指令判非法），</span>
+            <span class="tk-com">// 真出现了说明有人在 Off 下写了 f 寄存器，此时报 Dirty 才是如实。</span>
+            r_mstatus' = r_mstatus | <span class="tk-num">0x6000</span>        <span class="tk-com">// FS ← Dirty（写 f 寄存器）</span></pre>
+  </div>
+
+  <p>用户态是不是真用浮点，也不用猜。initramfs 里第一个跑起来的 <code>linuxrc</code> 在保存例程里发出 <code>c.fsd</code>——压缩编码，展开器的激励表把这条记成了"真机崩过的那条"。所以本集要交付的是两半：<strong>算术通路</strong>（FPU 与浮点寄存器堆）和<strong>特权义务</strong>（<code>mstatus.FS</code> 三态、硬件置 Dirty、<code>SD</code> 派生、<code>fflags</code> 累积、<code>FS=Off</code> 时整族判非法）。</p>
+</section>
+
+<section id="s2">
+  <h2>算术这一半：一条统一宽通路，两种精度</h2>
+  <p>单精度与双精度最常见的两种写法是"两个定宽单元并排"或"一个 64 位单元加一堆截断"。这里选的是第三种——<strong>一条统一宽通路同时服务两种精度</strong>，形状照 C910 的标量浮加：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/fpu.prism · 单元形状</span></div>
+<pre class="wrap"><span class="tk-com">// 形状照 openc910 的标量浮加（vfalu/ct_fadd_double_dp.v）：**一条统一宽通路**同时服务</span>
+<span class="tk-com">// 两种精度，不是两个定宽单元并排。single 不占独立算术硬件，只靠</span>
+<span class="tk-com">//   ① 解包时各写一套**固定切片**再按 fmt 选（`fmt ? a[62:52] : {3{0}, a[30:23]}`）；</span>
+<span class="tk-com">//   ② 有效数字**左对齐到同一个隐含位**（bit55）——double 的 53 位天然如此，single 的</span>
+<span class="tk-com">//      24 位放在高位、下面补零（C910 的 `{29'b0, frac}` 是同一手法）；</span>
+<span class="tk-com">//   ③ 舍入与打包按 fmt 取同一条通路的**不同抽头**（double 取 [54:3]、single 取 [54:32]）。</span>
+<span class="tk-com">// 代价落在"几十处 fmt 与或 mux"上，算术通路只有一份。</span></pre>
+  </div>
+
+  <p>三条手法合起来是一件事：<strong>精度差异全部挪到"抽哪几位"上，算术本身只有一份</strong>。代价也在这里——几十处按 <code>fmt</code> 的与或选择器。窗口口径全流程只有一份，这是能在一张表里同时验两种精度的前提：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/fpu.prism · 窗口口径</span></div>
+<pre class="wrap"><span class="tk-com">// 窗口口径（全流程一份）：value = W × 2^(E-55)，W 的隐含位在 bit55，[54:3] 是小数位，</span>
+<span class="tk-com">// [2:0] 是 G/R/S 舍入道。右移挤出去的位不提前归约：整段留在窗口里，最后一并 OR 进 sticky</span>
+<span class="tk-com">// （C910 也把移出位整体带走、到舍入时才算 sticky）。</span></pre>
+  </div>
+
+  <p>流水上分两档。加减乘与融合在 EX 级内联，一拍出结果；<code>FDIV</code> / <code>FSQRT</code> 是多拍迭代档，double 31 拍、single 17 拍：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/fpu.prism · @schedule</span></div>
+<pre class="wrap">@schedule FPU {
+    bitwidth  : { data:<span class="tk-num">64</span> }
+    pipeline  : <span class="tk-num">1</span> stage
+    reset     : async_low
+    <span class="tk-kw">clock</span>     : <span class="tk-num">100</span> MHz, domain = single
+    resource  : none
+    latency   : <span class="tk-num">31</span> cycles        <span class="tk-com">// 组合档 1 拍；迭代档（FDIV/FSQRT）double 31 拍、single 17 拍</span></pre>
+  </div>
+
+  <p>迭代档占用的这一拍里，流水线怎么办？用的是第 24 集已经立起来的<strong>占用协议</strong>：<code>hazard</code> 出 <code>div_start</code> 起手，把 EX 冻到 <code>done</code>，消费者在 ID 被冻住、释放沿才放行。所以浮点除法没有引入新的停顿种类——它新增的是十源表里那一根 <code>src_fdiv</code>。</p>
+</section>
+
+<section id="s3">
+  <h2>特殊值：规范给的三条，各归一处</h2>
+  <p>浮点最容易出错的地方从来不是加减乘，是边角：NaN、无穷、零的符号、次正规、以及 FLEN=64 装单精度时的"箱"。头注把这些逐行钉住：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/fpu.prism · 特殊值口径</span></div>
+<pre class="wrap"><span class="tk-com">// 流水：算术部分是 EX 级内联的一拍出结果（C910 标量 FADD 3 拍、FMUL/FMADD 5 拍，把它</span>
+<span class="tk-com">// 按拍切开是后续步骤）；FDIV/FSQRT 是⑤的多拍状态机，double 31 拍、single 17 拍（C910 走</span>
+<span class="tk-com">// SRT radix-16 的 14/7 次迭代），占用期由 hazard 把 EX 冻到 done。</span>
+<span class="tk-com">//</span>
+<span class="tk-com">// 特殊值（IEEE 754-2019 + RISC-V F/D 章）：</span>
+<span class="tk-com">//   NaN  指数全 1 且尾数非 0。sNaN 参与运算置 NV。运算结果只要是 NaN 就是 **canonical</span>
+<span class="tk-com">//        NaN**（§6.1.3 "Except when otherwise stated, if the result of a floating-point</span>
+<span class="tk-com">//        operation is NaN, it is the canonical NaN"）——载荷传播是被点名否掉的非标准选项，</span>
+<span class="tk-com">//        只有 FLW/FSW/FLD/FSD/FMV.* 这类搬运才保载荷；min/max 取非 NaN 那一侧。</span></pre>
+  </div>
+
+  <p>三条规范义务分别落在三个模块里，<strong>没有一条在浮点寄存器堆里</strong>——这是这一节的关键分工：</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>义务</th><th>规范原文的位置</th><th>落在哪个模块</th></tr>
+      <tr><td>窄结果写回时高位补全 1（NaN-boxing）</td><td class="mono">"must write all 1s to the uppermost FLEN-n bits"</td><td><strong>写侧</strong>：顶层按指令的 <code>fmt</code> 拼，<code>fregfile</code> 照单存</td></tr>
+      <tr><td>读出后判断是不是有效窄值，坏箱当 canonical NaN</td><td class="mono">"otherwise the input value is treated as an n-bit canonical NaN"</td><td><strong>用侧</strong>：<code>pipe/exu.prism</code> 验箱</td></tr>
+      <tr><td>搬运类不改被搬的位</td><td class="mono">FLW / FSW / FLD / FSD / FMV.*</td><td><strong>LSU</strong>：装载补箱、存储只取低 32 位，都不验箱</td></tr>
+    </table>
+  </div>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/exu.prism · 验箱在前递之后还是之前</span></div>
+<pre class="wrap">    <span class="tk-com">// FLEN=64，单精度值靠 NaN-box 表达，所以用侧必须**验箱**："check if the input</span>
+    <span class="tk-com">// operands are correctly NaN-boxed, i.e., all upper FLEN-n bits are 1. If so, the</span>
+    <span class="tk-com">// n least-significant bits of the input are used as the input value, otherwise the</span>
+    <span class="tk-com">// input value is treated as an n-bit canonical NaN."（0x7FC00000 就是 32 位</span>
+    <span class="tk-com">// canonical NaN）验箱属这条"用"的路——FSW 那条转移路不验，只取低 32 位。</span>
+    <span class="tk-com">// 两级前递按年龄优先：MEM（生产者刚算出结果/取回数据）盖过 WB，都比锁存值新。</span>
+    <span class="tk-com">// 前递插在验箱**之前**：递来的就是成箱值，箱坏了照样判成 canonical NaN。</span></pre>
+  </div>
+
+  <p>最后那一句是判据的形状：<strong>前递插在验箱之前</strong>。如果反过来（先验锁存值再前递），一次坏箱会被前递来的好值掩盖，测试就看不出箱逻辑坏在哪一级。</p>
+</section>
+
+<section id="s4">
+  <h2>浮点寄存器堆：与整数堆对称，但没有硬连线零</h2>
+  <p><code>fregfile</code> 与 <code>regfile</code> 的端口形状一样（三读一写、组合读出），差别在两处：<strong>宽度是 FLEN=64 且不分档</strong>，以及<strong><code>f0</code> 是一个普通寄存器</strong>。整数那一族 <code>x0</code> 有硬连线零，浮点没有对应物——<code>f0</code> 是 ABI 里的 <code>ft0</code>，编译器真会拿它当临时寄存器用。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/fregfile.prism · 宽度由编码约定决定，不由本模块决定</span></div>
+<pre class="wrap"><span class="tk-com">// FLEN=64 之后，寄存器里放的可能是单精度也可能是双精度，区分它们的是**编码约定**</span>
+<span class="tk-com">// 而不是本模块的状态，规范（riscv-norm-rules）那三条：</span>
+<span class="tk-com">//   · "valid values of narrower n-bit types, n&lt;FLEN, are represented in the lower</span>
+<span class="tk-com">//     n bits of an FLEN-bit NaN value, in a process termed NaN-boxing. The upper</span>
+<span class="tk-com">//     bits of a valid NaN-boxed value must be all 1s." —— 窄值叫 NaN-boxed。</span>
+<span class="tk-com">//   · "Any operation that writes a narrower result to an f register must write</span>
+<span class="tk-com">//     all 1s to the uppermost FLEN-n bits" —— 窄结果写回时高位补全 1：这件事归</span>
+<span class="tk-com">//     **写侧**（顶层按指令的 fmt 拼），不在寄存器堆里做，本模块只照单存。</span></pre>
+  </div>
+
+  <p>阵列自己的判据只有 6 拍，钉的是"三口不串、<code>f0</code> 可写、写使能门控有效、高半不被截"：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ prism run whitebow/iu/fregfile.prism --run fregfile_check --debug</span></div>
+<pre class="wrap">$ prism run whitebow/iu/fregfile.prism --run fregfile_check --debug
+<span class="term-hint"># 全表 6 拍</span>
+cycle	dut_fwaddr	dut_fwdata	dut_fwen	dut_fraddr1	dut_fraddr2	dut_fraddr3	dut_frdata1	dut_frdata2	dut_frdata3
+0	0	0	0	0	1	2	0	0	0
+1	3	1311768467463790320	1	3	3	3	1311768467463790320	1311768467463790320	1311768467463790320
+2	4	18446744070421217280	1	3	4	0	1311768467463790320	18446744070421217280	0
+3	0	18446744073709551615	1	0	1	3	18446744073709551615	0	1311768467463790320
+4	0	12297829382473034410	0	0	0	0	18446744073709551615	18446744073709551615	18446744073709551615
+5	1	4607182418800017408	1	1	0	4	4607182418800017408	18446744073709551615	18446744070421217280
+<span class="term-ok"># expect: 6/6 拍有断言 · 3 列 · 全等 ✅</span></pre>
+  </div>
+
+  <p>"<code>f0</code> 可写"这一条在核级另有一发：<code>fadd.s f0, f5, f7</code> 岔开两拍再用 <code>fsw</code>→<code>lw</code> 回读，必须拿到 3.0f 的位型。整数侧那根 <code>rd != 0</code> 门控如果被乘回浮点写使能，这一发不仅写不进阵列——<strong>前递也一起断</strong>，红在两处而不是一个值。</p>
+</section>
+
+<section id="s5">
+  <h2>特权这一半：FS 三态、Dirty 由硬件置、SD 是派生读值</h2>
+  <p><code>mstatus.FS</code> 在规范的 RV64 位图里是 <strong>bit[14:13]</strong>，三态：Off(00) / Initial(01) / Clean(10) / Dirty(11)。本集把位段搬正到规范位置，并让这三态真的起作用。第一件事是门：<code>FS=Off</code> 时整族浮点指令判非法。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · Off 的门限只有一份</span></div>
+<pre class="wrap">    <span class="tk-com">// FS=Off(00) 时浮点状态不可访问——规范把这条给**所有特权级**（含 M）：它不是特权门，</span>
+    <span class="tk-com">// 而是浮点单元整个被关掉这件事本身。本核只白名单了 fcsr(0x003)（fflags/frm 折进它），</span>
+    <span class="tk-com">// 所以这一档先在 fcsr 上生效；浮点指令（fadd/FLW/FSW…）那一档在 decoder/trap 里合 cause 2。</span>
+    <span class="tk-kw">wire</span> fs_off  : <span class="tk-prim">u1</span> = r_mstatus[<span class="tk-num">14</span>:<span class="tk-num">13</span>] == <span class="tk-num">0</span>
+    <span class="tk-kw">wire</span> fp_gate : <span class="tk-prim">u1</span> = !(is_fcsr &amp; fs_off)
+    <span class="tk-kw">wire</span> priv_ok      : <span class="tk-prim">u1</span> = (r_priv &gt;= csr_priv_req) &amp; ctr_gate &amp; fp_gate
+    csr_illegal_priv = csr_exec &amp; is_supported &amp; !priv_ok
+    <span class="tk-com">// FS 关着这件事交给 TRAP 去合 cause 2：门限只有这一份（r_mstatus[14:13]==0），下游拿</span>
+    <span class="tk-com">// 译码器带进 MEM 的 is_fp 一并判定，别在 EX/MEM 再拼一遍位段。</span>
+    <span class="tk-com">// 采样点定在 MEM：更早的 `csrw mstatus` 到这一拍已经落了，紧跟其后的浮点指令因此</span>
+    <span class="tk-com">// 看到的是新值——在 ID 采就会把"先开 FS 再用 FP"的合法序列误判成非法。</span>
+    fp_off = fs_off</pre>
+  </div>
+
+  <p>门限只算一次、只交一根线出去，剩下的合并交给陷阱那一集立起来的裁决表：<code>is_fp</code> 与 <code>fp_off</code> 相与，落进 <code>cause = 2</code>。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/trap.prism · Off 下的浮点指令并入 cause 2</span></div>
+<pre class="wrap">    <span class="tk-com">//          OR FS=Off 时的任何浮点指令（csr.fp_off × 译码器的 is_fp——含只读浮点状态</span>
+    <span class="tk-com">//          那一族与浮点访存；规范给所有特权级，含 M）</span>
+    <span class="tk-com">// 缺页/访问错（LSU 翻译定案给出）排在未对齐之前：有 MMU 时先翻译、物理访问在后，</span>
+    <span class="tk-com">// 一个既未对齐又缺页的访问按实现选缺页（规范允许二者择一）。cause 12/13/15</span>
+    <span class="tk-com">// 都可经 medeleg 委派给 S（与未对齐同走下面的 to_s 判据）。cause 7 同理可委派。</span>
+    <span class="tk-com">// 取指缺页排最前，压过 illegal：这条指令**根本没取到字**，ID 拿的是废值、</span>
+    <span class="tk-com">// mem_is_illegal 很可能顺带成立——让它先报就成了 cause 2 + 指令字当 mtval，两样都错。</span>
+    mem_trap_cause = <span class="tk-kw">match</span> {
+        <span class="tk-com">// 中断优先于异常：cause = (1 &lt;&lt; 63) | interrupt_number</span>
+        (mem_valid &amp; mem_interrupt_pending)                   =&gt; (<span class="tk-num">1</span> &lt;&lt; <span class="tk-num">63</span>) | mem_interrupt_cause,
+        (mem_valid &amp; mem_if_pf)                               =&gt; <span class="tk-num">12</span>,
+        (mem_valid &amp; (mem_is_illegal | csr.csr_illegal_priv | mem_priv_bad | (mem_is_fp &amp; csr.fp_off))) =&gt; <span class="tk-num">2</span>,</pre>
+  </div>
+
+  <p>注释里"采样点在 MEM 不在 ID"这一句值得单独看：<strong>在 ID 采会把"先开 FS 再用浮点"的合法序列误判成非法</strong>——写 <code>mstatus</code> 的那条指令自己还没提交。</p>
+  <p>第二件事是 <code>SD</code>。它是 <code>FS==Dirty</code> 的<strong>派生读值</strong>，不是一个可以写的状态位：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · SD 不进 reg</span></div>
+<pre class="wrap">    <span class="tk-com">// SD[63] 不是软件可写的状态位，是 FS 的派生读值：FS=Dirty(11) ⇒ 1，其余 0。</span>
+    <span class="tk-com">// 规范里 SD 是 read-only，"= 1 if the FS, XS, or VS field is Dirty"——本核没有 XS/VS，</span>
+    <span class="tk-com">// 所以只跟 FS 一路。把它存进 reg 就与 FS 成了两套口径，一定会漂。</span></pre>
+  </div>
+
+  <p>"存进 reg 就与 FS 成了两套口径，一定会漂"——这一句是硬件设计里通用的判据：<strong>同一个事实只许有一个存储来源</strong>。<code>csr_fs</code> 那 16 拍钉的就是派生关系：写 <code>FS=11</code> 之后读出口 <code>SD[63]=1</code>，写 0 之后 <code>SD</code> 归 0 而两个只读位 <code>SXL/UXL</code> 照在。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ prism run whitebow/ext/csr.prism --run csr_fs --debug</span></div>
+<pre class="wrap">$ prism run whitebow/ext/csr.prism --run csr_fs --debug
+<span class="term-hint"># 全表 16 拍；priv=3 是 M 态</span>
+cycle	priv	csr_illegal_priv	csr_rdata
+0	3	0	9223372079804473344
+1	3	0	9223372079804473344
+2	3	0	9223372036854800384
+3	3	0	42949672960
+4	3	0	42949672960
+5	3	0	8192
+6	3	0	42949681152
+7	3	0	42949672960
+8	3	1	0
+9	3	1	0
+10	3	0	42949689344
+11	3	0	7
+12	3	0	7
+13	3	0	42949689344
+14	3	0	7
+15	3	0	9223372079804473344
+<span class="term-ok"># expect: 16/16 拍有断言 · 3 列 · 全等 ✅</span></pre>
+  </div>
+
+  <p>第三件事是 Dirty 的两支来源：<strong>写浮点状态 CSR（<code>fcsr</code>）</strong>与<strong>写 f 寄存器</strong>。两支都由硬件自己置，软件只负责写 Clean/Initial。哪些指令<strong>不算</strong>写浮点状态，口径写死在生产方：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/decoder.prism · 两支判据的分工</span></div>
+<pre class="wrap">    <span class="tk-kw">out</span>  is_fp_wr_x    : Signal&lt;<span class="tk-prim">u1</span>&gt;     <span class="tk-com">// 1=浮点源、整数目的（FEQ/FLE/FLT/FCLASS/FMV.X/FCVT.*.S|D）</span>
+    <span class="tk-kw">out</span>  is_fp_load    : Signal&lt;<span class="tk-prim">u1</span>&gt;     <span class="tk-com">// FLW/FLD（opcode 0x07, f3=2/3）</span>
+    <span class="tk-kw">out</span>  is_fp_store   : Signal&lt;<span class="tk-prim">u1</span>&gt;     <span class="tk-com">// FSW/FSD（opcode 0x27, f3=2/3）</span>
+    <span class="tk-kw">out</span>  is_fp         : Signal&lt;<span class="tk-prim">u1</span>&gt;     <span class="tk-com">// 1=浮点家族总判据（mstatus.FS==Off 时整族判非法，见 pipe/trap.prism）</span>
+    <span class="tk-kw">out</span>  is_fp_op      : Signal&lt;<span class="tk-prim">u1</span>&gt;     <span class="tk-com">// 1=真过 FPU 的那两支（写 f 的运算 + 浮点源整数目的）——fflags 只在这些指令上算数</span></pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/iu/decoder.prism · is_fp 四支与 is_fp_op 两支</span></div>
+<pre class="wrap">    is_fp_load    = (opcode == <span class="tk-num">0x07</span>) &amp; (funct3 <span class="tk-kw">in</span> [<span class="tk-num">2</span>, <span class="tk-num">3</span>])          <span class="tk-com">// FLW/FLD</span>
+    is_fp_store   = (opcode == <span class="tk-num">0x27</span>) &amp; (funct3 <span class="tk-kw">in</span> [<span class="tk-num">2</span>, <span class="tk-num">3</span>])          <span class="tk-com">// FSW/FSD</span>
+    <span class="tk-com">// 两类目的分账：写 f 寄存器的（算术 + 整数→浮点 + 互转 + 装载）与写整数 rd 的</span>
+    <span class="tk-com">// （比较/分类/FMV.X/浮点→整数）——整数那一支要进 reg_write_eff 与 wb_sel。</span>
+    is_farith     = is_fadd | is_fsub | is_fmul | is_fdiv | is_fsqrt | is_fsgnj | is_fminmax | is_fcvt_i2f | is_fcvt_swap | is_fmv_fx | is_fmadd | is_fmsub | is_fnmsub | is_fnmadd
+    is_fp_wr_x    = is_fcmp | is_fclass | is_fmv_x | is_fcvt_f2i
+    <span class="tk-com">// 浮点家族总判据：写 f 的、读 f 写整数的、装载的、存储的四支都算。规范口径是</span>
+    <span class="tk-com">// "FS=Off 时任何浮点指令都是非法指令"（含只读浮点状态那一族与浮点访存），所以这一份</span>
+    <span class="tk-com">// 判据归译码器独家拥有——trap 侧只认这根线，别在 MEM 拿 opcode 再拼一遍。</span>
+    is_fp         = is_farith | is_fp_wr_x | is_fp_load | is_fp_store
+    <span class="tk-com">// 浮点**运算**判据（比 is_fp 少装载/存储两支）：FLW/FSW/FLD/FSD 是搬运，规范明说</span>
+    <span class="tk-com">// "The transfer instructions do not modify the exception flags"，所以 fflags 只能从</span>
+    <span class="tk-com">// 这一支取——否则装载那一拍的 FPU 输出（op 位段是译码默认值）会当成标志灌进 fcsr。</span>
+    is_fp_op      = is_farith | is_fp_wr_x</pre>
+  </div>
+
+  <p><code>is_fp</code> 与 <code>is_fp_op</code> 差的那两支正是 FLW / FSW / FLD / FSD：<strong>搬运读浮点状态或写浮点状态，但不产生标志</strong>。规范对搬运类明说不改 <code>fflags</code>，所以 <code>fflags</code> 的门控用 <code>is_fp_op</code>；而 <code>FS=Off</code> 挡整族用 <code>is_fp</code>——<strong>装载与存储也在挡的范围里</strong>。这两套判据不能合成一根线，合成之后 Off 状态下搬运能过、或者运算乱置标志，两种错各占一半。</p>
+  <p>核级那六拍（⑧–⑬）钉的就是这一半：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/whitebow.prism · fp_probe 的浮点状态段</span></div>
+<pre class="wrap"><span class="tk-com">//   ⑧ FS←Dirty（写 f 寄存器那一支）：程序跑到这里已经有一串指令往 f 寄存器写</span>
+<span class="tk-com">//      （flw/fld/算术/融合/开方），`csrrs x27, mstatus, x0` 读回来必须是 FS=Dirty(11)</span>
+<span class="tk-com">//      且读出口 SD[63]=1。内核的 save_fp 就看 sstatus.FS 这一份，不置 Dirty 等于上下文</span>
+<span class="tk-com">//      切换时**静默丢**浮点寄存器——不 trap、不报错、结果错。</span>
+<span class="tk-com">//   ⑨ 只读浮点状态不许置 Dirty：先 `csrw mstatus` 把 FS 显式写成 Clean(10)，再 `fsw`</span>
+<span class="tk-com">//      （它只读 f 寄存器、结果进内存），紧接着 `csrrs x29` 必须还看到 Clean(10)、SD=0。</span>
+<span class="tk-com">//      FSD/FMV.X.F/FCVT.X.F/FCLASS 同属"读浮点状态、写整数或内存"，生产方（lsu.fp_wen）</span>
+<span class="tk-com">//      把这一族整个排除在外，这一拍就是它的判据。</span>
+<span class="tk-com">//   ⑩ 装载算写浮点状态：`flw f20` 之后 `csrrs x30` 必须看到 Dirty(11)——内核 _restore_fp</span>
+<span class="tk-com">//      用 fld/flw 恢复上下文，这一档不置 Dirty 就等于恢复完又等着被下次切换跳过保存。</span>
+<span class="tk-com">//   ⑪ 写 f0 落不落在阵列里：`fadd.s f0, f5, f7` 之后岔两拍再 `fsw f0`→`lw x31` 回读，</span>
+<span class="tk-com">//      必须拿到 3.0f 的位型。f0 是 ABI 的 ft0（编译器真用的临时寄存器），浮点这一族没有</span>
+<span class="tk-com">//      整数 x0 那样的硬连线零；目的号 0 被整数侧那支 `rd != 0` 门控挡掉时，前递也一起断，</span>
+<span class="tk-com">//      所以这一发同时钉住"算术/搬运写回"那一路的 fwen。</span>
+<span class="tk-com">//   ⑫ rs3 那一级的浮点前递（结构性那一发）：`fdiv.s f23`（多拍占到 done）紧跟</span>
+<span class="tk-com">//      `fmadd.s f24, f23, f7, f23`——占用协议把消费者冻在 ID 直到生产者离开 EX，放行那一拍</span>
+<span class="tk-com">//      生产者恰在 MEM，所以 rs3 只有 MEM/WB 前递这一条路；断掉它 f24 拿到的是阵列里的旧值</span>
+<span class="tk-com">//      （未初始化＝坏箱＝canonical NaN），绝不是 13.5f。</span>
+<span class="tk-com">//   ⑬ fflags 落进 fcsr：`csrrs x5, fcsr` 拿基线（此刻 DZ 位必须是 0），中间一发</span>
+<span class="tk-com">//      `fdiv.s f26, f5, f14`＝有限非零除以零 ⇒ 规范 Table 给 DZ 置位、商 ±Inf、Inexact</span>
+<span class="tk-com">//      不置；`csrrs x6` 必须等于 x5 再 OR 上 DZ（粘滞是累加），再来一发 `fsw`（搬运类，</span>
+<span class="tk-com">//      规范说不改标志）之后 `csrrs x7` 必须与 x6 相同——这一条同时钉住门控（装载/存储那两拍</span>
+<span class="tk-com">//      不许把 FPU 组合面的残值当标志灌进去）与"只 OR 不覆盖"。</span></pre>
+  </div>
+
+</section>
+
+<section id="s6">
+  <h2>压缩臂：四条 D 搬运，RV64C 没有压缩单精度</h2>
+  <p>第 17 集立过一条口径：<strong>压缩码是别名，不是新语义</strong>。浮点这一族的压缩臂照整数孪生的位段做，四条：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/rvc.prism · 展开值位段照整数孪生</span></div>
+<pre class="wrap">    e_fld      = (w_ud &lt;&lt; <span class="tk-num">20</span>) | (w_hi3 &lt;&lt; <span class="tk-num">15</span>) | (w_lo3 &lt;&lt; <span class="tk-num">7</span>) | <span class="tk-num">0x3007</span>                        <span class="tk-com">// fld rd', uimm(rs1')</span>
+    e_fsd      = (((w_ud &gt;&gt; <span class="tk-num">5</span>) &amp; <span class="tk-num">0x7f</span>) &lt;&lt; <span class="tk-num">25</span>) | (w_lo3 &lt;&lt; <span class="tk-num">20</span>) | (w_hi3 &lt;&lt; <span class="tk-num">15</span>) | ((w_ud &amp; <span class="tk-num">0x1f</span>) &lt;&lt; <span class="tk-num">7</span>) | <span class="tk-num">0x3027</span>   <span class="tk-com">// fsd rs2', uimm(rs1')</span></pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/rvc.prism · 四条臂在 match 表里的位置</span></div>
+<pre class="wrap">        (quad == <span class="tk-num">0</span>) &amp; (funct3 == <span class="tk-num">1</span>)                                           =&gt; e_fld,    <span class="tk-com">// C.FLD</span>
+        (quad == <span class="tk-num">0</span>) &amp; (funct3 == <span class="tk-num">2</span>)                                           =&gt; e_lw,
+        (quad == <span class="tk-num">0</span>) &amp; (funct3 == <span class="tk-num">3</span>)                                           =&gt; e_ld,
+        (quad == <span class="tk-num">0</span>) &amp; (funct3 == <span class="tk-num">5</span>)                                           =&gt; e_fsd,    <span class="tk-com">// C.FSD</span></pre>
+  </div>
+
+  <p>有一条<strong>故意不给臂</strong>：RV64C 没有压缩单精度搬运——<code>C.FLW</code> / <code>C.FSW</code> 占的 <code>f3=3/7</code> 在 RV64 里已经是 <code>C.LD</code> / <code>C.SD</code>，Q0 的 <code>f3=4</code> 才是保留编码。保留编码不展开成合法指令，而是展开成 <code>{16&#39;b0, raw}</code>：低 2 位 != 11，在 32 位空间里恒非法，解码器报 <code>illegal</code>，<code>mtval</code> 拿到原始 16 位。</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ prism run whitebow/ext/rvc.prism --run rvc_check --debug</span></div>
+<pre class="wrap">$ prism run whitebow/ext/rvc.prism --run rvc_check --debug
+<span class="term-hint"># 全表 70 拍，此处只摘浮点臂与那条保留编码</span>
+cycle	raw16	instr
+7	8192	275463
+8	32768	32768
+13	47392	109393959
+62	8322	77959
+<span class="term-ok"># expect: 70/70 拍有断言 · 1 列 · 全等 ✅</span></pre>
+  </div>
+
+  <p>最后一件事是<strong>三处口径必须同改</strong>：<code>misa</code> 的扩展位、设备树的 <code>riscv,isa</code>、以及硬件真实能力。提交 <code>670c380</code> 把三件放在同一笔里改，注释把"广告的前提"逐条列出来：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/csr.prism · misa 的每一位都得兑现</span></div>
+<pre class="wrap">    <span class="tk-com">// misa：MXL[63:62] 是**只读**常量——"Redefined misa.MXL to be read-only, making</span>
+    <span class="tk-com">// MXLEN a constant"。本核 MXLEN=64 ⇒ MXL=2'b10。扩展位按字母序映射到 bit：A(0)</span>
+    <span class="tk-com">// B(1) C(2) D(3) F(5) I(8) M(12) ⇒ 0x112F = A+B+C+D+F+I+M，再加 S 位 0x40000、</span>
+    <span class="tk-com">// U 位 0x100000 → 0x14112F。广告的前提都得兑现：B 的 34 条编码全部真实现</span>
+    <span class="tk-com">// （Zba+Zbb+Zbs，见 ext/bitmanip.prism 与 iu/decoder.prism 的编码表）；</span>
+    <span class="tk-com">// F/D 的 FS[14:13] 可写且硬件自动置 Dirty、SD 随 Dirty 派生、FS=Off 挡浮点 CSR</span>
+    <span class="tk-com">// 也挡浮点指令、fflags 由硬件累积进 fcsr。</span>
+    misa_val = <span class="tk-num">0x800000000014112F</span></pre>
+  </div>
+
+</section>
+
+<section id="s7">
+  <h2>判据：一张向量账 + 十三档通路探针 + 反证十七发</h2>
+  <p>浮点的算术值不能靠"看起来对"。向量账的期望值来自<strong>独立实现</strong>，而且这个实现自己也对拍过：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/ext/fpu.prism · fpu_check 的期望从哪来</span></div>
+<pre class="wrap"><span class="tk-com">// fpu_check —— 统一宽通路的行内期望：期望值出自独立 oracle（精确有理数 + 自己实现</span>
+<span class="tk-com">// IEEE 舍入），并与 Python 原生 IEEE 做过 40000 组 RNE 对拍、逐位一致；FMADD 家族四种</span>
+<span class="tk-com">// 运算另与 math.fma 各对拍 28945 组、逐位一致；FCVT 浮→整与 Python</span>
+<span class="tk-com">// floor/ceil/trunc/round/远离零 对拍 2400000 组（四种目标宽度 × 五种舍入方向）、逐位一致，</span>
+<span class="tk-com">// 整→浮与 struct 的 IEEE 转换对拍 60000 组。</span>
+<span class="tk-com">// 覆盖：基本加减乘 / 相消与零的符号 / 五种舍入（含奇偶两种真 ties 与 G·R·S 组合）/</span>
+<span class="tk-com">// ±0·±Inf·NaN·sNaN·坏箱（一律 canonical）/ 上溢（远离零给 Inf、朝零给最大有限）/ 下溢与次正规 /</span>
+<span class="tk-com">// 符号注入 / 比较 / min-max / FCLASS / FMV 双向 / FMADD 家族四式</span>
+<span class="tk-com">// （含"融合≠双次舍入"的两条、0×∞ 加 qNaN 也要 NV、乘积移空成 ±0 时的定号与 NX|UF）/</span>
+<span class="tk-com">// FCVT 双向（饱和四档、NaN 与 ±Inf 的落点、置 NV 就不记 NX、负值舍到零对无符号合法、</span>
+<span class="tk-com">// W/WU 的 32 位结果符号扩展、整→浮只记 NX）——互转行的无关操作数故意放 NaN，钉住</span>
+<span class="tk-com">// "互转不套浮点的 NaN/Inf 支路"。单精度的操作数与结果都按 FLEN=64 成箱给。</span></pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ prism run whitebow/ext/fpu.prism --run fpu_check --debug</span></div>
+<pre class="wrap">$ prism run whitebow/ext/fpu.prism --run fpu_check --debug
+<span class="term-hint"># 全表 335 拍，此处摘前 10 拍</span>
+cycle	dut_op	dut_fmt	dut_frm	dut_c	dut_gpr	dut_result	dut_fflags
+0	0	0	0	0	0	18446744070492520448	0
+1	0	0	0	0	0	18446744070492520448	0
+2	0	0	0	0	0	18446744070479937536	0
+3	1	0	0	0	0	18446744070479937536	0
+4	1	0	0	0	0	18446744072627421184	0
+5	2	0	0	0	0	18446744070496714752	0
+6	2	0	0	0	0	18446744070489374720	0
+7	2	0	0	0	0	18446744070463160320	0
+8	0	0	0	0	0	18446744070484131840	0
+9	0	0	0	0	0	18446744070925458378	16
+<span class="term-ok"># expect: 335/335 拍有断言 · 2 列 · 全等 ✅</span></pre>
+  </div>
+
+  <p>算术值归向量账，<strong>通路归核级</strong>。<code>fp_probe</code> 十三档各钉一条边，档号就是源码注释里的编号：</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>档</th><th>钉什么</th><th>断了会怎样</th></tr>
+      <tr><td class="mono">①</td><td>FLW→FSW→LW 回路 + 背靠背两级前递</td><td>存 0；且存储类的 <code>rd</code> 位段被当整数写回，x8/x24 被写成访存地址</td></tr>
+      <tr><td class="mono">②</td><td>双精度宽回路：同址 <code>ld</code> 与 <code>fld</code> 读到同一个值</td><td>u64 数据面或宽操作数前递断一支</td></tr>
+      <tr><td class="mono">②b</td><td><code>fsw</code> 走 4 字节车道合并</td><td>整字 8 字节都写下去，邻车道被踩坏</td></tr>
+      <tr><td class="mono">③</td><td>FMV 双向整份搬 64 位</td><td>内核存浮点上下文用的就是这一对，断则存丢</td></tr>
+      <tr><td class="mono">④</td><td>算术写回补箱 + 经内存回路自证</td><td>写侧补箱丢，或 <code>wb_sel</code> 少一支</td></tr>
+      <tr><td class="mono">⑤</td><td>FMADD 家族的 <code>rs3</code> 通路与前递</td><td>背靠背融合拿到阵列旧值：7.0 变 2.0</td></tr>
+      <tr><td class="mono">⑥</td><td>FCVT 双向，含动态 <code>rm</code> 与整数符号</td><td>1.5 在 RNE 下不给 2；-1 不给 -1.0</td></tr>
+      <tr><td class="mono">⑦</td><td>迭代档占用协议与结果可被前递</td><td>退休序出现重复条目，或消费者读到旧值</td></tr>
+      <tr><td class="mono">⑧</td><td>一串 f 写回之后 <code>FS=Dirty</code>、<code>SD=1</code></td><td>内核 <code>save_fp</code> 不存浮点——静默丢</td></tr>
+      <tr><td class="mono">⑨</td><td>只读浮点状态的一发 <code>fsw</code> 不许置 Dirty</td><td>FS 恒 Dirty，每次切换都白存一遍浮点</td></tr>
+      <tr><td class="mono">⑩</td><td><code>flw</code> 算写浮点状态，必须置 Dirty</td><td><code>_restore_fp</code> 恢复完又被下一次切换跳过保存</td></tr>
+      <tr><td class="mono">⑪</td><td>写 <code>f0</code> 要落进阵列</td><td>整数那支 <code>rd != 0</code> 门控乘回浮点，写回与前递一起断</td></tr>
+      <tr><td class="mono">⑫</td><td>多拍除法的产出当 <code>rs3</code>（结构钉法）</td><td>拿到坏箱 → canonical NaN，绝不是 13.5f</td></tr>
+      <tr><td class="mono">⑬</td><td>除零置 <code>DZ</code>、粘滞只 OR、搬运类不许碰标志</td><td>存储那一拍 FPU 组合面的残值灌进 <code>fflags</code>，多出 NV</td></tr>
+    </table>
+  </div>
+  <p>核级这张表很宽（57 列），页面上只放前两拍示意，全表以 <code>--debug</code> 现跑为准：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ prism run whitebow/whitebow.prism --run fp_probe --debug</span></div>
+<pre class="wrap">$ prism run whitebow/whitebow.prism --run fp_probe --debug
+<span class="term-hint"># 全表 259 拍 × 57 列，此处只作列形状示意；这一族不设行内期望，判定在常驻套件（89 项）</span>
+[run] fp_probe: 259 拍 golden 直跑完成
+# run: fp_probe  design: WhitebowCpu  stop: until true at cycle 258
+cycle	pc	retire_valid	retire_pc	retire_rd	retire_wen	retire_data	x8	x9	x10	x11	x12	x13	x14	x15	x16	x17	x18	x19	x20	x21	x22	x23	x24	x25	x26	x5	x6	x7	x27	x28	x29	x30	x31	f0	f5	f6	f7	f8	f9	f10	f11	f12	f13	f14	f15	f16	f17	f18	f19	f20	f23	f24	f26	mcause	mtval	mepc
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0</pre>
+  </div>
+
+  <p>常驻套件里这一族共 <strong>89 项</strong>：正例与结构 38 项，反证 17 发、每发三条断言＝51 项。十七发各打一条边，分三组：阵列三发、通路九发、浮点状态五发。两处细节值得单独说：</p>
+  <ul>
+    <li><strong>通路那一组的第 ③ 发换过靶</strong>。原先拿"两条背靠背的 <code>fmadd</code>"当靶，红不红取决于两拍之间有没有气泡——而气泡随 PC 走，镜像里加两条指令就能把它顶成假通过。现在的靶是"<code>fdiv.s f23</code> 紧跟 <code>fmadd.s f24, f23, f7, f23</code>"：占用协议保证消费者放行那一拍生产者恰在 MEM，阵列里还没有值，<code>rs3</code> 只有前递这一条路。<strong>这是结构上必然红，不是碰巧红。</strong></li>
+    <li><strong>第 ④ 发是"两路都错但错得不一样"那一类</strong>。把 IDU 的 <code>fwen</code> 退回引用译码器内部线，checker 与 golden 都不报"未定义引用"：golden 读成 0、RTL 落成 <code>x</code>。所以这一发不按"同源 cosim 无感"登记，而按<strong>分歧</strong>登记——分歧报告只打前 20 行且按列名排序，判据取分歧行的形状，不取某个列名。</li>
+  </ul>
+  <p>其余各发的同源 cosim 一律无感：golden 与 RTL 读同一份表达式，错得一致。<strong>红只能由这份独立的退休表来判</strong>——这条口径第 24 集立过一次，浮点这一族把它用得更狠。</p>
+</section>
+
+<section id="s8">
+  <h2>小结</h2>
+  <ul>
+    <li>浮点这一族分两半：算术通路一条统一宽档（精度差只体现在抽位上），特权义务四件（<code>FS</code> 三态、硬件置 <code>Dirty</code>、<code>SD</code> 派生、<code>fflags</code> 累积）。</li>
+    <li>三条规范义务各归一处：补箱在写侧、验箱在用侧、搬运不改位也不验箱——<code>fregfile</code> 自己不判宽度。</li>
+    <li>两套判据不许合成一根线：<code>is_fp</code>（Off 挡整族，含装载存储）与 <code>is_fp_op</code>（只有运算才产生标志）。</li>
+    <li>迭代档复用第 24 集的占用协议，新增的是 <code>src_fdiv</code> 这一根源，不是新的停顿种类。</li>
+    <li>压缩臂补四条 D 搬运，保留编码不展开成合法指令；<code>misa</code> 与设备树与硬件能力三处同改。</li>
+    <li>判据：向量账 335 拍（期望出自独立实现并与 Python 对拍）、核级十三档通路探针、阵列 6 拍、压缩 70 拍、CSR 16 拍；反证十七发。</li>
+  </ul>
+  <div class="callout">
+    <span class="callout-title">边界照实写</span>
+    <p style="margin:0;">① 算术部分现在是 EX 级内联的一拍出结果，C910 的标量 <code>FADD</code> 是 3 拍、<code>FMUL/FMADD</code> 是 5 拍——把它按拍切开是后续步骤，本集不宣称达到。② <code>FS=Off</code> 对 CSR 那一支只挡 <code>fcsr</code>（<code>fp_gate</code>），别的号不受它影响。③ 单精度不占独立算术硬件，所以面积上省了一份加法器，代价是几十处 <code>fmt</code> 选择器——这一笔没有逐项实测。</p>
+  </div>
+</section>
+
+<section id="s9">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre># 白虹仓库（riscv-prism）
+prism run whitebow/ext/fpu.prism --run fpu_check --debug        # 335 拍 × 2 列
+prism run whitebow/ext/fpu.prism --run fiter_check --debug   # 迭代档逐拍
+prism run whitebow/iu/fregfile.prism --run fregfile_check --debug   # 6 拍 × 3 列
+prism run whitebow/ext/rvc.prism --run rvc_check --debug        # 70 拍 × 1 列
+prism run whitebow/ext/csr.prism --run csr_fs --debug           # 16 拍 × 3 列
+prism run whitebow/whitebow.prism --run fp_probe --debug        # 259 拍 × 57 列，十三档
+prism run whitebow/whitebow.prism --run fp_off_probe --debug    # FS=Off ⇒ cause 2
+# 常驻套件（浮点段 89 项：正例与结构 38 + 反证十七发×3）：
+python3 run_tests.py</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第六日 · 安息前的最后一班岗 —— 浮点立起来了；下一集：一笔装不下的访存</span>
+  七日创造 · 第六日 · 安息前的最后一班岗 · 第 28 集 · <a href="29-misaligned.html">下一集 →</a> · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>

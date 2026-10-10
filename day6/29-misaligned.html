@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 29 集 · 非对齐访存：一笔装不下，就拆两笔 · 创世记 · 第六日 · 安息前的最后一班岗</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --ink:#0f1420; --ink-2:#1c2333; --ink-3:#4a5468; --mute:#8892a6;
+  --line:#e5e8ef; --paper:#ffffff; --cream:#fbf9f4;
+  --prism:#5b4bff; --prism-2:#a678ff;
+  --accent:#2f6fb8; --accent-2:#8ab4f8;
+  --ok:#12a060; --warn:#d84a4a;
+  --code-bg:#10131c; --code-fg:#d6d9e0; --radius:10px;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Inter','Noto Serif SC',-apple-system,sans-serif; color:var(--ink); background:var(--paper); line-height:1.7; font-size:17px; -webkit-font-smoothing:antialiased; }
+
+.hero { position:relative; padding:90px 24px 72px; background:radial-gradient(ellipse 820px 460px at 28% 30%, rgba(47,111,184,.30) 0%, transparent 58%), radial-gradient(ellipse 680px 400px at 78% 66%, rgba(91,75,255,.20) 0%, transparent 55%), #060910; color:#fff; overflow:hidden; }
+.hero-inner { max-width:900px; margin:0 auto; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-block; padding:6px 14px; border-radius:999px; background:rgba(255,255,255,.08); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.16); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em; margin-bottom:22px; color:#cfe2ff; }
+.hero h1 { font-family:'Noto Serif SC',serif; font-weight:700; font-size:clamp(32px,5.2vw,52px); line-height:1.2; margin-bottom:20px; letter-spacing:-0.01em; }
+.hero h1 em { font-style:normal; background:linear-gradient(120deg,#fff 0%,#cfe2ff 48%,#8ab4f8 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero .subtitle { font-size:19px; font-weight:300; color:rgba(255,255,255,.82); margin-bottom:38px; max-width:680px; line-height:1.75; }
+.hero .subtitle strong { color:#fff; font-weight:600; text-shadow:0 0 14px rgba(138,180,248,.55); }
+.hero .verse { border-left:2px solid rgba(47,111,184,.7); padding-left:16px; margin-bottom:32px; font-family:'Noto Serif SC',serif; font-style:italic; color:rgba(255,255,255,.65); font-size:16px; line-height:1.85; }
+.hero .verse cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:rgba(255,255,255,.4); }
+.hero .dp { margin-top:6px; padding:14px 10px 6px; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(255,255,255,.025); }
+
+main { max-width:780px; margin:0 auto; padding:76px 24px 120px; }
+section { margin-bottom:72px; }
+h2 { font-family:'Noto Serif SC',serif; font-size:30px; font-weight:700; margin-bottom:20px; padding-top:8px; }
+h2::before { content:''; display:inline-block; width:32px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:2px; vertical-align:middle; margin-right:12px; transform:translateY(-6px); }
+h3 { font-size:20px; font-weight:600; margin:32px 0 12px; color:var(--ink-2); }
+p { margin-bottom:16px; color:var(--ink-2); }
+p code, li code, td code { font-family:'JetBrains Mono',monospace; font-size:.93em; padding:2px 6px; background:var(--cream); border:1px solid var(--line); border-radius:4px; color:#1f5590; font-weight:500; }
+strong { color:var(--ink); font-weight:600; }
+ul, ol { margin:0 0 20px 24px; color:var(--ink-2); }
+li { margin-bottom:8px; }
+
+.verse-inline { padding:18px 22px; margin:22px 0; background:linear-gradient(90deg,#f2f7ff 0%,transparent 60%); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; font-family:'Noto Serif SC',serif; font-style:italic; color:var(--ink-3); }
+.verse-inline cite { display:block; margin-top:6px; font-style:normal; font-size:13px; color:var(--mute); }
+
+.stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0; }
+.stk { padding:16px 15px; border-radius:var(--radius); border:1px solid var(--line); background:linear-gradient(180deg,var(--paper),var(--cream)); }
+.stk .k { font-family:'JetBrains Mono',monospace; font-size:11px; color:#1f5590; letter-spacing:.08em; margin-bottom:4px; }
+.stk .t { font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.stk .d { font-size:13px; color:var(--ink-3); line-height:1.55; }
+
+.code { margin:22px 0; background:var(--code-bg); border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 24px rgba(15,20,32,.08); border:1px solid #1c1f2e; }
+.code-header { padding:10px 16px; background:#0a0d15; border-bottom:1px solid #1c1f2e; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.code-lang { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent-2); text-transform:uppercase; font-weight:600; }
+.code-file { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--mute); }
+.code pre { padding:20px 22px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.65; color:var(--code-fg); }
+.code pre .hl { background:rgba(138,180,248,.12); display:inline-block; width:100%; margin:0 -22px; padding:0 22px; }
+
+.code pre.wrap { white-space:pre-wrap; word-break:break-word; }
+
+.tk-kw { color: #c57bff; font-weight: 500; }.tk-decl { color: #e08aff; font-weight: 600; }.tk-name { color: #ffffff; font-weight: 500; }
+.tk-dir { color: #7ee8d8; font-weight: 500; }.tk-typ { color: #4ad6b4; }.tk-prim { color: #79dfff; }
+.tk-rf { color: #ffd479; font-weight: 500; }.tk-rw { color: #b8a0e0; }.tk-stor { color: #4ad6b4; font-weight: 600; }
+.tk-sf { color: #c5b890; }.tk-sv { color: #8ab4f8; }.tk-op { color: #ff8a4c; }.tk-num { color: #79b8ff; }
+.tk-com { color: #6c7488; font-style: italic; }.tk-ann { color: #ff79c6; }.tk-fn { color: #4ad6b4; }.tk-str { color: #ffd479; }.tk-hex { color: #79b8ff; font-weight: 500; }
+
+.term { margin:18px 0; background:#060810; border-radius:var(--radius); overflow:hidden; border:1px solid #1c1f2e; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.7; }
+.term-header { padding:8px 14px; background:#10131c; border-bottom:1px solid #1c1f2e; color:var(--mute); font-size:11px; letter-spacing:.1em; }
+.term-body { padding:16px 20px; color:#c5cbd8; overflow-x:auto; white-space:pre; }
+.term-ok{color:#6fe8a5}.term-err{color:#ff8f8f}.term-warn{color:#ffcf8f}.term-hint{color:var(--mute);font-style:italic}.term-dim{color:#7d879b}
+
+.callout { padding:18px 22px; background:var(--cream); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; margin:24px 0; font-size:15.5px; }
+.callout-title { font-weight:600; color:var(--ink); margin-bottom:6px; display:block; }
+.callout.warn { border-left-color:var(--warn); background:#fdf4f4; }
+.callout.key { background:linear-gradient(90deg,#f2f7ff 0%,var(--cream) 100%); border-left-color:var(--prism); }
+
+.tbl-wrap { margin:20px 0; overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { background:var(--cream); text-align:left; padding:11px 15px; font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+td { padding:11px 15px; border-bottom:1px solid var(--line); color:var(--ink-2); }
+tbody tr:last-child td { border-bottom:none; }
+td.mono, th.mono { font-family:'JetBrains Mono',monospace; font-size:13px; }
+td .check { color:var(--ok); font-weight:600; }
+
+.pn { display:flex; justify-content:space-between; gap:12px; padding:16px 0 32px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:56px; font-size:14px; color:var(--mute); }
+.pn a { color:var(--prism); text-decoration:none; font-weight:500; }
+
+footer { padding:40px 24px; background:var(--code-bg); color:var(--mute); text-align:center; font-size:14px; }
+footer a { color:var(--prism-2); text-decoration:none; }
+footer .next { display:block; margin-bottom:12px; font-family:'Noto Serif SC',serif; color:var(--code-fg); font-size:15px; }
+
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0 26px; }
+.two .box { border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; background:var(--cream); }
+.two .box h4 { font-size:15px; margin-bottom:6px; }
+.two .box p { font-size:14px; color:var(--ink-3); }
+@media (max-width:720px){ .two { grid-template-columns:1fr; } }
+@media (max-width:640px){ main{padding:48px 20px 80px} .hero{padding:60px 20px 52px} h2{font-size:24px} }
+</style>
+<style>
+/* ---------- 侧边栏目录（构建脚本注入） ---------- */
+:root { --nav-w: 288px; --nav-bg: #080b13; --nav-line: rgba(255,255,255,.09); }
+body { padding-left: var(--nav-w); }
+.site-nav { position: fixed; inset: 0 auto 0 0; width: var(--nav-w); z-index: 60;
+  background: var(--nav-bg); border-right: 1px solid var(--nav-line);
+  display: flex; flex-direction: column; }
+.site-nav-inner { overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px 28px; flex: 1;
+  scrollbar-width: thin; scrollbar-color: #2a3242 transparent; }
+.site-nav-inner::-webkit-scrollbar { width: 8px; }
+.site-nav-inner::-webkit-scrollbar-thumb { background: #242c3b; border-radius: 8px; }
+.nav-brand { display: block; text-decoration: none; padding: 0 8px 18px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--nav-line); }
+.nav-kicker { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .14em; color: #8892a6; margin-bottom: 6px; }
+.nav-title { display: block; font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 700; color: #fff; }
+.nav-title em { font-style: normal; background: linear-gradient(112deg, #ffe0a8, #a678ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nav-top { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.nav-top a { display: flex; align-items: baseline; gap: 8px; padding: 7px 10px; border-radius: 7px;
+  font-size: 13.5px; color: #c6cdda; text-decoration: none; }
+.nav-top a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-top a.on { background: rgba(91,75,255,.2); color: #fff; box-shadow: inset 2px 0 0 #a678ff; }
+.nav-top a .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: #7a8497; }
+.nav-day { margin-bottom: 14px; }
+.nav-day h3 { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+  color: #8892a6; letter-spacing: .02em; padding: 0 10px; margin-bottom: 5px; }
+.nav-day h3 .dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.nav-day h3 .nm { color: #e8ecf4; }
+.nav-day h3 .st { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: #5d6779; }
+.nav-day ul { list-style: none; margin: 0; padding: 0; }
+.nav-day li a, .nav-day li span.row { display: flex; gap: 8px; align-items: baseline;
+  padding: 6px 10px 6px 14px; border-radius: 7px; font-size: 13px; line-height: 1.45;
+  color: #9aa4b8; text-decoration: none; }
+.nav-day li a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav-day li a .n, .nav-day li span.row .n { font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #6b7488; flex: none; }
+.nav-day li a .n { color: #a678ff; }
+.nav-day li.todo span.row { color: #4c5666; cursor: default; padding-left: 13px;
+  border-left: 1px dashed rgba(255,255,255,.1); border-radius: 0; }
+.nav-day li a.on { background: rgba(91,75,255,.22); color: #fff; }
+.nav-day li a.on .n { color: #ffe0a8; }
+.nav-foot { margin-top: 20px; padding: 14px 10px 0; border-top: 1px solid var(--nav-line);
+  font-size: 11.5px; color: #5d6779; line-height: 1.7; }
+.nav-foot a { color: #8a94a8; text-decoration: none; }
+.nav-foot a:hover { color: #a678ff; }
+.nav-toggle { display: none; position: fixed; z-index: 70; left: 14px; top: 14px; padding: 9px 14px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.22); background: rgba(8,11,19,.86);
+  backdrop-filter: blur(8px); color: #fff; font: 600 13px/1 'Inter', 'Noto Serif SC', sans-serif; cursor: pointer; }
+.nav-scrim { display: none; position: fixed; inset: 0; z-index: 55; background: rgba(4,6,12,.6); }
+html.nav-open .nav-scrim { display: block; }
+@media (max-width: 1080px) {
+  body { padding-left: 0; }
+  .site-nav { transform: translateX(-100%); transition: transform .22s ease; width: min(var(--nav-w), 86vw); }
+  html.nav-open .site-nav { transform: none; }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .hero .hero-inner, main { padding-top: 52px; }
+}
+@media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
+</style></head>
+<body>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">第 1 集</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">第 2 集</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">第 3 集</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">第 4 集</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">第 5 集</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">第 6 集</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">第 7 集</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">第 8 集</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">第 9 集</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">第 10 集</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">第 11 集</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">第 12 集</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">第 13 集</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">第 14 集</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">第 15 集</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">第 16 集</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">第 17 集</span><span class="t">指令集扩展：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">第 18 集</span><span class="t">把 CPU 装进 SoC</span></a></li><li><a href="../day4/19-uart.html"><span class="n">第 19 集</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">第 20 集</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">第 21 集</span><span class="t">换成跑得更快的 Verilator</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">第 22 集</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">第 23 集</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">第 24 集</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">第 25 集</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">第 26 集</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">第 27 集</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已写完</span></h3><ul><li><a href="28-fpu.html"><span class="n">第 28 集</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></a></li><li><a href="29-misaligned.html" class="on" aria-current="page"><span class="n">第 29 集</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></a></li><li><a href="30-initramfs.html"><span class="n">第 30 集</span><span class="t">挂根：initramfs 与它的三条软规矩</span></a></li><li><a href="31-shell.html"><span class="n">第 31 集</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="../day7/32-gap.html"><span class="n">第 32 集</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="../day7/33-ooo.html"><span class="n">第 32 集</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="../day7/34-width.html"><span class="n">第 32 集</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="../day7/35-deep.html"><span class="n">第 32 集</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="../day7/36-mem.html"><span class="n">第 32 集</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="../day7/37-bpred.html"><span class="n">第 32 集</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="../day7/38-coremark.html"><span class="n">第 32 集</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">七日创造 · 第六日 · 安息前的最后一班岗 · 第 29 集</div>
+    <h1>非对齐访存<br><em>一笔装不下，就拆两笔</em></h1>
+    <p class="subtitle">一个字 8 条字节车道，地址不落在车道 0 上就有三种情形：<strong>同一个字内走车道移位，跨字不跨页拆两笔再拼接，跨页与原子交 cause 4 / 6</strong>。三档共用一张宽度表，判据只许有一份——而每一档都藏着"另一种写法在对齐激励下逐位相同"的陷阱，所以判据必须指名它靠哪几根线成立。</p>
+    <div class="verse">
+      "神赐福给他们，又对他们说：要生养众多，遍满地面，治理这地；"
+      <cite>—— 《创世记》 1:28</cite>
+    </div>
+  </div>
+</header>
+
+<main id="doc-main">
+
+<div class="pn">
+  <a href="28-fpu.html">← 第 28 集 · FPU（F / D）：一半是算术，一半是特权</a>
+  <a href="30-initramfs.html">第 30 集 · 挂根：initramfs 与它的三条软规矩 →</a>
+</div>
+
+<section id="s1">
+  <h2>一笔装不下：三档判决从哪来</h2>
+  <p>数据通路一个字是 64 位、8 条字节车道。地址不落在车道 0 上时，一次访问可能整个落在同一个字里，也可能横跨两个字。硬件对"未对齐"只有三种回答，而回答哪一种是<strong>地址算出来的，不是指令算出来的</strong>：</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>档</th><th>条件</th><th>硬件做什么</th><th>架构结果</th></tr>
+      <tr><td class="mono">①</td><td>未对齐，但 <code>boff + 宽度 &lt;= 8</code></td><td>同一个字内做车道移位与掩码合并</td><td>正常读写，不报异常</td></tr>
+      <tr><td class="mono">②</td><td>跨字，且相邻字在同一页内</td><td>拆两笔：第一笔锁字，第二拍拼接</td><td>正常读写，多占一拍</td></tr>
+      <tr><td class="mono">③</td><td>跨页，或这笔是原子（AMO / LR / SC）</td><td>不拆</td><td>报 cause 4（load）/ 6（store、AMO）</td></tr>
+    </table>
+  </div>
+  <p>三档共用同一张宽度表，所以判据只能有一份。这件事的位置是被理由定下来的：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/lsu.prism · 对齐判据在 LSU 产，TRAP 只编 cause</span></div>
+<pre class="wrap">    <span class="tk-com">// ---- 地址对齐判据（本子系统产，TRAP 只编 cause/委派）----</span>
+    <span class="tk-com">// 为什么在这儿：同一张宽度表既是 cause 4/6 的料，也是"这笔要不要拆两笔"的料，</span>
+    <span class="tk-com">// 两处各算一遍必然漂移——与缺页/访问错同一条路（LSU 产、TRAP 编号）。</span>
+    <span class="tk-com">// 宽度要求按规范：LB/SB 无要求；LH/LHU/SH 看 bit0；LW/LWU/SW 看 [1:0]；LD/SD 看 [2:0]。</span>
+    <span class="tk-com">// 浮点访存**并进来**（FLW/FSW 的 funct3=2、FLD/FSD=3，与普通 lw/ld 同一档）：</span>
+    <span class="tk-com">// q_mem_read/q_mem_write 不覆盖 FLW/FSW，原先这里漏检，未对齐的 FLD 会安静地只读</span>
+    <span class="tk-com">// 一个字的高半段，既不报 4/6 也拿不到第二个字。</span>
+    <span class="tk-kw">wire</span> acc_load  : <span class="tk-prim">u1</span> = (mem_mem_read  | mem_is_fp_load)  &amp; mem_valid
+    <span class="tk-kw">wire</span> acc_store : <span class="tk-prim">u1</span> = (mem_mem_write | mem_is_fp_store) &amp; mem_valid
+    <span class="tk-kw">wire</span> mis_by_f3 : <span class="tk-prim">u1</span> = <span class="tk-kw">match</span> mem_funct3 {
+        <span class="tk-num">1</span> =&gt; mem_alu_result[<span class="tk-num">0</span>:<span class="tk-num">0</span>],         <span class="tk-com">// lh/lhu/sh：2 字节</span>
+        <span class="tk-num">2</span> =&gt; mem_alu_result[<span class="tk-num">1</span>:<span class="tk-num">0</span>] != <span class="tk-num">0</span>,    <span class="tk-com">// lw/sw/flw：4 字节</span>
+        <span class="tk-num">3</span> =&gt; mem_alu_result[<span class="tk-num">2</span>:<span class="tk-num">0</span>] != <span class="tk-num">0</span>,    <span class="tk-com">// ld/sd/fld/fsd：8 字节</span>
+        <span class="tk-num">5</span> =&gt; mem_alu_result[<span class="tk-num">0</span>:<span class="tk-num">0</span>],         <span class="tk-com">// lhu</span>
+        <span class="tk-num">6</span> =&gt; mem_alu_result[<span class="tk-num">1</span>:<span class="tk-num">0</span>] != <span class="tk-num">0</span>,    <span class="tk-com">// lwu</span>
+        _ =&gt; <span class="tk-num">0</span>,                           <span class="tk-com">// lb/lbu/sb：无要求</span>
+    }</pre>
+  </div>
+
+  <p>注释里那句"浮点访存并进来"记的是一个真实缺陷：<code>q_mem_read</code> / <code>q_mem_write</code> 不覆盖 FLW / FSW，所以这一处原先漏检——未对齐的 <code>fld</code> 既不报 4/6，也拿不到第二个字，<strong>安静地只读了一个字的高半段</strong>。这类缺陷不会崩，只会给出错的数据，所以它必须由判据抓，不能由"跑起来了"抓。</p>
+</section>
+
+<section id="s2">
+  <h2>同字内：走车道，绝不拆</h2>
+  <p>第一档与第二档的分界是 <code>boff + 宽度 &gt; 8</code>。这一条不能省成"凡未对齐都拆"，理由写在同一处注释里：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/lsu.prism · 跨字判据</span></div>
+<pre class="wrap">    <span class="tk-com">// 一笔（一个 64 位字）装不下的才算"要跨字"：boff + 宽度 &gt; 8。dm 的字宽是 64 位，</span>
+    <span class="tk-com">// 一个字 8 条字节车道，车道号 = 字节地址低 3 位；取 [2:0] 之外的位会把地址位当车道。</span>
+    <span class="tk-com">// 同一个字内的未对齐访问（如 lw @2：字节 2..5）走车道移位就够——硬拉去拆两笔会让</span>
+    <span class="tk-com">// sec_bytes 在 u64 上绕成负数（2+4-8），第二笔的掩码与拼接全是垃圾。</span>
+    <span class="tk-kw">wire</span> acc_bytes    : <span class="tk-prim">u64</span> = <span class="tk-kw">match</span> mem_funct3 {
+        <span class="tk-num">1</span> =&gt; <span class="tk-num">2</span>, <span class="tk-num">2</span> =&gt; <span class="tk-num">4</span>, <span class="tk-num">3</span> =&gt; <span class="tk-num">8</span>, <span class="tk-num">5</span> =&gt; <span class="tk-num">2</span>, <span class="tk-num">6</span> =&gt; <span class="tk-num">4</span>, _ =&gt; <span class="tk-num">1</span>,   <span class="tk-com">// lh/lw/ld/lhu/lwu；lb/sb 无要求</span>
+    }
+    <span class="tk-kw">wire</span> mem_boff     : <span class="tk-prim">u64</span> = mem_alu_result[<span class="tk-num">2</span>:<span class="tk-num">0</span>]
+    <span class="tk-kw">wire</span> crosses_word : <span class="tk-prim">u1</span> = mem_boff + acc_bytes &gt; <span class="tk-num">8</span></pre>
+  </div>
+
+  <p><code>sec_bytes = boff + 宽度 - 8</code> 是第二笔要写的字节数。同字内的访问套进这个式子会得到负数——而它声明成 <code>u64</code>，于是绕成一个巨大的无符号数，第二笔的掩码与拼接全成垃圾。<strong>这是一个只在"错误的那一档"才会出现的值，所以两档的分界必须有独立判据</strong>（见第 6 节的反证 <code>split</code>）。</p>
+</section>
+
+<section id="s3">
+  <h2>跨字不跨页：两拍事务与它的相位</h2>
+  <p>第二档要占两拍：第一拍取回低地址那个字并锁住，第二拍取回相邻字再拼接。跨拍状态只能落在一个 module 里——composer 不能自持 <code>reg</code>，这与第 17 集那条"A 的时序：判决与清除差一拍"是同一条理由：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/lsu.prism · MisPhase 头注</span></div>
+<pre class="wrap"><span class="tk-com">// MisPhase —— 非对齐访存的相位状态（一笔只装得下一个 64 位字，跨字就要两笔）</span>
+<span class="tk-com">//</span>
+<span class="tk-com">// 与 AmoPhase 同一形状的理由：composer 不能自持 reg，跨拍状态只能落在一个 module 里。</span>
+<span class="tk-com">// 第一笔交付那一沿锁住 word0 并把相位翻成"第二笔"；走完/被撤销清相位。</span>
+<span class="tk-com">// w0 只有 load 侧用得到（store 的第二笔自带 RMW 读），锁一份不影响正确性。</span></pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/lsu.prism · MisPhase 全文</span></div>
+<pre class="wrap">module MisPhase {
+    <span class="tk-kw">in</span>  first_done : Signal&lt;<span class="tk-prim">u1</span>&gt;    <span class="tk-com">// 第一笔交付拍（本拍 first 就是要锁的那个字）</span>
+    <span class="tk-kw">in</span>  first      : Signal&lt;<span class="tk-prim">u64</span>&gt;   <span class="tk-com">// 第一笔取回/参与合并的字</span>
+    <span class="tk-kw">in</span>  clear      : Signal&lt;<span class="tk-prim">u1</span>&gt;    <span class="tk-com">// 走完 / 撤销（trap、冲刷）：相位归零</span>
+    <span class="tk-kw">out</span> sec        : Signal&lt;<span class="tk-prim">u1</span>&gt;    <span class="tk-com">// 1=第二笔（高位那一半）</span>
+    <span class="tk-kw">out</span> w0         : Signal&lt;<span class="tk-prim">u64</span>&gt;   <span class="tk-com">// 锁住的第一字，合并时的低位来源</span>
+
+    <span class="tk-kw">reg</span> r_sec : <span class="tk-prim">u1</span>  = <span class="tk-num">0</span>
+    <span class="tk-kw">reg</span> r_w0  : <span class="tk-prim">u64</span> = <span class="tk-num">0</span>
+
+    sec = r_sec
+    w0  = r_w0
+
+    <span class="tk-kw">on</span> <span class="tk-kw">clock</span> {
+        <span class="tk-kw">if</span> (first_done) {
+            r_sec' = <span class="tk-num">1</span>
+            r_w0'  = first
+        }
+        <span class="tk-kw">if</span> (clear) {
+            r_sec' = <span class="tk-num">0</span>
+        }
+    }
+}</pre>
+  </div>
+
+  <p>拼接的方向不能反。反了会怎样，注释写得比任何解释都直接：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/lsu.prism · 合并窗口</span></div>
+<pre class="wrap">    <span class="tk-com">// 合并窗口：第一拍就是 mem_sh；第二拍的低 n1 个字节来自**锁住的第一字**（w0），高</span>
+    <span class="tk-com">// n2 个字节来自本拍取回的相邻字（word+1）——两个来源一个都不能反：写成</span>
+    <span class="tk-com">// (本拍&gt;&gt;shamt)|(w0&lt;&lt;(64-shamt)) 会把相邻字摆在低位、第一字顶到高位，load 值整段错位。</span>
+    <span class="tk-com">// 对齐时两式逐位相同（boff=0 ⇒ shamt=0，w0==本拍字）。</span>
+    <span class="tk-kw">wire</span> mem_win : <span class="tk-prim">u64</span> = mis_ph.sec ? ((mis_ph.w0 &gt;&gt; mem_shamt) | (old_word &lt;&lt; (<span class="tk-num">64</span> - mem_shamt))) : mem_sh</pre>
+  </div>
+
+  <p>最后一句是判据设计上的一个陷阱：<strong>对齐时两个方向逐位相同</strong>。所以只给对齐激励，这一根线错了也量不出来——必须有一笔真正跨字的 load（探针里的甲⑧⑨）。</p>
+</section>
+
+<section id="s4">
+  <h2>跨页与原子：不拆，交 cause</h2>
+  <p>第二笔的字如果在下一页，就要另一次地址翻译、另一次缺页判决——这一支不在本集范围内，直接交异常。页尾的判据是一位之差：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/lsu.prism · 页尾与三根产出线</span></div>
+<pre class="wrap">    <span class="tk-com">// 相邻字在下一页：第二笔要另一次翻译、另一次缺页判决 ⇒ 这一支还不拆，交 cause。</span>
+    <span class="tk-com">// 页内 512 个字 ⇒ 最后一个字的下标是 9 位的 0x1FF（不是 0xFF：那是页中间那个字，</span>
+    <span class="tk-com">// 邻字还在同一页里，拒它是误拒；真页尾反而漏过去，第二笔就跨到下一页去了）。</span>
+    <span class="tk-kw">wire</span> crosses_page : <span class="tk-prim">u1</span> = mem_alu_result[<span class="tk-num">11</span>:<span class="tk-num">3</span>] == <span class="tk-num">0x1FF</span>
+    <span class="tk-kw">wire</span> mis_refused  : <span class="tk-prim">u1</span> = crosses_word &amp; crosses_page</pre>
+  </div>
+
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/lsu.prism · 原子永不拆</span></div>
+<pre class="wrap">    <span class="tk-com">// 原子不算进这两根：AMO 是读改写，mem_read 对它恒 1，混进来会让它误报 cause 4</span>
+    <span class="tk-kw">wire</span> mem_is_atomic : <span class="tk-prim">u1</span> = mem_is_lr | mem_is_sc | mem_is_amo
+    <span class="tk-com">// 能做的就不报：同字内走车道、跨字不跨页走两笔。这两根只产 mis_refused 那一支，</span>
+    <span class="tk-com">// 与 do_split 同源——两处各判一次必然漂移（就是拆了还报 4、事务被自己的陷阱打断）。</span>
+    mem_mis_load   = acc_load  &amp; !mem_is_atomic &amp; mis_by_f3 &amp; mis_refused
+    mem_mis_st     = acc_store &amp; !mem_is_atomic &amp; mis_by_f3 &amp; mis_refused
+    <span class="tk-com">// .w 要 4 字节对齐、.d 要 8 字节对齐（LR 报 load 未对齐，SC 与九种 AMO 报 store/AMO）</span>
+    mem_mis_atomic = mem_is_atomic &amp; mem_valid &amp; (mem_amo_word ? (mem_alu_result[<span class="tk-num">1</span>:<span class="tk-num">0</span>] != <span class="tk-num">0</span>) : (mem_alu_result[<span class="tk-num">2</span>:<span class="tk-num">0</span>] != <span class="tk-num">0</span>))</pre>
+  </div>
+
+  <p>规范对 AMO / LR / SC 的未对齐本来就要求报异常（<code>.w</code> 要 4 字节对齐、<code>.d</code> 要 8 字节对齐），所以原子这一族不是"实现偷懒不拆"，而是<strong>拆了才不合规</strong>。cause 编号归第 15 集立起来的陷阱裁决表：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">prism</span><span class="code-file">whitebow/pipe/trap.prism · cause 4 与 6</span></div>
+<pre class="wrap">        (lsu_mis_load | (lsu_mis_atomic &amp; mem_is_lr)) =&gt; <span class="tk-num">4</span>,
+        (lsu_mis_st | lsu_mis_atomic)                    =&gt; <span class="tk-num">6</span>,</pre>
+  </div>
+
+</section>
+
+<section id="s5">
+  <h2>机器与内核的边界：那颗内核没编 traps_misaligned.o</h2>
+  <p>硬件合规地报了 cause 4，故事并没有结束。内核启动时有一项 warmup 会<strong>故意做一次未对齐访问</strong>来量性能，而它依赖内核自己的非对齐陷阱处理——这颗内核（S 态 + MMU）没编那个文件。设备树的注释把这条边界与撤法都记着：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">dts</span><span class="code-file">fw/sbi.dts · initcall_blacklist 挡的是什么</span></div>
+<pre class="wrap">		 * initcall_blacklist 挡的是非对齐 warmup：本核对非对齐 load 报 cause 4（合规），
+		 * 而这颗内核（S 态 + MMU）没编 traps_misaligned.o（arch/riscv/kernel/Makefile
+		 * 只把 obj-$(CONFIG_RISCV_M_MODE) 收进去，而 RISCV_M_MODE 默认 !MMU），
+		 * cpufeature.c 的 check_unaligned_access_boot_cpu 里
+		 * __riscv_copy_words_unaligned 一发 `ld (page|1)` 就是 Oops/panic。
+		 * 2026-10-06 撤黑名单实验实测如此（panic 栈：check_unaligned_access_boot_cpu
+		 * → __riscv_copy_words_unaligned，"Oops - load address misaligned"）——
+		 * 早年挂在它上面的理由（S 模式 timer 无 tick）已随 Sstc 修掉，这个显然不是。
+		 * 要撤它得先让 LSU 真吃下非对齐 load（C910 那条路：LSU 拆多笔），或内核配仿真。</pre>
+  </div>
+
+  <p>这不是推测：2026-10-06 撤掉黑名单实测过一次，panic 栈直接点到 <code>check_unaligned_access_boot_cpu → __riscv_copy_words_unaligned</code>，最后一行是 <code>Oops - load address misaligned</code>。两条撤法也都写在注释里——<strong>LSU 真吃下非对齐 load（拆多笔那条路）</strong>，或者<strong>内核配软件仿真</strong>。这一集选了第三条：把这条 initcall 挡掉，同时把"为什么挡"留在能看见的地方。</p>
+  <div class="callout warn">
+    <span class="callout-title">为什么要把这条记在设备树里</span>
+    <p style="margin:0;">黑名单看起来像一行无关紧要的启动参数，实际是<strong>机器能力与内核配置之间的一条约定</strong>。它挡住的那条 initcall 与硬件的 cause 4 是同一件事的两端——只写代码不写这里，下一次改动就会把它当残留清掉，然后在启动阶段收到一个看起来与改动无关的 panic。</p>
+  </div>
+</section>
+
+<section id="s6">
+  <h2>判据：20 根寄存器逐条对字节模型，四发反证各红一族</h2>
+  <p>三档互相会掩盖对方，所以判据必须一次覆盖三档。探针的期望值不是抄实现算的，而是<strong>另写一份字节模型</strong>：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">python</span><span class="code-file">tests/test_cpu.py · 三档判决为什么要一起钉</span></div>
+<pre class="wrap"># 非对齐访存的三档判决：① 同一个 64 位字内 → 车道移位；② 跨字不跨页 → 拆两笔再拼接；
+# ③ 跨页（页内第 511 个字）与原子 → 交 cause 4/6（规范允许实现对未对齐择一报异常）。
+#
+# 三条口径都要单独钉，因为它们互相会掩盖对方：门控写错（该拆的报了异常）时 ①② 全塌；
+# 跨字判据写成"凡未对齐都拆"时 ① 会拿第二笔的垃圾；页尾判据错一位时 ③ 根本不报。
+# 同源 cosim 一律无感（RTL 与 golden 读同一份表达式），所以判据必须是手算值。</pre>
+  </div>
+
+  <p>探针程序本身有一段工程账要记：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">python</span><span class="code-file">tests/test_cpu.py · 激励不许手编</span></div>
+<pre class="wrap"># 探针的程序由 riscv64-elf-as 汇编产出（禁手编：这一版手编踩过两次——csrrw 少了
+# funct3、or 的 funct3 写成字段值 0x0E，两次都伪装成"硬件算错"，白花一轮）。
+# 数据模式故意选两个不对称的字（每字节都不同）：对称模式会把"取错半字"掩盖成正确。
+# handler 必须排在 260 之前——demo 的 until 是 retire_pc &gt;= 260，放 512 的话 trap 一进
+# handler 就停机，见证寄存器永远是 0（上一版就这么被自己骗过一次）。</pre>
+  </div>
+
+  <p>探针的读法与写法各占一段（甲），跨页（乙）与原子（丙）各占一段，每段后面紧跟读回与陷阱见证：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">python</span><span class="code-file">tests/test_cpu.py · 探针激励摘录（甲⑦–⑪）</span></div>
+<pre class="wrap">    0x00605C83,   # pc96   lhu s9,6(zero) — 甲⑦ boff+宽 == 8：恰好不跨字（硬拆就用到第二笔的垃圾）
+    0x00502D03,   # pc100  lw s10,5(zero) — 甲⑧ 跨字 lw（5..9）⇒ 拆两笔
+    0x00303D83,   # pc104  ld s11,3(zero) — 甲⑨ 跨字 ld（3..11）⇒ 拆两笔
+    0x013023A3,   # pc108  sw s3,7(zero) — 甲⑩ 跨字 sw（7..10：1 字节落 word0、3 字节落 word1）
+    0x00003383,   # pc112  ld t2,0(zero) — 读回 word0
+    0x00803E03,   # pc116  ld t3,8(zero) — 读回 word1
+    0x55667537,   # pc120  lui a0,0x55667
+    0x7885051B,   # pc124  addiw a0,a0,1928 — a0 = 0x55667788（四字节互异，写错车道一眼看出）
+    0x00A02123,   # pc128  sw a0,2(zero) — 甲⑪ 同字内未对齐 sw（2..5）：只走车道，绝不许拆
+    0x00003403,   # pc132  ld s0,0(zero) — 再读回 word0（带 ⑩⑪ 两写的结果，邻居字节必须原样）
+    0x00803303,   # pc136  ld t1,8(zero) — 再读回 word1：甲⑪ 一个字都不该动它</pre>
+  </div>
+
+  <p>四发反证各打一根柱子，而且<strong>每发都规定了必须红在哪几根上</strong>——红到别处不算，红不到也不算：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">python</span><span class="code-file">tests/test_cpu.py · 四发反证与各自的承重位</span></div>
+<pre class="wrap">MIS_RED = {   # 每发反证必须红在哪几根上（红到别处不算，红不到也不算）
+    # 摘掉门控 ⇒ 三档全塌成"凡未对齐都报 4/6"：甲段的未对齐 load/store 一律不落地，
+    # gp 见证非 0。甲⑦（lhu@6）不在这一族里——它地址是偶数，mis_by_f3 本来就 0，
+    # 摘不摘门控都不该 trap；乙案也不在，它要的就是报 4。
+    "gate":   {"x15", "x21", "x22", "x26", "x27", "x7", "x28"},
+    # 跨字判据退成"凡未对齐都拆"：同字内那几案被拖去发第二笔，而 sec_bytes 在 u64 上
+    # 绕成负数 ⇒ 第二笔的掩码是垃圾。load 侧量不出来（拼接结果里被访问的那几个字节全在
+    # 64-shamt 以下，只来自锁住的第一字），**只有同字内的 store 甲⑪ 会把邻居字写花**——
+    # 所以甲⑪ 与 x6 这根读回就是这一发的承重位。
+    "split":  {"x6"},
+    # 页尾判据差一位（0xFF 是页中间那个字）：乙案不再报 4，改成被拆两笔。承重的是
+    # mcause/mtval 两根见证；rd（x11）量不出来——下一页全是 0，"半笔数据"与"不写回"
+    # 落进同一个 0，这正是 rd 单独当判据的盲区。
+    "page":   {"x16", "x17"},
+    # 拼接方向反过来 ⇒ 跨字的两笔 load（甲⑧⑨）整段错位；同字内的和 store 都不走这根
+    "stitch": {"x26", "x27"},
+}</pre>
+  </div>
+
+  <p>实跑一遍（沙箱副本注入，真源码不动）：</p>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">terminal</span><span class="code-file">$ python3 -m pytest tests/test_cpu.py -k trap_misalign -s -q</span></div>
+<pre class="wrap">$ python3 -m pytest tests/test_cpu.py -k trap_misalign -s -q
+<span class="term-hint"># 每条判据后面是实测耗时；同源 cosim 那一行是正控</span>
+  [PASS] 未对齐探针：同源 cosim PASS（RTL == golden） [3.23s]
+  [PASS] 未对齐探针：20 根寄存器逐条 == 字节模型（三档全过） [2.29s]
+  [PASS] 反证gate：判红恰好落在自己那一族（['x15', 'x21', 'x22', 'x26', 'x27', 'x28', 'x7']） [3.16s]
+  [PASS] 反证split：判红恰好落在自己那一族（['x6']） [2.37s]
+  [PASS] 反证page：判红恰好落在自己那一族（['x16', 'x17']） [2.34s]
+  [PASS] 反证stitch：判红恰好落在自己那一族（['x26', 'x27']） [2.43s]
+  [PASS] 四发注入之后真源码仍逐条全等（注入没有连带影响） [2.41s]
+1 passed, 32 deselected in 18.83s</pre>
+  </div>
+  <p>两处细节值得单独看：<code>split</code> 那一发在 load 侧<strong>量不出来</strong>（拼接结果里被访问的那几个字节全来自锁住的第一字），只有同字内的 store 会把邻居字写花——所以它的承重位是 <code>x6</code> 一根；<code>page</code> 那一发的 <code>rd</code> 也量不出来（下一页全是 0，"半笔数据"与"不写回"落进同一个 0），承重的是 <code>mcause</code> / <code>mtval</code> 两根见证。<strong>判据要指名它靠哪几根线成立，否则"通过"这两个字没有内容。</strong></p>
+</section>
+
+<section id="s7">
+  <h2>小结</h2>
+  <ul>
+    <li>未对齐分三档：同字内走车道、跨字不跨页拆两笔、跨页与原子报 cause 4 / 6。三档共用一张宽度表，判据只许有一份。</li>
+    <li>两笔事务的跨拍状态落在 <code>MisPhase</code> 这一颗 module 里（composer 不能自持 <code>reg</code>），与 <code>AmoPhase</code> 同形。</li>
+    <li>拼接方向、页尾位宽、两档分界这三处，各自都有"另一种写法在对齐激励下逐位相同"的陷阱——判据必须自带跨字与跨页那两案。</li>
+    <li>原子永不拆：规范对 AMO / LR / SC 的未对齐要求报异常，拆了才不合规。</li>
+    <li>硬件合规不等于整机可跑：那颗内核没编 <code>traps_misaligned.o</code>，边界与撤法记在设备树注释里。</li>
+    <li>判据：20 根寄存器逐条对独立字节模型；四发反证（门控 / 跨字 / 页尾 / 拼接方向）各红自己那一族；注入后真源码仍逐条全等。</li>
+  </ul>
+  <div class="callout">
+    <span class="callout-title">边界照实写</span>
+    <p style="margin:0;">① 两笔事务只覆盖"相邻字在同一页"这一种跨字情形，跨页一律报异常——这是选择，不是能力上限。② 拆两笔会让这笔访存多占一拍，代价记在 <code>src_mis</code> 这一根源上（第 33 集的归因表里能看到它），本集不报具体拍数收益。③ 内核侧那条 initcall 仍被挡着：本集交付的是硬件三档判决，不是内核的非对齐性能测量。</p>
+  </div>
+</section>
+
+<section id="s8">
+  <h2>复现本集</h2>
+  <div class="code">
+    <div class="code-header"><span class="code-lang">bash</span><span class="code-file">reproduce</span></div>
+<pre># 白虹仓库（riscv-prism）
+python3 -m pytest tests/test_cpu.py -k trap_misalign -s -q   # 三档 20 根 + 四发反证
+# 判据与注入点都在 tests/test_cpu.py 的 test_cpu_trap_misalign：
+#   PROBE_MISALIGN（探针镜像）/ MIS_RED（每发必须红在哪几根）/ MIS_PATCH（注入式）
+# 测试自己把探针写成 bin，走 demo 的运行入口（别名 prog 即 run 的 image 段）：
+#   prism run whitebow/whitebow.prism --run whitebow_cpu_demo \
+#     --image prog=probe_misalign.bin
+# 整机侧：fw/sbi.dts 的 bootargs 里有 initcall_blacklist=check_unaligned_access_boot_cpu
+grep -n 'initcall_blacklist' fw/sbi.dts</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="next">第六日 · 安息前的最后一班岗 —— 非对齐有三档；下一集：把根文件系统挂上</span>
+  七日创造 · 第六日 · 安息前的最后一班岗 · 第 29 集 · <a href="30-initramfs.html">下一集 →</a> · <a href="../index.html">返回首页</a>
+</footer>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var nav = document.getElementById('site-nav');
+  var toggle = document.getElementById('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = root.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var on = nav.querySelector('a.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
+  });
+  document.getElementById('nav-scrim').addEventListener('click', function () {
+    root.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && root.classList.contains('nav-open')) toggle.click();
+  });
+})();
+</script>
+</body>
+</html>
