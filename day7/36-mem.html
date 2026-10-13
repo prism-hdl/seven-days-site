@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 36 集 · 非阻塞访存：miss 期间，流水继续退休 · 创世记 · 第七日 · 安息</title>
+<title>第 36 集 · 非阻塞访存：等待数据时，独立指令继续执行 · 创世记 · 第七日 · 安息</title>
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 :root {
@@ -158,13 +158,14 @@ html.nav-open .nav-scrim { display: block; }
 @media print { .site-nav, .nav-toggle, .nav-scrim { display: none !important; } body { padding-left: 0; } }
 </style></head>
 <body>
-<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">已写完</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">第 1 集</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">第 2 集</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">第 3 集</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">第 4 集</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">已写完</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">第 5 集</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">第 6 集</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">第 7 集</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">第 8 集</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">第 9 集</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">第 10 集</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">第 11 集</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">已写完</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">第 12 集</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">第 13 集</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">第 14 集</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">第 15 集</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">已写完</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">第 16 集</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">第 17 集</span><span class="t">指令集扩展：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">第 18 集</span><span class="t">把 CPU 装进 SoC</span></a></li><li><a href="../day4/19-uart.html"><span class="n">第 19 集</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">第 20 集</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">第 21 集</span><span class="t">换成跑得更快的 Verilator</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">第 22 集</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">已写完</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">第 23 集</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">第 24 集</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">第 25 集</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">第 26 集</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">第 27 集</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">已写完</span></h3><ul><li><a href="../day6/28-fpu.html"><span class="n">第 28 集</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></a></li><li><a href="../day6/29-misaligned.html"><span class="n">第 29 集</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></a></li><li><a href="../day6/30-initramfs.html"><span class="n">第 30 集</span><span class="t">挂根：initramfs 与它的三条软规矩</span></a></li><li><a href="../day6/31-shell.html"><span class="n">第 31 集</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">已写完</span></h3><ul><li><a href="32-gap.html"><span class="n">第 32 集</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="33-ooo.html"><span class="n">第 32 集</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="34-width.html"><span class="n">第 32 集</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="35-deep.html"><span class="n">第 32 集</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="36-mem.html" class="on" aria-current="page"><span class="n">第 32 集</span><span class="t">非阻塞访存：miss 期间，流水继续退休</span></a></li><li><a href="37-bpred.html"><span class="n">第 32 集</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="38-coremark.html"><span class="n">第 32 集</span><span class="t">CoreMark 跑分：到 A76 那一档</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
+<nav class="site-nav" id="site-nav" aria-label="文档目录"><div class="site-nav-inner"><a class="nav-brand" href="../index.html"><span class="nav-kicker">PRISM DSL × RISC-V</span><span class="nav-title">七日<em>创造</em></span></a><div class="nav-top"><a href="../index.html"><span class="tag">HOME</span>首页 · 七日导览</a><a href="../outline.html"><span class="tag">OUTLINE</span>全部集数大纲</a></div><section class="nav-day"><h3><span class="dot" style="background:#ffd479"></span><span class="nm">光</span><span class="st">第 1–4 集</span></h3><ul><li><a href="../day1/01-why-prism.html"><span class="n">第 1 集</span><span class="t">一道裂缝 · 为什么要有 Prism</span></a></li><li><a href="../day1/02-layered.html"><span class="n">第 2 集</span><span class="t">分层与语法骨架</span></a></li><li><a href="../day1/03-cpu-top.html"><span class="n">第 3 集</span><span class="t">聚在一处</span></a></li><li><a href="../day1/04-let-there-be-light.html"><span class="n">第 4 集</span><span class="t">让光打出去</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#4ad6b4"></span><span class="nm">空气与水</span><span class="st">第 5–11 集</span></h3><ul><li><a href="../day2/05-pc.html"><span class="n">第 5 集</span><span class="t">pc · 下一步</span></a></li><li><a href="../day2/06-memory.html"><span class="n">第 6 集</span><span class="t">记忆</span></a></li><li><a href="../day2/07-alu.html"><span class="n">第 7 集</span><span class="t">ALU · 活动</span></a></li><li><a href="../day2/08-decoder.html"><span class="n">第 8 集</span><span class="t">decoder · 理解世界</span></a></li><li><a href="../day2/09-cpu-top.html"><span class="n">第 9 集</span><span class="t">CpuTop · 一具身体</span></a></li><li><a href="../day2/10-bubble-sort.html"><span class="n">第 10 集</span><span class="t">跑一段真程序 · 从 C 到裸镜像</span></a></li><li><a href="../day2/11-sail.html"><span class="n">第 11 集</span><span class="t">第四方对撞 · 官方 sail 模型</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#8ab4f8"></span><span class="nm">天上光体，定节律</span><span class="st">第 12–15 集</span></h3><ul><li><a href="../day3/12-flag.html"><span class="n">第 12 集</span><span class="t">立 flag · 缺的四样</span></a></li><li><a href="../day3/13-pipeline.html"><span class="n">第 13 集</span><span class="t">五级流水线数据通路</span></a></li><li><a href="../day3/14-hazards.html"><span class="n">第 14 集</span><span class="t">冒险：停顿、前递、冲刷</span></a></li><li><a href="../day3/15-csr.html"><span class="n">第 15 集</span><span class="t">CSR 与特权级</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#a678ff"></span><span class="nm">有生命的活物</span><span class="st">第 16–22 集</span></h3><ul><li><a href="../day4/16-interrupts.html"><span class="n">第 16 集</span><span class="t">中断：CLINT 与 PLIC</span></a></li><li><a href="../day4/17-isa-mac.html"><span class="n">第 17 集</span><span class="t">指令集扩展：M · A · C</span></a></li><li><a href="../day4/18-soc.html"><span class="n">第 18 集</span><span class="t">把 CPU 装进 SoC</span></a></li><li><a href="../day4/19-uart.html"><span class="n">第 19 集</span><span class="t">uart8250：接上串口</span></a></li><li><a href="../day4/20-modes.html"><span class="n">第 20 集</span><span class="t">模式切换与系统调用</span></a></li><li><a href="../day4/21-verilator.html"><span class="n">第 21 集</span><span class="t">换成跑得更快的 Verilator</span></a></li><li><a href="../day4/22-opensbi.html"><span class="n">第 22 集</span><span class="t">OpenSBI 起 banner 与交棒</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#ff8a4c"></span><span class="nm">照着形象造人</span><span class="st">第 23–27 集</span></h3><ul><li><a href="../day5/23-icache.html"><span class="n">第 23 集</span><span class="t">ICache：取指不再等存储器</span></a></li><li><a href="../day5/24-dcache.html"><span class="n">第 24 集</span><span class="t">DCache：访存多拍，前递源的生命周期要重算</span></a></li><li><a href="../day5/25-bpredict.html"><span class="n">第 25 集</span><span class="t">分支预测：把两拍惩罚藏起来</span></a></li><li><a href="../day5/26-mmu.html"><span class="n">第 26 集</span><span class="t">MMU 与 Sv39：虚拟地址第一次成立</span></a></li><li><a href="../day5/27-pmp.html"><span class="n">第 27 集</span><span class="t">PMP：S / U 能访问哪段物理内存</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#e0507a"></span><span class="nm">安息前的最后一班岗</span><span class="st">第 28–31 集</span></h3><ul><li><a href="../day6/28-fpu.html"><span class="n">第 28 集</span><span class="t">FPU（F / D）：一半是算术，一半是特权</span></a></li><li><a href="../day6/29-misaligned.html"><span class="n">第 29 集</span><span class="t">非对齐访存：一笔装不下，就拆两笔</span></a></li><li><a href="../day6/30-initramfs.html"><span class="n">第 30 集</span><span class="t">挂根：initramfs 与它的三条软规矩</span></a></li><li><a href="../day6/31-shell.html"><span class="n">第 31 集</span><span class="t">进入 shell：从&quot;能打印&quot;到&quot;能对话&quot;</span></a></li></ul></section><section class="nav-day"><h3><span class="dot" style="background:#c8cfdd"></span><span class="nm">安息</span><span class="st">第 32–38 集</span></h3><ul><li><a href="32-gap.html"><span class="n">第 32 集</span><span class="t">差在五处：五级顺序单发射 vs 现代高性能核</span></a></li><li><a href="33-ooo.html"><span class="n">第 33 集</span><span class="t">乱序：把&quot;位置即年龄&quot;换成&quot;tag 即年龄&quot;</span></a></li><li><a href="34-width.html"><span class="n">第 34 集</span><span class="t">多发射：从一拍一条到一拍三条</span></a></li><li><a href="35-deep.html"><span class="n">第 35 集</span><span class="t">深流水：主干 12 级与同步读</span></a></li><li><a href="36-mem.html" class="on" aria-current="page"><span class="n">第 36 集</span><span class="t">非阻塞访存：等待数据时，独立指令继续执行</span></a></li><li><a href="37-bpred.html"><span class="n">第 37 集</span><span class="t">预测升级：四件套与返回地址栈</span></a></li><li><a href="38-coremark.html"><span class="n">第 38 集</span><span class="t">CoreMark 跑分：性能如何验收</span></a></li></ul></section><div class="nav-foot">连载写作中 · 一个人造的编译器与语言<br><a href="https://github.com/ifnfn">作者</a> · <a href="https://github.com/prism-hdl">Prism HDL</a></div></div></nav><button class="nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false">目录</button><div class="nav-scrim" id="nav-scrim"></div>
 
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">七日创造 · 第七日 · 安息 · 第 36 集</div>
-    <h1>非阻塞访存<br><em>miss 期间，流水继续退休</em></h1>
-    <p class="subtitle">第 32 集立的第三个数是"miss 从发出到交付，还能退休几条"——按序核恒为 0。这一集把它变成正数：访存从"一笔在途、阻塞等待"改为<strong>非阻塞</strong>——地址项 8、填充项 2 笔在途，再加一层<strong>私有 L2</strong>（512KB），对外换 <strong>AXI4</strong>。这次换代逐项给出理由。</p>
+    <h1>非阻塞访存<br><em>等待数据时，独立指令继续执行</em></h1>
+    <p class="subtitle">第 32 集区分了执行完成与架构退休。本集让独立年轻指令在老 load 等待期间执行，并把结果保存到按序提交结构中：访存从"一笔在途、阻塞等待"改为<strong>非阻塞</strong>——地址项 8、填充项 2 笔在途，再加一层<strong>私有 L2</strong>（512KB），对外换 <strong>AXI4</strong>。这些结构共同服从 ROB 年龄、精确异常和已提交 store 不回滚三条规则。</p>
+    <div class="callout warn"><span class="callout-title">非阻塞访存的证据边界</span><p style="margin:0">地址项8、填充项2、L2 512KB/4路/64B和AXI4是终版设计候选值；当前 DCache/L2 源码已有几何与局部事务证据，但完整“老 miss 等待、年轻完成、年轻不提前退休”的整核闭环仍需单独验收。</p></div>
     <div class="verse">
       "因为在这日，神歇了他一切创造的工，"
       <cite>—— 《创世记》 2:3</cite>
@@ -175,22 +176,22 @@ html.nav-open .nav-scrim { display: block; }
 <main id="doc-main">
 
 <div class="pn">
-  <a href="35-deep.html">← 第 32 集 · 深流水：主干 12 级与同步读</a>
-  <a href="37-bpred.html">第 32 集 · 预测升级：四件套与返回地址栈 →</a>
+  <a href="35-deep.html">← 第 35 集 · 深流水：主干 12 级与同步读</a>
+  <a href="37-bpred.html">第 37 集 · 预测升级：四件套与返回地址栈 →</a>
 </div>
 
 <section id="s1">
   <h2>从阻塞式到登记式</h2>
-  <p>第六日的白虹遇到一次缓存 miss 就暂停整条流水线：只允许<strong>一笔在途事务</strong>，冻结到数据返回（第 32 集停顿表里的 <code>src_dmiss</code>）。乱序已经解除了"等待连坐"——一条 load 在等，其他指令可以继续执行——但要真正兑现，访存本身必须从<strong>阻塞式</strong>改为<strong>登记式</strong>：miss 发出时在途表登记一项，数据返回时按登记配对，其间流水线不暂停。</p>
-  <p>这笔改造落在三个地方：缓存本体、在途能力、和它对外的接口。</p>
+  <p>顺序观察路径遇到一次缓存 miss 就暂停整条流水线：只允许<strong>一笔在途事务</strong>，冻结到数据返回（第 32 集停顿表里的 <code>src_dmiss</code>）。乱序已经解除了"等待连坐"——一条 load 在等，其他指令可以继续执行——但要真正兑现，访存本身必须从<strong>阻塞式</strong>改为<strong>登记式</strong>：miss 发出时在途表登记一项，数据返回时按登记配对，其间流水线不暂停。</p>
+  <p>终版把职责分到缓存本体、行事务表、写队列、L2 与外部总线接口，任何返回都携带可核对的事务身份。</p>
 </section>
 
 <section id="s2">
-  <h2>DCache 换代：64KB、4 路、写回</h2>
-  <p>第六日是直接映射 512B、写穿、miss 不分配。第七日的工作点：</p>
+  <h2>DCache：64KB、4 路、写回</h2>
+  <p>教学缓存用 512B 直接映射结构解释命中、填充与提交脉冲；终版 DCache 的固定参数如下：</p>
   <div class="tbl-wrap">
     <table>
-      <tr><th>参数</th><th>第六日</th><th>第七日</th><th>为什么</th></tr>
+      <tr><th>参数</th><th>教学观察面</th><th>终版实现</th><th>为什么</th></tr>
       <tr><td>容量</td><td class="mono">512 B</td><td class="mono">64 KB</td><td>工作集：跑分负载的 list / matrix 段装得下才有命中率</td></tr>
       <tr><td>相联度</td><td>直接映射</td><td class="mono">4 路</td><td>见下"为什么是 4 路"——两层都不能没有余量</td></tr>
       <tr><td>行大小</td><td class="mono">32 B</td><td class="mono">64 B</td><td>一次取回整个行，相邻数据一并装入</td></tr>
@@ -198,8 +199,8 @@ html.nav-open .nav-scrim { display: block; }
     </table>
   </div>
   <h3>为什么是 4 路</h3>
-  <p>上一代使用直接映射，是因为没有下一层缓存需要衔接。这一代自己实现 L2，<strong>两层都必须能容纳冲突缺失</strong>：64KB 直接映射的同组步距是 64KB，而跑分负载的 matrix / list 步长恰是 2 的幂——两份数据反复映射到同一组（conflict miss 的典型条件）。升到 4 路后，同一组内有四个候选位置，冲突大幅减少。相联度另有两种方案（交错 way 阵列、XOR 散列索引），经比较代价与风险更高——4 路的 mux 落在触发器之后，时序成本很低。</p>
-  <p>指令侧刻意<strong>不对称</strong>：容量提级并升到 2 路——取指是顺序流，背后有 32 项指令缓冲 + 4 项预取承接，冲突缺失被缓冲吸收；而 load / store 的幂次步长没有这种缓冲可依赖。<strong>不要为了对称把两侧拉平。</strong></p>
+  <p>直接映射教学结构用于显露冲突条件；终版接入私有 L2 后，<strong>两层都必须能容纳冲突缺失</strong>：64KB 直接映射的同组步距是 64KB，而跑分负载的 matrix / list 步长恰是 2 的幂——两份数据反复映射到同一组（conflict miss 的典型条件）。升到 4 路后，同一组内有四个候选位置，冲突大幅减少。四路组相联在冲突容纳能力与同步读后的选择路径之间取得固定平衡；way 选择位于读出寄存器之后。</p>
+  <p>指令侧刻意<strong>不对称</strong>：64KB、2 路、32B 行——取指是顺序流，背后有 32 项指令缓冲 + 4 项预取承接，冲突缺失被缓冲吸收；而 load / store 的幂次步长没有这种缓冲可依赖。<strong>不要为了对称把两侧拉平。</strong></p>
 </section>
 
 <section id="s3">
@@ -207,22 +208,25 @@ html.nav-open .nav-scrim { display: block; }
   <p>"非阻塞"的能力大小 = <strong>同时在途几笔</strong>。这里有一个必须分开的细节——在途是<strong>两件事</strong>，不是一个数：</p>
   <div class="two">
     <div class="box"><h4>地址项 8</h4><p>miss 的"地址 + 凭证"登记表（LFB）：同时可以有八笔不同的 miss 在飞——每笔都知道自己在等哪个地址。</p></div>
-    <div class="box"><h4>填充项 2</h4><p>同时在"灌数据"的行只有两笔——从 L2 或内存回来的数据通道只宽两条。</p></div>
+    <div class="box"><h4>填充项 2</h4><p>数据项同时容纳两条正在接收的缓存行；这是存储资源数量，不等于两条返回通道或每拍两行吞吐。</p></div>
   </div>
-  <p>把它合成一句"在途 8 笔"是错的：<strong>地址表宽、数据表窄</strong>——八笔可以同时等，但同一拍真正在灌的只有两笔。另外两笔队列：store 侧从 12 项队列（第 33 集）接一个 8 项的<strong>写合并缓冲</strong>——同一行的多次写先合再出，省事务；load 若撞上还没落地的 store，按<strong>行内 16 字节粒度 + 字节掩码</strong>前递（地址对上 + 字节有重叠才递）。</p>
+  <p>把它合成一句"在途 8 笔"是错的：<strong>地址表宽、数据表窄</strong>——至多八个不同地址能登记等待，而数据填充资源至多容纳两条行事务。另外两笔队列：store 侧从 12 项队列（第 33 集）接一个 8 项的<strong>写合并缓冲</strong>——同一行的多次写先合再出，省事务；load 若撞上还没落地的 store，以物理字节地址、程序序年龄和字节掩码从最新的更老 store 合成覆盖车道；未覆盖车道仍从缓存取得，地址未知的更老 store 必须阻止错误放行。</p>
 </section>
 
 <section id="s4">
   <h2>私有 L2 与 AXI4</h2>
-  <p>L1 miss 的落点是自己的一层 L2：<strong>512KB / 4 路 / 64B 行</strong>。拿它跟大核的 L2 比是降档的——降档换的是<strong>时序</strong>：L2 命中只打一级（tag 比较 + 选中一拍出数），而不是两级。这笔交易要配对才成立：如果量出来这一级省不掉（同步读之后"少一路"并不自动"少一级"），4 路就只是降相联，那时应当回到 8 路——<strong>取舍要有判据，不能靠感觉</strong>。</p>
-  <p>核外的接口这一集也换代：原来两条口径不同的组合口（取指 32 位字、访存 64 位字）统一成<strong>一条 AXI4 主口</strong>，事务带 ID：普通读写各 8 笔，另留五个特殊 ID（非缓存、L2 预取、强序、非缓存原子、栅栏）——"要穿到设备去的访问"从核端口的一根线，升级成事务的一个属性。</p>
-  <p>TLB 同步扩容：<strong>uTLB 32 项全相联</strong>（指令 / 数据各一份）。不加第二级大表——那是为更大 footprint 与多核准备的，单核起步 32 × 2 够用，不够再谈。</p>
+  <p>L1 miss 的落点是自己的一层 L2：<strong>512KB / 4 路 / 64B 行</strong>。L2 命中路径固定为一级 tag 比较与选路；512KB、4 路、64B 行与这一拍级共同构成容量、冲突率和级距之间的终版取舍。</p>
+  <p>核外接口把取指行与数据事务汇入<strong>AXI4 主口</strong>，事务带 ID：普通读写各 8 笔，另留五个特殊 ID（非缓存、L2 预取、强序、非缓存原子、栅栏）——"要穿到设备去的访问"从核端口的一根线，升级成事务的一个属性。</p>
+  <p>TLB 同步扩容：<strong>uTLB 32 项全相联</strong>（指令 / 数据各一份）。终版不设二级 TLB；I/D 各 32 项全相联 uTLB 直接服务单核 Sv39 工作集，miss 统一进入 PTW。</p>
 </section>
 
 <section id="s5">
+  <h2>物理地址、权限与两笔访问的归属</h2>
+  <p>第 26 集的 Sv39 翻译给出物理地址，第 27 集的 PMP 对取指、普通访存与 PTW 的物理访问分别判权；DCache、L2 与 AXI 只接收带权限结论的事务。第 29 集的非对齐普通访问若跨字但不跨页，拆成两个带同一指令身份的子请求，直到两笔成功才允许完整结果完成；跨页与 AMO/LR-SC 的未对齐情形按前文的异常规则处理。第一笔成功不能提前提交半个架构结果。</p>
+  <p>缓存行返回可晚于分支恢复或异常冲刷：事务 ID 负责配对物理响应，ROB 身份决定它是否还能写回架构候选结果。已提交 store 即使跨年轻 trap 也必须排空；设备 MMIO 保持强序且不得被推测路径提前执行。SoC 的 DDR 窗口仍为 <code>0x80000000–0x87ffffff</code>，ROM/CLINT/PLIC/UART 地址不因核外接口改为 AXI 而重新编号。</p>
   <h2>判据怎么钉</h2>
   <ul>
-    <li><strong>主判据</strong>：miss 期间可退休拍数 <strong>&gt; 0</strong>——第 32 集第三个数的兑现点。配套看"在途利用率"：LFB 八项在跑分负载里应当被用到，用不到说明负载的 miss 压力不够（跑分台的分层判据：medium 档 miss 率必须显著高于 little 档）。</li>
+    <li><strong>主判据</strong>：miss 期间独立年轻指令的接纳与完成数 <strong>&gt; 0</strong>，且老 load 完成前年轻指令退休数为 0——第 32 集第三个数的兑现点。配套看"在途利用率"：以独立请求压力台检验满表与回压，并报告真实负载的利用率；基准未用满窗口不等于硬件不合格。</li>
     <li><strong>分层归因</strong>：归因表单独报 L1 与 L2 的 miss——否则相联度、容量、行大小的每一处改动都无法归因。</li>
     <li><strong>一致性底线</strong>：退休序与程序序逐条一致；store-to-load 前递的字节掩码错一位，必须有反证能打到。</li>
   </ul>
@@ -233,7 +237,7 @@ html.nav-open .nav-scrim { display: block; }
   <ul>
     <li>访存从"一笔在途、阻塞全流水"改为登记式在途：地址项 8 + 填充项 2——<strong>两个数，不是一句"在途 8 笔"</strong>。</li>
     <li>DCache：64KB / 4 路 / 64B 行 / write-back；4 路的理由是一组具体的 thrash 条件；指令侧保持 2 路是刻意的不对称。</li>
-    <li>私有 L2 512KB / 4 路、命中只打一级（量不出就回 8 路）；uTLB 32 项；对外统一 AXI4。</li>
+    <li>私有 L2 为 512KB / 4 路 / 64B 行、一级命中路径；I/D uTLB 各 32 项；对外统一 AXI4。</li>
     <li>下一集：把"猜"升级——四件套预测器与返回地址栈。</li>
   </ul>
 </section>
